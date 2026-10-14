@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Codeethos — Learn Programming Fast, Interactively</title>
+    <meta name="description" content="Codeethos: an interactive coding platform with live in-browser execution, auto-graded challenges, real-world projects, quizzes and an intelligent AI tutor." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="#/" class="brand" id="brand-link"><span class="brand-logo">~$</span><span><b>codeethos</b></span></a>
+      <div class="stats" id="stats"></div>
+      <div class="top-actions">
+        <span class="py-status" id="py-status" title="Language engine status"><i></i><em>python ready</em></span>
+        <button class="icon-btn" id="btn-chat" title="Ask Codeethos AI Tutor">ask</button>
+        <button class="icon-btn" id="btn-settings" title="Settings">config</button>
+        <div id="auth-actions" class="auth-actions"></div>
+      </div>
+    </header>
+    <main id="app"></main>
+    <aside class="chat-panel" id="chat-panel" aria-label="AI tutor chat"></aside>
+    <div class="modal-root" id="modal-root"></div>
+    <div class="toast-root" id="toast-root"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

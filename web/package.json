@@ -1,0 +1,21 @@
+{
+  "name": "codeethos",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dump-content": "node scripts/dump-content.mjs"
+  },
+  "dependencies": {
+    "@codemirror/lang-python": "^6.1.6",
+    "@codemirror/theme-one-dark": "^6.1.2",
+    "canvas-confetti": "^1.9.3",
+    "codemirror": "^6.0.1"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

@@ -1,0 +1,75 @@
+// Client for any OpenAI-compatible local LLM server
+// (Ollama, LM Studio, llama.cpp server, vLLM, LocalAI...).
+
+import { store } from './store.js';
+
+function cfg() {
+  const s = store.get().settings;
+  return { base: s.llmUrl.replace(/\/+$/, ''), model: s.model, key: s.apiKey };
+}
+function headers(key) {
+  const h = { 'Content-Type': 'application/json' };
+  if (key) h.Authorization = `Bearer ${key}`;
+  return h;
+}
+
+export async function listModels() {
+  const { base, key } = cfg();
+  const res = await fetch(`${base}/models`, { headers: headers(key) });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  return (data.data || []).map((m) => m.id);
+}
+
+/**
+ * Stream a chat completion. Calls onToken(text) for each chunk.
+ * Returns the full reply.
+ */
+export async function streamChat(messages, onToken, signal) {
+  const { base, model, key } = cfg();
+  const res = await fetch(`${base}/chat/completions`, {
+    method: 'POST',
+    headers: headers(key),
+    body: JSON.stringify({ model, messages, stream: true, temperature: 0.4 }),
+    signal,
+  });
+  if (!res.ok || !res.body) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`LLM error ${res.status}: ${text.slice(0, 200)}`);
+  }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let full = '';
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop();
+    for (const line of lines) {
+      const t = line.trim();
+      if (!t.startsWith('data:')) continue;
+      const payload = t.slice(5).trim();
+      if (payload === '[DONE]') return full;
+      try {
+        const delta = JSON.parse(payload).choices?.[0]?.delta?.content;
+        if (delta) {
+          full += delta;
+          onToken(delta);
+        }
+      } catch {
+        /* partial JSON line, ignore */
+      }
+    }
+  }
+  return full;
+}
+
+export const TUTOR_SYSTEM_PROMPT = `You are the Codeethos AI Tutor, a friendly, encouraging expert programming mentor for learners.
+Rules:
+- Teach Socratically: ask a guiding question or give a hint BEFORE showing code.
+- NEVER write the complete solution to the current challenge. Small snippets (1-3 lines) illustrating a concept are OK.
+- Keep answers short (under 150 words), use simple English and markdown.
+- Point out common pitfalls: missing colons, indentation, = vs ==, shadowing built-ins, mutable defaults, is vs ==, type errors from input().
+- When reviewing code: first praise one thing, then point to at most 2 issues with line numbers, then ask a question.`;

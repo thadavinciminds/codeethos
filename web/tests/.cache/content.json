@@ -1,0 +1,1982 @@
+[
+  {
+    "id": 1,
+    "title": "Foundations & Interactive CLI",
+    "lessons": [
+      {
+        "id": "1.1",
+        "title": "Hello World & Variables",
+        "emoji": "👋",
+        "minutes": 8,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Your first line of Python",
+            "body": "<p><code>print()</code> shows text on the screen. Text goes inside quotes and is called a <b>string</b>.</p>\n<p>Press <kbd>▶ Run</kbd> (or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>) to run the code on the right. Then change the message and run it again!</p>",
+            "code": "print(\"Hello, Python!\")\nprint(\"I am learning fast 🚀\")\n"
+          },
+          {
+            "type": "concept",
+            "title": "Variables & data types",
+            "body": "<p>A <b>variable</b> is a labelled box that stores a value. Use <code>=</code> to put a value in the box.</p>\n<ul>\n<li><code>str</code> – text: <code>\"Ada\"</code></li>\n<li><code>int</code> – whole number: <code>36</code></li>\n<li><code>float</code> – decimal: <code>1.75</code></li>\n<li><code>bool</code> – <code>True</code> / <code>False</code></li>\n</ul>\n<p><code>type(x)</code> tells you what kind of value <code>x</code> holds. Run it!</p>",
+            "code": "name = \"Ada\"\nage = 36\nheight = 1.75\nis_coder = True\n\nprint(name, type(name))\nprint(age, type(age))\nprint(height, type(height))\nprint(is_coder, type(is_coder))\n"
+          },
+          {
+            "type": "concept",
+            "title": "Asking the user: input()",
+            "body": "<p><code>input(\"prompt\")</code> pauses and waits for the user to type something.</p>\n<p>In this app, what the user \"types\" comes from the <b>Input box</b> under the editor — one line per <code>input()</code> call.</p>\n<div class=\"callout warn\"><b>⚠ Pitfall:</b> <code>input()</code> <u>always</u> returns a <code>str</code>, even if the user types a number!</div>",
+            "code": "name = input(\"What is your name? \")\nprint(\"Nice to meet you, \" + name + \"!\")\n",
+            "stdin": "Ada"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "age = input(\"Age? \")   # user types 20\nprint(age + \"1\")\n",
+            "question": "The user types <code>20</code>. What gets printed?",
+            "options": [
+              "21",
+              "201",
+              "TypeError",
+              "20 1"
+            ],
+            "answer": 1,
+            "explain": "<code>input()</code> returns the string <code>\"20\"</code>. Adding two strings <b>joins</b> them: <code>\"20\" + \"1\"</code> → <code>\"201\"</code>."
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "age = 20\nprint(\"Age: \" + age)\n",
+            "question": "What happens?",
+            "options": [
+              "Age: 20",
+              "Age:20",
+              "TypeError",
+              "Age: age"
+            ],
+            "answer": 2,
+            "explain": "You cannot <code>+</code> a <code>str</code> and an <code>int</code>. Fix it with <code>str(age)</code> or an f-string: <code>f\"Age: {age}\"</code>."
+          },
+          {
+            "type": "concept",
+            "title": "Converting types & f-strings",
+            "body": "<p>Convert between types with <code>int()</code>, <code>float()</code> and <code>str()</code>.</p>\n<p>The easiest way to mix text and numbers is an <b>f-string</b>: put <code>f</code> before the quotes and variables inside <code>{ }</code>.</p>",
+            "code": "age_text = input(\"Age? \")\nage = int(age_text)          # str -> int\nprint(\"In 5 years:\", age + 5)\nprint(f\"You are {age} now, {age + 5} in 5 years.\")\n",
+            "stdin": "30"
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Birthday greeting",
+            "body": "<p>Write a program that:</p>\n<ol>\n<li>Asks for the user's <b>name</b></li>\n<li>Asks for the user's <b>age</b></li>\n<li>Prints exactly: <code>Hello, Ada! Next year you will be 37.</code></li>\n</ol>\n<p>Fill in the <code># TODO</code> lines. Press <b>✓ Check</b> to run the hidden tests.</p>",
+            "starter": "# 1. Ask for the name\nname = # TODO\n\n# 2. Ask for the age (remember: input() gives you a string!)\nage = # TODO\n\n# 3. Print the greeting\n# TODO\n",
+            "stdin": "Ada\n36",
+            "tests": [
+              {
+                "name": "Greets Ada (36 → 37)",
+                "stdin": "Ada\n36",
+                "check": "assert \"Hello, Ada!\" in output, \"Expected 'Hello, Ada!' in the output\"\nassert \"Next year you will be 37.\" in output, \"Expected 'Next year you will be 37.'\"\n"
+              },
+              {
+                "name": "Greets Bob (9 → 10)",
+                "stdin": "Bob\n9",
+                "check": "assert \"Hello, Bob! Next year you will be 10.\" in output, \"Expected 'Hello, Bob! Next year you will be 10.'\"\n"
+              }
+            ],
+            "hints": [
+              "Use <code>input(\"...\")</code> twice. What type does it return?",
+              "Convert the age with <code>int(...)</code> before adding 1.",
+              "An f-string makes the last line easy: <code>print(f\"Hello, {name}! ...\")</code>"
+            ],
+            "solution": "name = input(\"What is your name? \")\nage = int(input(\"How old are you? \"))\nprint(f\"Hello, {name}! Next year you will be {age + 1}.\")\n"
+          }
+        ]
+      },
+      {
+        "id": "1.2",
+        "title": "Control Flow & Logic",
+        "emoji": "🔀",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Comparisons & booleans",
+            "body": "<p>Comparisons produce <code>True</code> or <code>False</code>:</p>\n<table class=\"mini\"><tr><td><code>==</code></td><td>equal</td><td><code>!=</code></td><td>not equal</td></tr>\n<tr><td><code>&lt;</code> <code>&gt;</code></td><td>less / greater</td><td><code>&lt;=</code> <code>&gt;=</code></td><td>or equal</td></tr></table>\n<p>Combine them with <code>and</code>, <code>or</code>, <code>not</code>.</p>\n<div class=\"callout warn\"><b>⚠ Pitfall:</b> <code>=</code> <u>stores</u> a value, <code>==</code> <u>compares</u>.</div>",
+            "code": "x = 7\nprint(x == 7)\nprint(x != 7)\nprint(x > 3 and x < 10)\nprint(x < 3 or x == 7)\nprint(not x == 7)\n"
+          },
+          {
+            "type": "concept",
+            "title": "if / elif / else",
+            "body": "<p>Run different code depending on a condition. Two rules:</p>\n<ol><li>The <code>if</code> line ends with a colon <code>:</code></li>\n<li>The code inside is <b>indented 4 spaces</b></li></ol>\n<p>Python checks top to bottom and runs only the <b>first</b> true branch. Try different scores in the Input box!</p>",
+            "code": "score = int(input(\"Score? \"))\n\nif score >= 90:\n    print(\"A - excellent!\")\nelif score >= 70:\n    print(\"B - good job\")\nelse:\n    print(\"Keep practicing\")\nprint(\"Done\")   # not indented: always runs\n",
+            "stdin": "85"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "temp = 25\nif temp > 30:\n    print(\"hot\")\nelif temp > 20:\n    print(\"warm\")\nelif temp > 10:\n    print(\"mild\")\nelse:\n    print(\"cold\")\n",
+            "question": "What is printed?",
+            "options": [
+              "hot",
+              "warm",
+              "warm and mild",
+              "mild"
+            ],
+            "answer": 1,
+            "explain": "25 > 30 is False; 25 > 20 is True → prints <b>warm</b> and skips the rest. Only the first true branch runs."
+          },
+          {
+            "type": "concept",
+            "title": "while loops",
+            "body": "<p>A <code>while</code> loop repeats its block <b>as long as</b> the condition is True.</p>\n<div class=\"callout warn\"><b>⚠ Pitfall:</b> If the condition never becomes False you get an <b>infinite loop</b>. (Don't worry — this app stops code after 6 seconds.)</div>",
+            "code": "count = 3\nwhile count > 0:\n    print(count, \"...\")\n    count = count - 1    # try deleting this line!\nprint(\"Lift off! 🚀\")\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "n = 1\ntotal = 0\nwhile n <= 4:\n    total = total + n\n    n = n + 1\nprint(total)\n",
+            "question": "What is printed?",
+            "options": [
+              "4",
+              "6",
+              "10",
+              "15"
+            ],
+            "answer": 2,
+            "explain": "total = 1 + 2 + 3 + 4 = <b>10</b>. When n becomes 5, <code>n &lt;= 4</code> is False and the loop stops."
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Guess the number",
+            "body": "<p>The secret number is <code>7</code>. Keep asking for guesses until the user gets it.</p>\n<ul>\n<li>Guess too small → print <code>Too low</code></li>\n<li>Guess too big → print <code>Too high</code></li>\n<li>Correct → print <code>Correct! You took 3 tries.</code> (with the real count)</li>\n</ul>",
+            "starter": "secret = 7\ntries = 0\nguess = 0\n\nwhile  # TODO: loop while the guess is wrong\n    guess = int(input(\"Your guess: \"))\n    tries = tries + 1\n    # TODO: if / elif to print \"Too low\" or \"Too high\"\n\n# TODO: print the success message with the number of tries\n",
+            "stdin": "3\n9\n7",
+            "tests": [
+              {
+                "name": "Low, high, then correct",
+                "stdin": "3\n9\n7",
+                "check": "assert \"Too low\" in output, \"A guess of 3 should print 'Too low'\"\nassert \"Too high\" in output, \"A guess of 9 should print 'Too high'\"\nassert \"Correct! You took 3 tries.\" in output, \"Expected 'Correct! You took 3 tries.'\"\n"
+              },
+              {
+                "name": "Correct on first try",
+                "stdin": "7",
+                "check": "assert \"Correct! You took 1 tries.\" in output, \"Expected 'Correct! You took 1 tries.'\"\nassert \"Too\" not in output, \"Should not print Too low/high when the first guess is right\"\n"
+              },
+              {
+                "name": "Many low guesses",
+                "stdin": "1\n2\n3\n4\n7",
+                "check": "assert output.count(\"Too low\") == 4, \"Expected 'Too low' four times\"\nassert \"You took 5 tries.\" in output\n"
+              }
+            ],
+            "hints": [
+              "The loop should keep going while <code>guess != secret</code>. Don't forget the colon!",
+              "Inside the loop: <code>if guess &lt; secret:</code> … <code>elif guess &gt; secret:</code> …",
+              "After the loop ends, the guess must be right. Use an f-string: <code>f\"Correct! You took {tries} tries.\"</code>"
+            ],
+            "solution": "secret = 7\ntries = 0\nguess = 0\n\nwhile guess != secret:\n    guess = int(input(\"Your guess: \"))\n    tries = tries + 1\n    if guess < secret:\n        print(\"Too low\")\n    elif guess > secret:\n        print(\"Too high\")\n\nprint(f\"Correct! You took {tries} tries.\")\n"
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: Boolean logic",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "What is <code>True and False</code>?",
+                "options": [
+                  "True",
+                  "False",
+                  "None",
+                  "Error"
+                ],
+                "answer": 1,
+                "explain": "<code>and</code> is True only if <b>both</b> sides are True."
+              },
+              {
+                "q": "What is <code>not (5 &gt; 3) or 2 == 2</code>?",
+                "options": [
+                  "True",
+                  "False",
+                  "Error",
+                  "2"
+                ],
+                "answer": 0,
+                "explain": "<code>not True</code> → False; <code>False or True</code> → <b>True</b>."
+              },
+              {
+                "q": "Which line has a bug?",
+                "code": "x = 10\nif x = 10:\n    print(\"ten\")\n",
+                "options": [
+                  "Line 1",
+                  "Line 2",
+                  "Line 3",
+                  "No bug"
+                ],
+                "answer": 1,
+                "explain": "Line 2 uses <code>=</code> (assignment). A condition needs <code>==</code>."
+              },
+              {
+                "q": "What does <code>10 != 10.0</code> evaluate to?",
+                "options": [
+                  "True",
+                  "False",
+                  "TypeError",
+                  "None"
+                ],
+                "answer": 1,
+                "explain": "Python compares the values: 10 equals 10.0, so <code>!=</code> is <b>False</b>."
+              },
+              {
+                "q": "How many times does \"hi\" print?",
+                "code": "i = 0\nwhile i < 3:\n    print(\"hi\")\n    i = i + 1\n",
+                "options": [
+                  "2",
+                  "3",
+                  "4",
+                  "Forever"
+                ],
+                "answer": 1,
+                "explain": "i takes the values 0, 1, 2 → <b>3</b> times. At i = 3 the condition is False."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "1.3",
+        "title": "Project: Smart CLI Calculator",
+        "emoji": "🧮",
+        "minutes": 20,
+        "project": true,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Handling errors with try / except",
+            "body": "<p>When something goes wrong Python raises an <b>exception</b> and your program crashes… unless you catch it!</p>\n<ul><li><code>ValueError</code> – e.g. <code>float(\"abc\")</code></li>\n<li><code>ZeroDivisionError</code> – e.g. <code>5 / 0</code></li></ul>\n<div class=\"callout warn\"><b>⚠ Pitfall:</b> Always catch <b>specific</b> exceptions. A bare <code>except:</code> hides real bugs.</div>\n<p>Try typing <code>abc</code> or <code>0</code> in the Input box.</p>",
+            "code": "text = input(\"Divide 10 by: \")\ntry:\n    number = float(text)\n    print(\"Result:\", 10 / number)\nexcept ValueError:\n    print(\"That's not a number!\")\nexcept ZeroDivisionError:\n    print(\"You can't divide by zero!\")\n",
+            "stdin": "abc"
+          },
+          {
+            "type": "concept",
+            "title": "while True, break & pass",
+            "body": "<p><code>while True:</code> loops <b>forever</b> — until a <code>break</code> jumps out. Perfect for apps that keep running until the user quits.</p>\n<p><code>pass</code> means \"do nothing\". Use it as a placeholder while you build your code step by step.</p>\n<p>And <code>.split()</code> breaks text into parts: <code>\"3 + 4\".split()</code> → <code>['3', '+', '4']</code>.</p>",
+            "code": "while True:\n    command = input(\"> \")\n    if command == \"exit\":\n        print(\"Bye!\")\n        break\n    elif command == \"todo\":\n        pass   # feature coming soon\n    else:\n        print(\"You typed:\", command.split())\n",
+            "stdin": "hello world\n3 + 4\ntodo\nexit"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "parts = \"12 * 3\".split()\na = float(parts[0])\nb = float(parts[2])\nprint(a * b)\n",
+            "question": "What is printed?",
+            "options": [
+              "36",
+              "36.0",
+              "12 * 3",
+              "1212 12"
+            ],
+            "answer": 1,
+            "explain": "<code>float()</code> makes decimals, so <code>12.0 * 3.0</code> → <b>36.0</b>."
+          },
+          {
+            "type": "challenge",
+            "title": "Project: Smart CLI Calculator",
+            "body": "<p>Build a calculator that never crashes. Each input line looks like <code>3 + 4</code>.</p>\n<p><b>Acceptance criteria</b></p>\n<ul>\n<li>Uses a <code>while True:</code> loop that only stops on <code>exit</code> (print <code>Goodbye!</code>)</li>\n<li>Supports <code>+ - * /</code> and prints the result like <code>= 7.0</code></li>\n<li>Letters instead of numbers → <code>Error: please enter numbers</code></li>\n<li>Division by zero → <code>Error: cannot divide by zero</code></li>\n<li>Unknown operator → <code>Error: unknown operator</code></li>\n<li>Not 3 parts → <code>Error: use format: number operator number</code></li>\n</ul>",
+            "starter": "print(\"Smart Calculator - type 'exit' to quit\")\n\nwhile True:\n    line = input(\"> \")\n\n    # TODO 1: if the user typed \"exit\", say Goodbye! and break\n\n    parts = line.split()\n    # TODO 2: if there are not exactly 3 parts, print the format error\n    #         and use 'continue' to ask again\n\n    try:\n        a = float(parts[0])\n        op = parts[1]\n        b = float(parts[2])\n\n        # TODO 3: compute the result for + - * /\n        #         (unknown operator -> print error and continue)\n        pass\n\n        print(f\"= {result}\")\n    except ValueError:\n        pass  # TODO 4: print the numbers error\n    # TODO 5: catch ZeroDivisionError\n",
+            "stdin": "3 + 4\n10 / 0\nabc * 2\nexit",
+            "tests": [
+              {
+                "name": "Uses a while True: loop",
+                "check": "assert \"while True\" in source, \"The calculator must use a 'while True:' loop\"\n",
+                "stdin": "exit"
+              },
+              {
+                "name": "exit quits with Goodbye!",
+                "stdin": "exit",
+                "check": "assert \"Goodbye!\" in output, \"Typing exit should print 'Goodbye!'\"\n"
+              },
+              {
+                "name": "Addition: 3 + 4",
+                "stdin": "3 + 4\nexit",
+                "check": "assert \"= 7\" in output, \"3 + 4 should print '= 7.0'\"\n"
+              },
+              {
+                "name": "All operators",
+                "stdin": "10 - 4\n6 * 7\n9 / 3\nexit",
+                "check": "assert \"= 6\" in output, \"10 - 4 should be 6\"\nassert \"= 42\" in output, \"6 * 7 should be 42\"\nassert \"= 3\" in output, \"9 / 3 should be 3\"\n"
+              },
+              {
+                "name": "Edge case: letters",
+                "stdin": "abc + 2\n5 * xyz\nexit",
+                "check": "assert output.count(\"Error: please enter numbers\") == 2, \"Letters should print 'Error: please enter numbers'\"\nassert \"Goodbye!\" in output, \"The program must keep running after bad input\"\n"
+              },
+              {
+                "name": "Edge case: divide by zero",
+                "stdin": "5 / 0\nexit",
+                "check": "assert \"Error: cannot divide by zero\" in output, \"Expected 'Error: cannot divide by zero'\"\n"
+              },
+              {
+                "name": "Edge case: unknown operator",
+                "stdin": "2 ^ 3\nexit",
+                "check": "assert \"Error: unknown operator\" in output, \"Expected 'Error: unknown operator'\"\n"
+              },
+              {
+                "name": "Edge case: wrong format",
+                "stdin": "hello\n1 +\n\nexit",
+                "check": "assert output.count(\"Error: use format\") == 3, \"Inputs without 3 parts should print the format error\"\n"
+              }
+            ],
+            "hints": [
+              "Check <code>if line == \"exit\":</code> first, then <code>print(\"Goodbye!\")</code> and <code>break</code>. For the format check use <code>len(parts) != 3</code>.",
+              "Use <code>if op == \"+\":</code> / <code>elif op == \"-\":</code> … and an <code>else:</code> that prints the operator error and does <code>continue</code>.",
+              "Add a second handler after the first: <code>except ZeroDivisionError:</code> — Python raises it automatically when you do <code>a / 0</code>."
+            ],
+            "solution": "print(\"Smart Calculator - type 'exit' to quit\")\n\nwhile True:\n    line = input(\"> \")\n\n    if line == \"exit\":\n        print(\"Goodbye!\")\n        break\n\n    parts = line.split()\n    if len(parts) != 3:\n        print(\"Error: use format: number operator number\")\n        continue\n\n    try:\n        a = float(parts[0])\n        op = parts[1]\n        b = float(parts[2])\n\n        if op == \"+\":\n            result = a + b\n        elif op == \"-\":\n            result = a - b\n        elif op == \"*\":\n            result = a * b\n        elif op == \"/\":\n            result = a / b\n        else:\n            print(\"Error: unknown operator\")\n            continue\n\n        print(f\"= {result}\")\n    except ValueError:\n        print(\"Error: please enter numbers\")\n    except ZeroDivisionError:\n        print(\"Error: cannot divide by zero\")\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Data Structures & Clean Code",
+    "lessons": [
+      {
+        "id": "2.1",
+        "title": "Lists & Iterables",
+        "emoji": "📜",
+        "minutes": 10,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Ordered collections: Lists",
+            "body": "<p>A <b>list</b> stores multiple items in order using square brackets <code>[ ]</code>.</p>\n<p>Items can be accessed by their index starting at <code>0</code>, or from the end using negative numbers like <code>-1</code>.</p>\n<p>Add new items to the end using <code>.append()</code>.</p>",
+            "code": "languages = [\"Python\", \"JavaScript\", \"Rust\"]\nprint(\"First:\", languages[0])\nprint(\"Last:\", languages[-1])\n\nlanguages.append(\"Go\")\nprint(\"All languages:\", languages)\nprint(\"Count:\", len(languages))\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "scores = [90, 85, 78]\nprint(scores[3])\n",
+            "question": "What happens when this runs?",
+            "options": [
+              "None",
+              "0",
+              "IndexError",
+              "78"
+            ],
+            "answer": 2,
+            "explain": "A list with 3 items has indices <code>0</code>, <code>1</code>, and <code>2</code>. Asking for index <code>3</code> raises an <code>IndexError: list index out of range</code>."
+          },
+          {
+            "type": "concept",
+            "title": "List Slicing [start:stop:step]",
+            "body": "<p><b>Slicing</b> extracts a sub-list using <code>[start:stop:step]</code>.</p>\n<ul>\n<li><code>start</code> is inclusive (default 0).</li>\n<li><code>stop</code> is <b>exclusive</b> (the item at <code>stop</code> is not included).</li>\n<li><code>step</code> is how many items to jump (default 1; <code>-1</code> reverses!).</li>\n</ul>",
+            "code": "letters = [\"a\", \"b\", \"c\", \"d\", \"e\", \"f\"]\n\nprint(\"letters[1:4] ->\", letters[1:4])   # items 1, 2, 3\nprint(\"letters[:3]  ->\", letters[:3])    # first 3 items\nprint(\"letters[::2] ->\", letters[::2])   # every 2nd item\nprint(\"letters[::-1]->\", letters[::-1])  # reversed!\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "nums = [10, 20, 30, 40, 50]\nsub = nums[2:-1]\nprint(sub)\n",
+            "question": "What is the value of <code>sub</code>?",
+            "options": [
+              "[30, 40, 50]",
+              "[30, 40]",
+              "[20, 30, 40]",
+              "[30]"
+            ],
+            "answer": 1,
+            "explain": "Index <code>2</code> is <code>30</code>. Index <code>-1</code> is <code>50</code> (exclusive, so not included). The slice contains <b>[30, 40]</b>."
+          },
+          {
+            "type": "concept",
+            "title": "for loops & List Comprehensions",
+            "body": "<p>A <code>for</code> loop iterates over each item in a collection.</p>\n<p>Python offers a concise syntax called a <b>List Comprehension</b> to build new lists from existing ones: <code>[expression for item in iterable if condition]</code>.</p>",
+            "code": "# Traditional loop\nsquares = []\nfor n in range(1, 6):\n    squares.append(n * n)\nprint(\"Standard loop:\", squares)\n\n# Refactored as List Comprehension (Pythonic!)\ncomp_squares = [n * n for n in range(1, 6)]\nprint(\"Comprehension:\", comp_squares)\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Filter and Square Evens",
+            "body": "<p>Given a list of numbers, create a new list containing only the <b>squares of the even numbers</b>.</p>\n<ul>\n<li>Use a <b>list comprehension</b> with an <code>if</code> condition.</li>\n<li>Check if a number is even with <code>n % 2 == 0</code>.</li>\n<li>Print the resulting list.</li>\n</ul>",
+            "starter": "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\n# TODO: Create 'even_squares' using a list comprehension:\n# [n * n for n in numbers if ...]\neven_squares = []\n\nprint(even_squares)\n",
+            "tests": [
+              {
+                "name": "Result list matches expected even squares",
+                "check": "assert even_squares == [4, 16, 36, 64, 100], f\"Expected [4, 16, 36, 64, 100], got {even_squares}\"\n"
+              },
+              {
+                "name": "Uses a list comprehension",
+                "check": "assert \"[\" in source and \"for\" in source and \"if\" in source, \"Must use a list comprehension with 'for' and 'if'\"\nassert \".append(\" not in source, \"Do not use .append(), use list comprehension syntax\"\n"
+              },
+              {
+                "name": "Output is printed",
+                "check": "assert \"[4, 16, 36, 64, 100]\" in output, \"Expected the list [4, 16, 36, 64, 100] to be printed\"\n"
+              }
+            ],
+            "hints": [
+              "A list comprehension takes the shape: <code>[n * n for n in numbers if condition]</code>.",
+              "An even number satisfies <code>n % 2 == 0</code> (modulo 2 equals 0).",
+              "Put them together: <code>even_squares = [n * n for n in numbers if n % 2 == 0]</code>."
+            ],
+            "solution": "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\neven_squares = [n * n for n in numbers if n % 2 == 0]\n\nprint(even_squares)\n"
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: Lists and Comprehensions",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "What is the index of the first element in a Python list?",
+                "options": [
+                  "-1",
+                  "0",
+                  "1",
+                  "None"
+                ],
+                "answer": 1,
+                "explain": "Python lists are zero-indexed, so the first element is at index <code>0</code>."
+              },
+              {
+                "q": "What does <code>[1, 2, 3][-1]</code> return?",
+                "options": [
+                  "1",
+                  "2",
+                  "3",
+                  "IndexError"
+                ],
+                "answer": 2,
+                "explain": "Negative indices count backwards from the end: <code>-1</code> is the last element (<code>3</code>)."
+              },
+              {
+                "q": "What does <code>\"python\"[:: -1]</code> produce?",
+                "options": [
+                  "\"python\"",
+                  "\"nohtyp\"",
+                  "\"p\"",
+                  "SyntaxError"
+                ],
+                "answer": 1,
+                "explain": "A step of <code>-1</code> reverses any sequence, returning <code>\"nohtyp\"</code>."
+              },
+              {
+                "q": "Which expression correctly filters odd numbers from <code>nums</code>?",
+                "options": [
+                  "[x for x in nums if x % 2 != 0]",
+                  "[if x % 2 != 0 for x in nums]",
+                  "[x if x % 2 != 0 for x in nums]",
+                  "nums.filter(lambda x: x % 2 != 0)"
+                ],
+                "answer": 0,
+                "explain": "In a filtering comprehension, the <code>if</code> clause goes at the end: <code>[x for x in nums if x % 2 != 0]</code>."
+              },
+              {
+                "q": "What happens when you run <code>a = [1, 2]; b = a; b.append(3)</code>?",
+                "options": [
+                  "Only b has 3",
+                  "Both a and b have [1, 2, 3]",
+                  "TypeError: cannot mutate",
+                  "a is empty"
+                ],
+                "answer": 1,
+                "explain": "Lists are mutable objects. <code>b = a</code> does not copy the list; both variables reference the same list in memory."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2.2",
+        "title": "Dictionaries & Data Mapping",
+        "emoji": "🗺️",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Key-Value pairs: Dictionaries",
+            "body": "<p>A <b>dictionary</b> maps unique <b>keys</b> to <b>values</b> using curly braces <code>{key: value}</code>.</p>\n<p>Lookup by key is near instantaneous (O(1)). Keys are typically strings or integers.</p>",
+            "code": "user = {\n    \"name\": \"Grace Hopper\",\n    \"role\": \"Computer Scientist\",\n    \"year\": 1906\n}\n\nprint(user[\"name\"])\nuser[\"rank\"] = \"Admiral\"   # add a new key\nprint(user)\n"
+          },
+          {
+            "type": "concept",
+            "title": "Safe lookups with .get()",
+            "body": "<p>Accessing a key that does not exist with brackets like <code>d[\"missing\"]</code> raises a <code>KeyError</code> and crashes your script.</p>\n<p>Use <code>.get(key, default)</code> to safely fetch a value without crashing:</p>",
+            "code": "stock = {\"apples\": 10, \"bananas\": 5}\n\n# Safe lookup with default fallback\noranges = stock.get(\"oranges\", 0)\nprint(\"Oranges in stock:\", oranges)\n\n# Without default, it returns None\nprint(\"Pears:\", stock.get(\"pears\"))\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "scores = {\"Alice\": 95, \"Bob\": 80}\nprint(scores.get(\"Charlie\", 50))\nprint(scores.get(\"Alice\", 50))\n",
+            "question": "What gets printed?",
+            "options": [
+              "50 then 50",
+              "50 then 95",
+              "KeyError then 95",
+              "None then 95"
+            ],
+            "answer": 1,
+            "explain": "\"Charlie\" is not in the dictionary, so <code>.get()</code> returns the default <code>50</code>. \"Alice\" exists, so it returns her real score <code>95</code>."
+          },
+          {
+            "type": "concept",
+            "title": "Iterating over dictionaries",
+            "body": "<p>You can loop over keys, values, or both at once using <code>.items()</code>:</p>\n<ul>\n<li><code>for key in d:</code> loops over keys.</li>\n<li><code>for val in d.values():</code> loops over values.</li>\n<li><code>for key, val in d.items():</code> unpacks key and value together!</li>\n</ul>",
+            "code": "inventory = {\"pencil\": 12, \"notebook\": 4, \"eraser\": 7}\n\nfor item, count in inventory.items():\n    print(f\"{item.capitalize()}: {count} in stock\")\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output",
+            "code": "counts = {\"a\": 1, \"b\": 2}\nfor k in counts:\n    print(k, end=\" \")\n",
+            "question": "What does looping directly over <code>counts</code> yield?",
+            "options": [
+              "1 2",
+              "a b",
+              "(\"a\", 1) (\"b\", 2)",
+              "KeyError"
+            ],
+            "answer": 1,
+            "explain": "Looping directly over a dictionary (<code>for k in counts</code>) iterates over its <b>keys</b>: <code>a b</code>."
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Word Frequency Counter",
+            "body": "<p>Write a program that counts how many times each word appears in a sentence.</p>\n<ul>\n<li>Convert the sentence to lowercase and split it into words using <code>.lower().split()</code>.</li>\n<li>Use a dictionary named <code>frequencies</code>.</li>\n<li>Use <code>.get(word, 0) + 1</code> to increment counts safely.</li>\n<li>Print the final <code>frequencies</code> dictionary.</li>\n</ul>",
+            "starter": "text = \"Python is great and python is fun and python is fast\"\n\n# TODO 1: normalize text to lowercase and split into words\nwords = []\n\nfrequencies = {}\n# TODO 2: loop over each word and update its count in 'frequencies' using .get()\n\nprint(frequencies)\n",
+            "tests": [
+              {
+                "name": "Counts matches expected word frequencies",
+                "check": "expected = {\"python\": 3, \"is\": 3, \"great\": 1, \"and\": 2, \"fun\": 1, \"fast\": 1}\nassert frequencies == expected, f\"Expected {expected}, got {frequencies}\"\n"
+              },
+              {
+                "name": "Used .lower() and .split()",
+                "check": "assert \".lower()\" in source or \".lower ()\" in source, \"Must convert words to lowercase\"\nassert \".split()\" in source or \".split (\" in source, \"Must split text into words\"\n"
+              },
+              {
+                "name": "Used .get() for safe counting",
+                "check": "assert \".get(\" in source, \"Use frequencies.get(word, 0) + 1 to increment counts\"\n"
+              }
+            ],
+            "hints": [
+              "Create the list of words: <code>words = text.lower().split()</code>.",
+              "Inside the loop: <code>for word in words:</code> update with <code>frequencies[word] = frequencies.get(word, 0) + 1</code>.",
+              "Finally, print <code>print(frequencies)</code>."
+            ],
+            "solution": "text = \"Python is great and python is fun and python is fast\"\n\nwords = text.lower().split()\nfrequencies = {}\n\nfor word in words:\n    frequencies[word] = frequencies.get(word, 0) + 1\n\nprint(frequencies)\n"
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: Dictionaries & Data Mapping",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "What happens when you look up a non-existent key with <code>d[\"missing\"]</code>?",
+                "options": [
+                  "Returns None",
+                  "Returns False",
+                  "Raises KeyError",
+                  "Creates the key with value 0"
+                ],
+                "answer": 2,
+                "explain": "Direct indexing raises a <code>KeyError</code>. Use <code>d.get(\"missing\", default)</code> to avoid crashes."
+              },
+              {
+                "q": "Which data type CANNOT be used as a dictionary key?",
+                "options": [
+                  "str (e.g. \"id\")",
+                  "int (e.g. 42)",
+                  "tuple (e.g. (1, 2))",
+                  "list (e.g. [1, 2])"
+                ],
+                "answer": 3,
+                "explain": "Dictionary keys must be <b>hashable (immutable)</b>. Lists are mutable and cannot be keys."
+              },
+              {
+                "q": "What does <code>d.items()</code> return when iterated?",
+                "options": [
+                  "Only keys",
+                  "Only values",
+                  "(key, value) pairs as tuples",
+                  "The length of the dictionary"
+                ],
+                "answer": 2,
+                "explain": "<code>.items()</code> yields <code>(key, value)</code> pairs, which can be unpacked into two variables."
+              },
+              {
+                "q": "What is the warning when naming a variable <code>dict = {\"a\": 1}</code>?",
+                "options": [
+                  "SyntaxError",
+                  "Shadowing the built-in dict() function",
+                  "Memory leak",
+                  "Invalid assignment"
+                ],
+                "answer": 1,
+                "explain": "Naming a variable <code>dict</code> shadows Python's built-in <code>dict</code> type/constructor."
+              },
+              {
+                "q": "What does <code>d.get(\"score\", 100)</code> return if <code>d = {\"score\": 0}</code>?",
+                "options": [
+                  "100",
+                  "0",
+                  "None",
+                  "KeyError"
+                ],
+                "answer": 1,
+                "explain": "Because \"score\" is present with value <code>0</code>, <code>.get()</code> returns <code>0</code> (not the fallback default)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "2.3",
+        "title": "The Interactive Terminal Menu",
+        "emoji": "📟",
+        "project": true,
+        "minutes": 15,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Project Architecture: CLI Menus & State",
+            "body": "<p>A classic terminal application runs a continuous <b>event loop</b>, presenting an interactive menu, reading commands, updating state, and displaying formatted output.</p>\n<p>In this project, you will build an interactive store inventory manager with rich formatting.</p>\n<ul>\n<li><b>State:</b> A dictionary of products, where each product maps to a dict of <code>price</code> and <code>stock</code>.</li>\n<li><b>Loop:</b> A <code>while True:</code> loop waiting for user choices.</li>\n<li><b>Actions:</b> View stock, Add item, View stats, and Exit.</li>\n</ul>",
+            "code": "# Quick demo of formatted terminal tables:\nprint(\"=\" * 30)\nprint(f\"{'ITEM':<12} {'PRICE':>8} {'QTY':>6}\")\nprint(\"-\" * 30)\nprint(f\"{'Apples':<12} {'$1.50':>8} {25:>6}\")\nprint(f\"{'Oranges':<12} {'$2.00':>8} {14:>6}\")\nprint(\"=\" * 30)\n"
+          },
+          {
+            "type": "concept",
+            "title": "Clean Code: D.R.Y. & Functions",
+            "body": "<p><b>D.R.Y. (Don't Repeat Yourself):</b> Factor repeated actions into small helper functions.</p>\n<p>Functions keep our main loop clean, testable, and readable:</p>",
+            "code": "inventory = {\n    \"apples\": {\"price\": 1.5, \"stock\": 20},\n    \"bananas\": {\"price\": 0.8, \"stock\": 15}\n}\n\ndef total_inventory_value(inv):\n    total = sum(item[\"price\"] * item[\"stock\"] for item in inv.values())\n    return round(total, 2)\n\nprint(\"Total Value: $\" + str(total_inventory_value(inventory)))\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Project: Interactive Store Menu",
+            "body": "<p>Complete the interactive Store Inventory Menu CLI program!</p>\n<p>The program maintains a dictionary <code>store</code> and accepts commands in a <code>while True:</code> loop:</p>\n<ul>\n<li><code>1</code> or <code>view</code>: Prints each item formatted as <code>[item]: stock=[stock], price=$[price]</code></li>\n<li><code>2</code> or <code>add</code>: Reads <code>item_name</code>, <code>price</code>, <code>stock</code>, and updates the dictionary</li>\n<li><code>3</code> or <code>stats</code>: Prints total units and total inventory value: <code>Units: [total_units] | Value: $[total_val]</code></li>\n<li><code>exit</code>: Prints <code>Goodbye!</code> and terminates the loop using <code>break</code></li>\n<li>Any other command: Prints <code>Invalid choice</code> and continues the loop</li>\n</ul>",
+            "starter": "store = {\n    \"laptop\": {\"price\": 999.0, \"stock\": 5},\n    \"mouse\": {\"price\": 25.0, \"stock\": 30}\n}\n\nprint(\"=== STORE MANAGER CLI ===\")\nwhile True:\n    cmd = input(\"choice> \").strip().lower()\n\n    if cmd == \"exit\":\n        # TODO 1: print goodbye and break\n        pass\n\n    elif cmd == \"1\" or cmd == \"view\":\n        # TODO 2: iterate store.items() and print:\n        # f\"{item}: stock={info['stock']}, price=$\" + f\"{info['price']}\"\n        pass\n\n    elif cmd == \"2\" or cmd == \"add\":\n        # TODO 3: prompt for name, price, stock and add to store\n        name = input(\"Item name: \").strip().lower()\n        price = float(input(\"Price: \"))\n        stock = int(input(\"Stock: \"))\n        # store[name] = {\"price\": price, \"stock\": stock}\n        pass\n\n    elif cmd == \"3\" or cmd == \"stats\":\n        # TODO 4: compute total units and total value\n        # total_units = sum(info[\"stock\"] for info in store.values())\n        # total_val = sum(info[\"stock\"] * info[\"price\"] for info in store.values())\n        # print(f\"Units: {total_units} | Value: $\" + f\"{total_val:.2f}\")\n        pass\n\n    else:\n        # TODO 5: handle unknown commands\n        pass\n",
+            "stdin": "view\nstats\nexit",
+            "tests": [
+              {
+                "name": "Exit command stops gracefully",
+                "stdin": "exit",
+                "check": "assert \"Goodbye!\" in output, \"Expected 'Goodbye!' when typing exit\"\n"
+              },
+              {
+                "name": "View command lists products",
+                "stdin": "1\nexit",
+                "check": "assert \"laptop: stock=5, price=$999.0\" in output, \"Must list laptop info\"\nassert \"mouse: stock=30, price=$25.0\" in output, \"Must list mouse info\"\n"
+              },
+              {
+                "name": "Stats command computes units and total value",
+                "stdin": "stats\nexit",
+                "check": "assert \"Units: 35 | Value: $5745.00\" in output, \"Expected 'Units: 35 | Value: $5745.00'\"\n"
+              },
+              {
+                "name": "Add command updates inventory",
+                "stdin": "2\nkeyboard\n49.50\n10\n1\nexit",
+                "check": "assert \"keyboard: stock=10, price=$49.5\" in output, \"New item 'keyboard' must be present in view after adding\"\n"
+              },
+              {
+                "name": "Invalid command handled",
+                "stdin": "banana\nexit",
+                "check": "assert \"Invalid choice\" in output, \"Invalid choice should print 'Invalid choice'\"\n"
+              }
+            ],
+            "hints": [
+              "For <code>exit</code>: <code>print(\"Goodbye!\")</code> followed by <code>break</code>.",
+              "For <code>1 / view</code>: loop through <code>for item, info in store.items():</code> and print <code>print(f\"{item}: stock={info['stock']}, price=${info['price']}\")</code>.",
+              "For <code>2 / add</code>: assign <code>store[name] = {\"price\": price, \"stock\": stock}</code> and optionally print confirmation.",
+              "For <code>3 / stats</code>: sum stocks and values, then print with <code>print(f\"Units: {total_units} | Value: $\" + f\"{total_val:.2f}\")</code>.",
+              "For <code>else:</code> print <code>print(\"Invalid choice\")</code>."
+            ],
+            "solution": "store = {\n    \"laptop\": {\"price\": 999.0, \"stock\": 5},\n    \"mouse\": {\"price\": 25.0, \"stock\": 30}\n}\n\nprint(\"=== STORE MANAGER CLI ===\")\nwhile True:\n    cmd = input(\"choice> \").strip().lower()\n\n    if cmd == \"exit\":\n        print(\"Goodbye!\")\n        break\n\n    elif cmd == \"1\" or cmd == \"view\":\n        for item, info in store.items():\n            print(f\"{item}: stock={info['stock']}, price=$\" + f\"{info['price']}\")\n\n    elif cmd == \"2\" or cmd == \"add\":\n        name = input(\"Item name: \").strip().lower()\n        price = float(input(\"Price: \"))\n        stock = int(input(\"Stock: \"))\n        store[name] = {\"price\": price, \"stock\": stock}\n\n    elif cmd == \"3\" or cmd == \"stats\":\n        total_units = sum(info[\"stock\"] for info in store.values())\n        total_val = sum(info[\"stock\"] * info[\"price\"] for info in store.values())\n        print(f\"Units: {total_units} | Value: $\" + f\"{total_val:.2f}\")\n\n    else:\n        print(\"Invalid choice\")\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Object-Oriented Programming",
+    "lessons": [
+      {
+        "id": "3.1",
+        "title": "The Blueprint: Classes & Instances",
+        "emoji": "🏗️",
+        "minutes": 10,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "What is a Class?",
+            "body": "<p>A <b>class</b> is a blueprint or template for creating objects. An <b>instance</b> is an actual object created from that blueprint.</p>\n<p>The <code>__init__</code> method is the constructor: it runs automatically whenever you create a new instance.</p>\n<p>The <code>self</code> parameter represents the specific instance being created or manipulated. Use <code>self.variable_name</code> to attach data (attributes) to the instance.</p>",
+            "code": "class Dog:\n    def __init__(self, name, breed):\n        self.name = name\n        self.breed = breed\n        self.tricks = []\n\n    def learn_trick(self, trick):\n        self.tricks.append(trick)\n        print(f\"{self.name} learned {trick}!\")\n\n# Creating instances\nbuddy = Dog(\"Buddy\", \"Golden Retriever\")\nmilo = Dog(\"Milo\", \"Beagle\")\n\nbuddy.learn_trick(\"fetch\")\nprint(f\"{buddy.name}'s tricks:\", buddy.tricks)\nprint(f\"{milo.name}'s tricks:\", milo.tricks)\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Instance isolation",
+            "code": "class Counter:\n    def __init__(self):\n        self.count = 0\n\n    def increment(self):\n        self.count += 1\n\nc1 = Counter()\nc2 = Counter()\nc1.increment()\nc1.increment()\nprint(c1.count, c2.count)\n",
+            "question": "What is printed by <code>print(c1.count, c2.count)</code>?",
+            "options": [
+              "2 2",
+              "2 0",
+              "0 2",
+              "1 1"
+            ],
+            "answer": 1,
+            "explain": "Each instance maintains its own separate attributes attached to <code>self</code>. <code>c1</code> was incremented twice to <code>2</code>, while <code>c2</code> remains at <code>0</code>."
+          },
+          {
+            "type": "concept",
+            "title": "String Representation: __str__ and __repr__",
+            "body": "<p>When you print an object, Python by default prints something obscure like <code>&lt;Dog object at 0x7f...&gt;</code>.</p>\n<p>Defining <code>def __str__(self):</code> gives your class a human-friendly string representation when passed to <code>print()</code> or <code>str()</code>.</p>",
+            "code": "class Book:\n    def __init__(self, title, author, pages):\n        self.title = title\n        self.author = author\n        self.pages = pages\n\n    def __str__(self):\n        return f\"'{self.title}' by {self.author} ({self.pages} pages)\"\n\nbook = Book(\"Fluent Python\", \"Luciano Ramalho\", 800)\nprint(book)\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Missing self",
+            "code": "class Person:\n    def __init__(self, name):\n        self.name = name\n\n    def greet():\n        print(\"Hello from \" + self.name)\n\np = Person(\"Ada\")\np.greet()\n",
+            "question": "What happens when <code>p.greet()</code> is called?",
+            "options": [
+              "Prints: Hello from Ada",
+              "Prints: Hello from Person",
+              "TypeError: greet() takes 0 positional arguments but 1 was given",
+              "NameError: name is not defined"
+            ],
+            "answer": 2,
+            "explain": "In Python, instance methods automatically receive the instance as their first argument. Because <code>greet</code> was defined without <code>self</code>, Python raises a <code>TypeError</code>."
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Bank Account Manager",
+            "body": "<p>Create a <code>BankAccount</code> class with encapsulated balances and safe transactions.</p>\n<ul>\n<li><code>__init__(self, owner, balance=0.0)</code>: Stores <code>self.owner</code> and float <code>self.balance</code>.</li>\n<li><code>deposit(self, amount)</code>: Adds positive amount to balance and returns <code>True</code>. If amount &lt;= 0, prints <code>\"Invalid deposit\"</code> and returns <code>False</code>.</li>\n<li><code>withdraw(self, amount)</code>: If amount &gt; balance, prints <code>\"Insufficient funds\"</code> and returns <code>False</code>. Otherwise, subtracts amount and returns <code>True</code>.</li>\n<li><code>__str__(self)</code>: Returns <code>f\"Account({self.owner}, balance=$\" + f\"{self.balance:.2f})\"</code>.</li>\n</ul>",
+            "starter": "class BankAccount:\n    def __init__(self, owner, balance=0.0):\n        # TODO: initialize owner and balance\n        pass\n\n    def deposit(self, amount):\n        # TODO: deposit amount if valid (> 0)\n        pass\n\n    def withdraw(self, amount):\n        # TODO: withdraw amount if funds sufficient\n        pass\n\n    def __str__(self):\n        # TODO: string representation\n        return \"\"\n\n# Test execution:\nacc = BankAccount(\"Alice\", 100.0)\nacc.deposit(50.0)\nacc.deposit(-10.0)\nacc.withdraw(30.0)\nacc.withdraw(200.0)\nprint(acc)\n",
+            "tests": [
+              {
+                "name": "Deposits and withdrawals update balance accurately",
+                "check": "acc = BankAccount(\"TestUser\", 50.0)\nassert acc.owner == \"TestUser\"\nassert acc.balance == 50.0\n\nok_dep = acc.deposit(25.0)\nassert ok_dep is True\nassert acc.balance == 75.0\n\nok_draw = acc.withdraw(35.0)\nassert ok_draw is True\nassert acc.balance == 40.0\n"
+              },
+              {
+                "name": "Insufficient funds blocked",
+                "check": "acc = BankAccount(\"Bob\", 10.0)\nok = acc.withdraw(50.0)\nassert ok is False\nassert acc.balance == 10.0\nassert \"Insufficient funds\" in output\n"
+              },
+              {
+                "name": "Invalid deposit blocked",
+                "check": "acc = BankAccount(\"Charlie\", 10.0)\nok = acc.deposit(-5.0)\nassert ok is False\nassert acc.balance == 10.0\nassert \"Invalid deposit\" in output\n"
+              },
+              {
+                "name": "__str__ formatting",
+                "check": "acc = BankAccount(\"Alice\", 120.0)\nassert str(acc) == \"Account(Alice, balance=$120.00)\"\n"
+              }
+            ],
+            "hints": [
+              "In <code>__init__</code>, assign <code>self.owner = owner</code> and <code>self.balance = float(balance)</code>.",
+              "In <code>deposit</code>, check <code>if amount > 0: self.balance += amount; return True</code>, else print <code>\"Invalid deposit\"</code> and return <code>False</code>.",
+              "In <code>withdraw</code>, check <code>if amount > self.balance: print(\"Insufficient funds\"); return False</code>.",
+              "In <code>__str__</code>, return <code>f\"Account({self.owner}, balance=$\" + f\"{self.balance:.2f})\"</code>."
+            ],
+            "solution": "class BankAccount:\n    def __init__(self, owner, balance=0.0):\n        self.owner = owner\n        self.balance = float(balance)\n\n    def deposit(self, amount):\n        if amount > 0:\n            self.balance += amount\n            return True\n        print(\"Invalid deposit\")\n        return False\n\n    def withdraw(self, amount):\n        if amount > self.balance:\n            print(\"Insufficient funds\")\n            return False\n        self.balance -= amount\n        return True\n\n    def __str__(self):\n        return f\"Account({self.owner}, balance=$\" + f\"{self.balance:.2f})\"\n\nacc = BankAccount(\"Alice\", 100.0)\nacc.deposit(50.0)\nacc.deposit(-10.0)\nacc.withdraw(30.0)\nacc.withdraw(200.0)\nprint(acc)\n"
+          }
+        ]
+      },
+      {
+        "id": "3.2",
+        "title": "Inheritance & Polymorphism",
+        "emoji": "🧬",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Subclassing & Inheritance",
+            "body": "<p><b>Inheritance</b> lets a child class inherit attributes and methods from a parent class without duplicating code.</p>\n<p>Syntax: <code>class ChildClass(ParentClass):</code></p>\n<p>Use <code>super().__init__(...)</code> inside the child's constructor to let the parent initialize its own fields.</p>",
+            "code": "class Vehicle:\n    def __init__(self, make, model):\n        self.make = make\n        self.model = model\n\n    def describe(self):\n        return f\"{self.make} {self.model}\"\n\nclass ElectricCar(Vehicle):\n    def __init__(self, make, model, battery_kwh):\n        super().__init__(make, model)  # reuse Vehicle init!\n        self.battery_kwh = battery_kwh\n\n    def describe(self):\n        return f\"{super().describe()} (Electric, {self.battery_kwh} kWh)\"\n\nev = ElectricCar(\"Tesla\", \"Model 3\", 75)\nprint(ev.describe())\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Method Overriding",
+            "code": "class Animal:\n    def speak(self):\n        return \"Generic sound\"\n\nclass Cat(Animal):\n    def speak(self):\n        return \"Meow!\"\n\nclass Fish(Animal):\n    pass\n\nanimals = [Cat(), Fish()]\nsounds = [a.speak() for a in animals]\nprint(\", \".join(sounds))\n",
+            "question": "What is printed?",
+            "options": [
+              "Meow!, Meow!",
+              "Generic sound, Generic sound",
+              "Meow!, Generic sound",
+              "Error: speak not defined on Fish"
+            ],
+            "answer": 2,
+            "explain": "<code>Cat</code> overrides <code>speak()</code> to return <code>\"Meow!\"</code>. <code>Fish</code> does not override it, so it inherits <code>\"Generic sound\"</code> from <code>Animal</code>."
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: Object-Oriented Principles",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "What is the purpose of the <code>self</code> parameter in Python methods?",
+                "options": [
+                  "It refers to the class definition",
+                  "It refers to the current instance of the class",
+                  "It is an optional naming keyword",
+                  "It acts as a global variable"
+                ],
+                "answer": 1,
+                "explain": "<code>self</code> represents the specific instance on which the method is called, allowing access to its unique attributes and methods."
+              },
+              {
+                "q": "What built-in function is used to invoke a method from a parent class?",
+                "options": [
+                  "parent()",
+                  "super()",
+                  "base()",
+                  "inherit()"
+                ],
+                "answer": 1,
+                "explain": "<code>super()</code> delegates method calls to a parent or sibling class in the inheritance chain."
+              },
+              {
+                "q": "Which special dunder method is executed upon object creation?",
+                "options": [
+                  "__new__",
+                  "__create__",
+                  "__init__",
+                  "__start__"
+                ],
+                "answer": 2,
+                "explain": "<code>__init__</code> is the initializer method called immediately after the new object has been instantiated."
+              },
+              {
+                "q": "What is Polymorphism in Python?",
+                "options": [
+                  "Writing code that only runs on multiple operating systems",
+                  "The ability of different classes to respond to the same method interface in their own way",
+                  "Restricting variables from being changed after creation",
+                  "Creating a class with no attributes"
+                ],
+                "answer": 1,
+                "explain": "Polymorphism allows different object types to be treated uniformly through shared method signatures while implementing custom behaviors."
+              },
+              {
+                "q": "What is the result of <code>isinstance([1, 2], object)</code> in Python?",
+                "options": [
+                  "False",
+                  "True",
+                  "TypeError",
+                  "None"
+                ],
+                "answer": 1,
+                "explain": "In Python, everything is an object! All classes implicitly inherit from the base <code>object</code> class."
+              }
+            ]
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Employee Payroll Hierarchy",
+            "body": "<p>Design an employee payroll hierarchy using inheritance and polymorphism.</p>\n<ul>\n<li>Base class <code>Employee</code>:\n  <ul>\n    <li><code>__init__(self, name, base_salary)</code>: sets <code>self.name</code> and float <code>self.base_salary</code>.</li>\n    <li><code>calculate_pay(self)</code>: returns <code>self.base_salary</code>.</li>\n    <li><code>get_role(self)</code>: returns <code>\"Standard Employee\"</code>.</li>\n  </ul>\n</li>\n<li>Subclass <code>Manager(Employee)</code>:\n  <ul>\n    <li><code>__init__(self, name, base_salary, bonus)</code>: calls <code>super().__init__(name, base_salary)</code> and sets float <code>self.bonus</code>.</li>\n    <li><code>calculate_pay(self)</code>: returns <code>self.base_salary + self.bonus</code> using <code>super().calculate_pay()</code>.</li>\n    <li><code>get_role(self)</code>: returns <code>\"Manager\"</code>.</li>\n  </ul>\n</li>\n<li>Subclass <code>Contractor(Employee)</code>:\n  <ul>\n    <li><code>__init__(self, name, hourly_rate, hours_worked)</code>: sets <code>base_salary = 0.0</code> via <code>super()</code>, and sets <code>self.hourly_rate</code> and <code>self.hours_worked</code>.</li>\n    <li><code>calculate_pay(self)</code>: returns <code>self.hourly_rate * self.hours_worked</code>.</li>\n    <li><code>get_role(self)</code>: returns <code>\"Contractor\"</code>.</li>\n  </ul>\n</li>\n</ul>",
+            "starter": "class Employee:\n    def __init__(self, name, base_salary):\n        # TODO: initialize name and base_salary\n        pass\n\n    def calculate_pay(self):\n        # TODO: return pay\n        return 0.0\n\n    def get_role(self):\n        return \"Standard Employee\"\n\n\nclass Manager(Employee):\n    def __init__(self, name, base_salary, bonus):\n        # TODO: call super() and set bonus\n        pass\n\n    def calculate_pay(self):\n        # TODO: base_salary + bonus using super()\n        return 0.0\n\n    def get_role(self):\n        return \"Manager\"\n\n\nclass Contractor(Employee):\n    def __init__(self, name, hourly_rate, hours_worked):\n        # TODO: call super() with base_salary=0 and store hourly info\n        pass\n\n    def calculate_pay(self):\n        # TODO: hourly_rate * hours_worked\n        return 0.0\n\n    def get_role(self):\n        return \"Contractor\"\n",
+            "tests": [
+              {
+                "name": "Employee base pay calculation",
+                "check": "emp = Employee(\"Diana\", 4000.0)\nassert emp.name == \"Diana\"\nassert emp.calculate_pay() == 4000.0\nassert emp.get_role() == \"Standard Employee\"\n"
+              },
+              {
+                "name": "Manager pay includes bonus and inherits Employee",
+                "check": "mgr = Manager(\"Bruce\", 6000.0, 1500.0)\nassert isinstance(mgr, Employee)\nassert mgr.calculate_pay() == 7500.0\nassert mgr.get_role() == \"Manager\"\n"
+              },
+              {
+                "name": "Contractor hourly pay calculation",
+                "check": "con = Contractor(\"Clark\", 50.0, 40)\nassert isinstance(con, Employee)\nassert con.calculate_pay() == 2000.0\nassert con.get_role() == \"Contractor\"\n"
+              },
+              {
+                "name": "Polymorphic team total pay calculation",
+                "check": "team = [\n    Employee(\"Diana\", 4000.0),\n    Manager(\"Bruce\", 6000.0, 1500.0),\n    Contractor(\"Clark\", 50.0, 40)\n]\ntotal_payroll = sum(member.calculate_pay() for member in team)\nassert total_payroll == 13500.0, f\"Expected 13500.0, got {total_payroll}\"\n"
+              }
+            ],
+            "hints": [
+              "In <code>Employee.__init__</code>, store <code>self.name = name</code> and <code>self.base_salary = float(base_salary)</code>.",
+              "In <code>Manager.__init__</code>, call <code>super().__init__(name, base_salary)</code> and assign <code>self.bonus = float(bonus)</code>.",
+              "In <code>Manager.calculate_pay</code>, return <code>super().calculate_pay() + self.bonus</code>.",
+              "In <code>Contractor.__init__</code>, call <code>super().__init__(name, 0.0)</code> and store <code>self.hourly_rate = float(hourly_rate)</code>, <code>self.hours_worked = float(hours_worked)</code>.",
+              "In <code>Contractor.calculate_pay</code>, return <code>self.hourly_rate * self.hours_worked</code>."
+            ],
+            "solution": "class Employee:\n    def __init__(self, name, base_salary):\n        self.name = name\n        self.base_salary = float(base_salary)\n\n    def calculate_pay(self):\n        return self.base_salary\n\n    def get_role(self):\n        return \"Standard Employee\"\n\n\nclass Manager(Employee):\n    def __init__(self, name, base_salary, bonus):\n        super().__init__(name, base_salary)\n        self.bonus = float(bonus)\n\n    def calculate_pay(self):\n        return super().calculate_pay() + self.bonus\n\n    def get_role(self):\n        return \"Manager\"\n\n\nclass Contractor(Employee):\n    def __init__(self, name, hourly_rate, hours_worked):\n        super().__init__(name, 0.0)\n        self.hourly_rate = float(hourly_rate)\n        self.hours_worked = float(hours_worked)\n\n    def calculate_pay(self):\n        return self.hourly_rate * self.hours_worked\n\n    def get_role(self):\n        return \"Contractor\"\n"
+          }
+        ]
+      },
+      {
+        "id": "3.3",
+        "title": "Project: Spaced Repetition Flashcards",
+        "emoji": "🗂️",
+        "minutes": 15,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "The Leitner Spaced Repetition System",
+            "body": "<p>The <b>Leitner System</b> is an evidence-based learning technique using active recall and spaced intervals.</p>\n<p>Flashcards are sorted into boxes (e.g., Box 1, Box 2, Box 3):</p>\n<ul>\n<li><b>Box 1:</b> Cards reviewed every session (new or difficult cards).</li>\n<li><b>Box 2:</b> Cards reviewed every 3 days.</li>\n<li><b>Box 3:</b> Mastered cards reviewed weekly.</li>\n</ul>\n<p>When you answer a card correctly, it moves <b>up</b> to the next box (<code>promote</code>). If you answer incorrectly, it drops back to <b>Box 1</b> (<code>demote</code>)!</p>",
+            "code": "# Architecture preview:\n# Card: front, back, box\n# Deck: holds cards, filter by box\n# LeitnerSystem: administers review session\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Project: Spaced Repetition Engine",
+            "body": "<p>Build the full OOP engine for the Leitner Flashcard system!</p>\n<ol>\n<li><code>Card</code> class:\n  <ul>\n    <li><code>__init__(self, front, back, box=1)</code>: sets <code>self.front</code>, <code>self.back</code>, <code>self.box = int(box)</code>.</li>\n    <li><code>promote(self, max_box=3)</code>: if <code>self.box &lt; max_box</code>, increment <code>self.box += 1</code>.</li>\n    <li><code>demote(self)</code>: reset <code>self.box = 1</code>.</li>\n    <li><code>to_dict(self)</code>: returns <code>{\"front\": self.front, \"back\": self.back, \"box\": self.box}</code>.</li>\n  </ul>\n</li>\n<li><code>Deck</code> class:\n  <ul>\n    <li><code>__init__(self)</code>: initializes empty list <code>self.cards = []</code>.</li>\n    <li><code>add_card(self, card)</code>: appends card to <code>self.cards</code>.</li>\n    <li><code>cards_in_box(self, box)</code>: returns list of cards with <code>c.box == box</code>.</li>\n    <li><code>to_list(self)</code>: returns list of dicts from <code>[c.to_dict() for c in self.cards]</code>.</li>\n  </ul>\n</li>\n<li><code>LeitnerSystem</code> class:\n  <ul>\n    <li><code>__init__(self, deck)</code>: stores <code>self.deck = deck</code>.</li>\n    <li><code>review_card(self, card, user_answer)</code>: checks if <code>user_answer.strip().lower() == card.back.strip().lower()</code>.\n      If correct: calls <code>card.promote()</code> and returns <code>True</code>.\n      If incorrect: calls <code>card.demote()</code> and returns <code>False</code>.</li>\n    <li><code>get_summary(self)</code>: returns a dictionary mapping box numbers <code>1</code>, <code>2</code>, and <code>3</code> to the count of cards in each box: <code>{1: count1, 2: count2, 3: count3}</code>.</li>\n  </ul>\n</li>\n</ol>",
+            "starter": "class Card:\n    def __init__(self, front, back, box=1):\n        # TODO: initialize front, back, box\n        pass\n\n    def promote(self, max_box=3):\n        # TODO: increase box up to max_box\n        pass\n\n    def demote(self):\n        # TODO: drop back to box 1\n        pass\n\n    def to_dict(self):\n        # TODO: return dict\n        return {}\n\n\nclass Deck:\n    def __init__(self):\n        # TODO: list of cards\n        self.cards = []\n\n    def add_card(self, card):\n        # TODO: append card\n        pass\n\n    def cards_in_box(self, box):\n        # TODO: return cards matching box\n        return []\n\n    def to_list(self):\n        # TODO: return list of dicts\n        return []\n\n\nclass LeitnerSystem:\n    def __init__(self, deck):\n        self.deck = deck\n\n    def review_card(self, card, user_answer):\n        # TODO: compare answer, promote on match, demote on failure\n        pass\n\n    def get_summary(self):\n        # TODO: return {1: count1, 2: count2, 3: count3}\n        return {}\n",
+            "tests": [
+              {
+                "name": "Card promote and demote logic",
+                "check": "c = Card(\"What is Python?\", \"A programming language\")\nassert c.box == 1\nc.promote()\nassert c.box == 2\nc.promote()\nassert c.box == 3\nc.promote(max_box=3)\nassert c.box == 3, \"Card should not exceed max_box 3\"\nc.demote()\nassert c.box == 1, \"Demote must return card to box 1\"\n"
+              },
+              {
+                "name": "Deck management and filtering",
+                "check": "deck = Deck()\nc1 = Card(\"Q1\", \"A1\", box=1)\nc2 = Card(\"Q2\", \"A2\", box=2)\nc3 = Card(\"Q3\", \"A3\", box=1)\ndeck.add_card(c1)\ndeck.add_card(c2)\ndeck.add_card(c3)\n\nassert len(deck.cards) == 3\nbox1_cards = deck.cards_in_box(1)\nassert len(box1_cards) == 2\nassert c1 in box1_cards and c3 in box1_cards\n"
+              },
+              {
+                "name": "Leitner review promotes correct and demotes incorrect answers",
+                "check": "deck = Deck()\nc = Card(\"Capital of France?\", \"Paris\", box=1)\ndeck.add_card(c)\nengine = LeitnerSystem(deck)\n\n# Correct review (case-insensitive)\nres1 = engine.review_card(c, \"paris\")\nassert res1 is True\nassert c.box == 2, \"Correct answer should promote to Box 2\"\n\n# Second correct review\nres2 = engine.review_card(c, \" PARIS \")\nassert res2 is True\nassert c.box == 3, \"Correct answer should promote to Box 3\"\n\n# Incorrect answer\nres3 = engine.review_card(c, \"Rome\")\nassert res3 is False\nassert c.box == 1, \"Wrong answer must demote back to Box 1\"\n"
+              },
+              {
+                "name": "Engine summary counts boxes accurately",
+                "check": "deck = Deck()\ndeck.add_card(Card(\"Q1\", \"A1\", 1))\ndeck.add_card(Card(\"Q2\", \"A2\", 2))\ndeck.add_card(Card(\"Q3\", \"A3\", 2))\ndeck.add_card(Card(\"Q4\", \"A4\", 3))\n\nengine = LeitnerSystem(deck)\nsummary = engine.get_summary()\nassert summary == {1: 1, 2: 2, 3: 1}, f\"Expected {1: 1, 2: 2, 3: 1}, got {summary}\"\n"
+              },
+              {
+                "name": "Serialization to dict and list for persistence",
+                "check": "c = Card(\"Front\", \"Back\", 2)\nassert c.to_dict() == {\"front\": \"Front\", \"back\": \"Back\", \"box\": 2}\n\ndeck = Deck()\ndeck.add_card(c)\nserialized = deck.to_list()\nassert serialized == [{\"front\": \"Front\", \"back\": \"Back\", \"box\": 2}]\n"
+              }
+            ],
+            "hints": [
+              "In <code>Card.promote</code>: <code>if self.box < max_box: self.box += 1</code>.",
+              "In <code>Card.demote</code>: <code>self.box = 1</code>.",
+              "In <code>Deck.cards_in_box</code>: use list comprehension <code>[c for c in self.cards if c.box == box]</code>.",
+              "In <code>LeitnerSystem.review_card</code>: compare <code>user_answer.strip().lower() == card.back.strip().lower()</code>. If True, call <code>card.promote()</code> and return <code>True</code>, else call <code>card.demote()</code> and return <code>False</code>.",
+              "In <code>LeitnerSystem.get_summary</code>: return <code>{b: len(self.deck.cards_in_box(b)) for b in (1, 2, 3)}</code>."
+            ],
+            "solution": "class Card:\n    def __init__(self, front, back, box=1):\n        self.front = front\n        self.back = back\n        self.box = int(box)\n\n    def promote(self, max_box=3):\n        if self.box < max_box:\n            self.box += 1\n\n    def demote(self):\n        self.box = 1\n\n    def to_dict(self):\n        return {\"front\": self.front, \"back\": self.back, \"box\": self.box}\n\n\nclass Deck:\n    def __init__(self):\n        self.cards = []\n\n    def add_card(self, card):\n        self.cards.append(card)\n\n    def cards_in_box(self, box):\n        return [c for c in self.cards if c.box == box]\n\n    def to_list(self):\n        return [c.to_dict() for c in self.cards]\n\n\nclass LeitnerSystem:\n    def __init__(self, deck):\n        self.deck = deck\n\n    def review_card(self, card, user_answer):\n        if user_answer.strip().lower() == card.back.strip().lower():\n            card.promote()\n            return True\n        else:\n            card.demote()\n            return False\n\n    def get_summary(self):\n        return {b: len(self.deck.cards_in_box(b)) for b in (1, 2, 3)}\n\n# Verification run demo\ndeck = Deck()\ndeck.add_card(Card(\"What is a class?\", \"A blueprint for objects\"))\ndeck.add_card(Card(\"What does super() do?\", \"Calls the parent method\"))\nsystem = LeitnerSystem(deck)\nprint(\"Initial summary:\", system.get_summary())\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Files, APIs & Errors",
+    "lessons": [
+      {
+        "id": "4.1",
+        "title": "Context Managers & JSON",
+        "emoji": "📁",
+        "minutes": 10,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "The with Statement & Safe File I/O",
+            "body": "<p>In Python, opening a file requires closing it to prevent memory leaks and file lockouts.</p>\n<p>The <b><code>with</code></b> statement is a <b>context manager</b>: it guarantees the file is properly closed the instant the block finishes, even if an error crashes your program inside.</p>\n<ul>\n<li><code>\"r\"</code>: Read (default)</li>\n<li><code>\"w\"</code>: Write (overwrites existing content)</li>\n<li><code>\"a\"</code>: Append (adds to end of file)</li>\n</ul>",
+            "code": "# Writing to a file safely\nwith open(\"notes.txt\", \"w\") as f:\n    f.write(\"Line 1: Learning Python!\\n\")\n    f.write(\"Line 2: Context managers keep files safe.\\n\")\n\n# Reading the file back\nwith open(\"notes.txt\", \"r\") as f:\n    content = f.read()\n\nprint(\"File contents:\\n\" + content)\n"
+          },
+          {
+            "type": "concept",
+            "title": "Structured Data with JSON",
+            "body": "<p><b>JSON</b> (JavaScript Object Notation) is the standard format for config files and web APIs.</p>\n<p>Python's built-in <code>json</code> module converts between Python dictionaries and JSON strings/files:</p>\n<ul>\n<li><code>json.dumps(obj)</code>: Python dict → JSON string</li>\n<li><code>json.loads(str)</code>: JSON string → Python dict</li>\n<li><code>json.dump(obj, f)</code>: Write dict directly into open file <code>f</code></li>\n<li><code>json.load(f)</code>: Read dict directly from open file <code>f</code></li>\n</ul>",
+            "code": "import json\n\nuser_data = {\n    \"username\": \"coder42\",\n    \"level\": 5,\n    \"skills\": [\"python\", \"cli\", \"oop\"]\n}\n\n# Save as JSON file\nwith open(\"user.json\", \"w\") as f:\n    json.dump(user_data, f, indent=2)\n\n# Load back from JSON file\nwith open(\"user.json\", \"r\") as f:\n    loaded = json.load(f)\n\nprint(\"Loaded user:\", loaded[\"username\"])\nprint(\"Skills count:\", len(loaded[\"skills\"]))\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: File write mode overwrite",
+            "code": "with open(\"sample.txt\", \"w\") as f:\n    f.write(\"First write\\n\")\n\nwith open(\"sample.txt\", \"w\") as f:\n    f.write(\"Second write\\n\")\n\nwith open(\"sample.txt\", \"r\") as f:\n    data = f.read().strip()\n\nprint(data)\n",
+            "question": "What is the value of <code>data</code>?",
+            "options": [
+              "First write\\nSecond write",
+              "Second write",
+              "First write",
+              "FileExistsError"
+            ],
+            "answer": 1,
+            "explain": "Opening a file with mode <code>\"w\"</code> truncates (overwrites) existing contents. To preserve existing data and add to the end, use mode <code>\"a\"</code> (append)."
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: JSON Profile Manager",
+            "body": "<p>Build two helper functions for managing application configurations in a JSON file:</p>\n<ol>\n<li><code>save_profile(filename, data)</code>:\n  <ul>\n    <li>Opens <code>filename</code> in write mode using a <code>with open(...)</code> context manager.</li>\n    <li>Writes the Python dict <code>data</code> using <code>json.dump(data, f, indent=2)</code>.</li>\n  </ul>\n</li>\n<li><code>update_xp(filename, added_xp)</code>:\n  <ul>\n    <li>Opens <code>filename</code> in read mode with <code>with open(...)</code>.</li>\n    <li>Loads the dict with <code>json.load(f)</code>.</li>\n    <li>Increments the <code>\"xp\"</code> field: <code>profile[\"xp\"] = profile.get(\"xp\", 0) + added_xp</code>.</li>\n    <li>Saves the updated profile back to the same <code>filename</code>.</li>\n    <li>Returns the updated total XP.</li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import json\n\ndef save_profile(filename, data):\n    # TODO: Write data to filename as JSON using with open\n    pass\n\ndef update_xp(filename, added_xp):\n    # TODO: Read profile, increment 'xp', save back, and return new xp\n    return 0\n",
+            "tests": [
+              {
+                "name": "save_profile creates valid JSON file",
+                "check": "initial = {\"username\": \"ada\", \"xp\": 100}\nsave_profile(\"test_profile.json\", initial)\n\nimport json\nwith open(\"test_profile.json\", \"r\") as f:\n    loaded = json.load(f)\nassert loaded == {\"username\": \"ada\", \"xp\": 100}\n"
+              },
+              {
+                "name": "update_xp increments and returns updated total",
+                "check": "initial = {\"username\": \"linus\", \"xp\": 250}\nsave_profile(\"linus.json\", initial)\n\nnew_total = update_xp(\"linus.json\", 75)\nassert new_total == 325, f\"Expected 325, got {new_total}\"\n\nimport json\nwith open(\"linus.json\", \"r\") as f:\n    saved = json.load(f)\nassert saved[\"xp\"] == 325\n"
+              },
+              {
+                "name": "Enforces with statement for context management",
+                "check": "assert \"with open(\" in source, \"Must use 'with open(' context manager for file operations\"\nassert \".close()\" not in source, \"Avoid manual .close(); rely on the with statement\"\n"
+              }
+            ],
+            "hints": [
+              "For <code>save_profile</code>: <code>with open(filename, \"w\") as f: json.dump(data, f, indent=2)</code>.",
+              "For <code>update_xp</code>: read the file with <code>with open(filename, \"r\") as f: profile = json.load(f)</code>.",
+              "Increment XP with <code>profile[\"xp\"] = profile.get(\"xp\", 0) + added_xp</code>, save it with <code>save_profile(filename, profile)</code>, then <code>return profile[\"xp\"]</code>."
+            ],
+            "solution": "import json\n\ndef save_profile(filename, data):\n    with open(filename, \"w\") as f:\n        json.dump(data, f, indent=2)\n\ndef update_xp(filename, added_xp):\n    with open(filename, \"r\") as f:\n        profile = json.load(f)\n    profile[\"xp\"] = profile.get(\"xp\", 0) + added_xp\n    save_profile(filename, profile)\n    return profile[\"xp\"]\n\n# Demonstration\nsample = {\"username\": \"dev\", \"xp\": 50}\nsave_profile(\"profile.json\", sample)\nupdated = update_xp(\"profile.json\", 100)\nprint(f\"Updated XP: {updated}\")\n"
+          }
+        ]
+      },
+      {
+        "id": "4.2",
+        "title": "Web Responses & Error Handling",
+        "emoji": "🌐",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Exceptions: try / except / else / finally",
+            "body": "<p>Errors in Python are called <b>Exceptions</b>. Without handling, exceptions terminate your script immediately.</p>\n<p>Handle exceptions cleanly using <code>try / except</code> blocks:</p>\n<ul>\n<li><code>try</code>: code that might raise an error</li>\n<li><code>except SpecificError as e</code>: catches only that specific failure</li>\n<li><code>else</code>: runs only if <i>no</i> error occurred</li>\n<li><code>finally</code>: runs unconditionally (e.g., closing cleanup)</li>\n</ul>\n<div class=\"callout warn\"><b>⚠ Pitfall:</b> Never write a bare <code>except:</code>! Always specify the exact exception type (e.g. <code>ValueError</code>, <code>KeyError</code>, <code>ConnectionError</code>).</div>",
+            "code": "def parse_int(text, default=0):\n    try:\n        val = int(text)\n    except ValueError as e:\n        print(f\"Warning: could not parse '{text}', using default {default}\")\n        return default\n    else:\n        print(\"Parsed successfully!\")\n        return val\n\nprint(\"Result 1:\", parse_int(\"42\"))\nprint(\"Result 2:\", parse_int(\"not_a_number\", default=10))\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Exception order",
+            "code": "def calc(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return \"ZeroDiv\"\n    except TypeError:\n        return \"TypeErr\"\n    except Exception:\n        return \"Generic\"\n\nprint(calc(10, \"2\"), calc(10, 0))\n",
+            "question": "What is printed?",
+            "options": [
+              "TypeErr ZeroDiv",
+              "ZeroDiv TypeErr",
+              "Generic ZeroDiv",
+              "TypeError: unsupported operand"
+            ],
+            "answer": 0,
+            "explain": "<code>10 / \"2\"</code> triggers <code>TypeError</code> which matches the second branch. <code>10 / 0</code> triggers <code>ZeroDivisionError</code> which matches the first branch."
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: File I/O & Exception Handling",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "Why is using <code>with open(...)</code> preferred over manual <code>file.close()</code>?",
+                "options": [
+                  "It runs faster in assembly",
+                  "It automatically closes the file even if an exception occurs inside the block",
+                  "It bypasses operating system security restrictions",
+                  "It prevents other processes from reading the file permanently"
+                ],
+                "answer": 1,
+                "explain": "The <code>with</code> context manager guarantees clean teardown via <code>__exit__</code>, preventing unclosed file leaks even during errors."
+              },
+              {
+                "q": "Which function parses a JSON-formatted string into a Python dictionary?",
+                "options": [
+                  "json.dump()",
+                  "json.load()",
+                  "json.dumps()",
+                  "json.loads()"
+                ],
+                "answer": 3,
+                "explain": "<code>json.loads()</code> parses a JSON <b>string</b> (the \"s\" stands for string), while <code>json.load()</code> reads from a file pointer."
+              },
+              {
+                "q": "What is considered a dangerous anti-pattern when handling exceptions?",
+                "options": [
+                  "Catching specific exceptions like KeyError",
+                  "Using finally blocks for resource cleanup",
+                  "Using a bare <code>except:</code> without specifying the exception type",
+                  "Logging the exception message"
+                ],
+                "answer": 2,
+                "explain": "A bare <code>except:</code> silently catches everything, including <code>KeyboardInterrupt</code> and <code>SystemExit</code>, making debugging nightmare-inducing."
+              },
+              {
+                "q": "What HTTP status code indicates a successful request?",
+                "options": [
+                  "200",
+                  "404",
+                  "500",
+                  "301"
+                ],
+                "answer": 0,
+                "explain": "HTTP 200 OK signals that the request succeeded and the server returned the requested resource."
+              },
+              {
+                "q": "When does an <code>else:</code> block attached to a <code>try / except</code> execute?",
+                "options": [
+                  "Whenever an unhandled exception occurs",
+                  "Only when NO exception was raised in the try block",
+                  "Always, before the finally block",
+                  "Only when a ValueError is caught"
+                ],
+                "answer": 1,
+                "explain": "The <code>else</code> clause runs only when the <code>try</code> suite completes without raising any exception."
+              }
+            ]
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Robust API Payload Parser",
+            "body": "<p>Web APIs return JSON responses that may be incomplete, malformed, or missing expected keys.</p>\n<p>Write a function <code>parse_weather(raw_json)</code> that parses a JSON string representing weather data:</p>\n<ol>\n<li>If <code>raw_json</code> is not valid JSON, catch <code>json.JSONDecodeError</code> and return <code>{\"error\": \"Invalid JSON\"}</code>.</li>\n<li>Extract the city name from <code>data[\"city\"]</code> and temperature from <code>data[\"temp_c\"]</code>.</li>\n<li>If either key is missing, catch <code>KeyError</code> and return <code>{\"error\": \"Missing required fields\"}</code>.</li>\n<li>Calculate temperature in Fahrenheit: <code>temp_f = round((temp_c * 9/5) + 32, 1)</code>.</li>\n<li>If temperature is not a number, catch <code>TypeError</code> and return <code>{\"error\": \"Invalid temperature type\"}</code>.</li>\n<li>On success, return: <code>{\"city\": city, \"temp_c\": temp_c, \"temp_f\": temp_f, \"status\": \"ok\"}</code>.</li>\n</ol>",
+            "starter": "import json\n\ndef parse_weather(raw_json):\n    # TODO: Safely parse raw_json and handle JSONDecodeError, KeyError, and TypeError\n    return {}\n",
+            "tests": [
+              {
+                "name": "Successfully parses valid weather payload",
+                "check": "valid_json = '{\"city\": \"Tokyo\", \"temp_c\": 20.0}'\nres = parse_weather(valid_json)\nassert res == {\"city\": \"Tokyo\", \"temp_c\": 20.0, \"temp_f\": 68.0, \"status\": \"ok\"}\n"
+              },
+              {
+                "name": "Catches malformed JSON syntax",
+                "check": "bad_json = '{\"city\": \"Paris\", \"temp_c\": '\nres = parse_weather(bad_json)\nassert res == {\"error\": \"Invalid JSON\"}\n"
+              },
+              {
+                "name": "Catches missing required keys",
+                "check": "missing_key = '{\"city\": \"London\"}'\nres = parse_weather(missing_key)\nassert res == {\"error\": \"Missing required fields\"}\n"
+              },
+              {
+                "name": "Catches non-numeric temperature",
+                "check": "bad_type = '{\"city\": \"Berlin\", \"temp_c\": \"twenty\"}'\nres = parse_weather(bad_type)\nassert res == {\"error\": \"Invalid temperature type\"}\n"
+              }
+            ],
+            "hints": [
+              "Start with <code>data = json.loads(raw_json)</code> inside a <code>try</code> block catching <code>json.JSONDecodeError</code>.",
+              "Inside another <code>try</code> or the same block, read <code>city = data[\"city\"]</code> and <code>temp_c = data[\"temp_c\"]</code>.",
+              "Compute <code>temp_f = round((temp_c * 9/5) + 32, 1)</code> and return the formatted dictionary."
+            ],
+            "solution": "import json\n\ndef parse_weather(raw_json):\n    try:\n        data = json.loads(raw_json)\n    except json.JSONDecodeError:\n        return {\"error\": \"Invalid JSON\"}\n\n    try:\n        city = data[\"city\"]\n        temp_c = data[\"temp_c\"]\n    except KeyError:\n        return {\"error\": \"Missing required fields\"}\n\n    try:\n        temp_f = round((temp_c * 9/5) + 32, 1)\n    except TypeError:\n        return {\"error\": \"Invalid temperature type\"}\n\n    return {\n        \"city\": city,\n        \"temp_c\": temp_c,\n        \"temp_f\": temp_f,\n        \"status\": \"ok\"\n    }\n\nprint(parse_weather('{\"city\": \"Seoul\", \"temp_c\": 15.5}'))\n"
+          }
+        ]
+      },
+      {
+        "id": "4.3",
+        "title": "Project: CLI Trivia Game",
+        "emoji": "❓",
+        "minutes": 15,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Consuming Open Trivia API Data",
+            "body": "<p>Web services like the <b>Open Trivia Database</b> (OTDB) provide free question sets via REST endpoints.</p>\n<p>An API response has standard JSON format:</p>\n<pre class=\"md-code\"><code>{\n  \"response_code\": 0,\n  \"results\": [\n    {\n      \"question\": \"What is the capital of Australia?\",\n      \"correct_answer\": \"Canberra\",\n      \"incorrect_answers\": [\"Sydney\", \"Melbourne\", \"Brisbane\"]\n    }\n  ]\n}</code></pre>\n<p>In our game engine, we parse questions, combine and present options, evaluate answers, and safeguard against network or JSON decode errors.</p>",
+            "code": "# Example trivia payload\nraw_data = {\n    \"response_code\": 0,\n    \"results\": [\n        {\n            \"question\": \"Which language uses indentation for blocks?\",\n            \"correct_answer\": \"Python\",\n            \"incorrect_answers\": [\"C++\", \"Java\", \"PHP\"]\n        }\n    ]\n}\nprint(\"Question count:\", len(raw_data[\"results\"]))\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Project: The Trivia Game Engine",
+            "body": "<p>Build the full logic for the CLI Trivia Game engine!</p>\n<ol>\n<li><code>TriviaQuestion</code> class:\n  <ul>\n    <li><code>__init__(self, question, correct_answer, incorrect_answers)</code>: stores <code>self.question</code>, <code>self.correct_answer</code>, and <code>self.incorrect_answers</code>.</li>\n    <li><code>get_all_options(self)</code>: returns all choices sorted alphabetically: <code>sorted([self.correct_answer] + self.incorrect_answers)</code>.</li>\n    <li><code>check_answer(self, user_choice)</code>: returns <code>True</code> if <code>user_choice.strip().lower() == self.correct_answer.strip().lower()</code>, else <code>False</code>.</li>\n  </ul>\n</li>\n<li><code>TriviaGame</code> class:\n  <ul>\n    <li><code>__init__(self)</code>: initializes empty list <code>self.questions = []</code> and <code>self.score = 0</code>.</li>\n    <li><code>load_from_json(self, json_string)</code>:\n      <ul>\n        <li>Parses <code>json_string</code> using <code>json.loads()</code>.</li>\n        <li>If invalid JSON, catch <code>json.JSONDecodeError</code> and return <code>False</code>.</li>\n        <li>For each item in <code>data.get(\"results\", [])</code>, create a <code>TriviaQuestion</code> and append to <code>self.questions</code>.</li>\n        <li>Return <code>True</code>.</li>\n      </ul>\n    </li>\n    <li><code>answer_question(self, question_idx, user_choice)</code>:\n      <ul>\n        <li>If <code>question_idx</code> is out of range, raise <code>IndexError</code>.</li>\n        <li>Calls <code>question.check_answer(user_choice)</code>. If correct, increments <code>self.score += 1</code> and returns <code>True</code>. Otherwise returns <code>False</code>.</li>\n      </ul>\n    </li>\n    <li><code>get_summary(self)</code>: returns <code>{\"score\": self.score, \"total\": len(self.questions), \"pct\": round((self.score / len(self.questions)) * 100, 1) if self.questions else 0.0}</code>.</li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import json\n\nclass TriviaQuestion:\n    def __init__(self, question, correct_answer, incorrect_answers):\n        # TODO: initialize attributes\n        pass\n\n    def get_all_options(self):\n        # TODO: return sorted list of all options\n        return []\n\n    def check_answer(self, user_choice):\n        # TODO: case-insensitive answer comparison\n        return False\n\n\nclass TriviaGame:\n    def __init__(self):\n        self.questions = []\n        self.score = 0\n\n    def load_from_json(self, json_string):\n        # TODO: load JSON safely, populate self.questions, return True or False on error\n        return False\n\n    def answer_question(self, question_idx, user_choice):\n        # TODO: check answer, increment score on success, return bool\n        return False\n\n    def get_summary(self):\n        # TODO: return dict with score, total, pct\n        return {}\n",
+            "tests": [
+              {
+                "name": "TriviaQuestion options and evaluation",
+                "check": "q = TriviaQuestion(\"What is 2+2?\", \"4\", [\"1\", \"3\", \"5\"])\nassert q.get_all_options() == [\"1\", \"3\", \"4\", \"5\"]\nassert q.check_answer(\"4\") is True\nassert q.check_answer(\" 4 \") is True\nassert q.check_answer(\"3\") is False\n"
+              },
+              {
+                "name": "TriviaGame loads JSON questions cleanly",
+                "check": "payload = json.dumps({\n    \"response_code\": 0,\n    \"results\": [\n        {\"question\": \"Q1\", \"correct_answer\": \"A1\", \"incorrect_answers\": [\"B1\", \"C1\"]},\n        {\"question\": \"Q2\", \"correct_answer\": \"A2\", \"incorrect_answers\": [\"B2\", \"C2\"]}\n    ]\n})\n\ngame = TriviaGame()\nok = game.load_from_json(payload)\nassert ok is True\nassert len(game.questions) == 2\nassert game.questions[0].question == \"Q1\"\nassert game.questions[1].correct_answer == \"A2\"\n"
+              },
+              {
+                "name": "Handles malformed JSON gracefully without crashing",
+                "check": "game = TriviaGame()\nok = game.load_from_json(\"{malformed json\")\nassert ok is False\nassert len(game.questions) == 0\n"
+              },
+              {
+                "name": "Scoring and summary computation",
+                "check": "payload = json.dumps({\n    \"results\": [\n        {\"question\": \"Q1\", \"correct_answer\": \"Alpha\", \"incorrect_answers\": [\"Beta\"]},\n        {\"question\": \"Q2\", \"correct_answer\": \"Gamma\", \"incorrect_answers\": [\"Delta\"]}\n    ]\n})\n\ngame = TriviaGame()\ngame.load_from_json(payload)\n\n# Question 1: correct\nr1 = game.answer_question(0, \"alpha\")\nassert r1 is True\nassert game.score == 1\n\n# Question 2: incorrect\nr2 = game.answer_question(1, \"wrong\")\nassert r2 is False\nassert game.score == 1\n\nsummary = game.get_summary()\nassert summary == {\"score\": 1, \"total\": 2, \"pct\": 50.0}\n"
+              }
+            ],
+            "hints": [
+              "In <code>TriviaQuestion.get_all_options</code>: <code>return sorted([self.correct_answer] + self.incorrect_answers)</code>.",
+              "In <code>TriviaGame.load_from_json</code>: wrap <code>data = json.loads(json_string)</code> in a <code>try / except json.JSONDecodeError: return False</code>.",
+              "Iterate <code>for item in data.get(\"results\", []):</code> and append <code>TriviaQuestion(item[\"question\"], item[\"correct_answer\"], item[\"incorrect_answers\"])</code>.",
+              "In <code>answer_question</code>: <code>q = self.questions[question_idx]</code>. If <code>q.check_answer(user_choice): self.score += 1; return True</code> else return <code>False</code>."
+            ],
+            "solution": "import json\n\nclass TriviaQuestion:\n    def __init__(self, question, correct_answer, incorrect_answers):\n        self.question = question\n        self.correct_answer = correct_answer\n        self.incorrect_answers = list(incorrect_answers)\n\n    def get_all_options(self):\n        return sorted([self.correct_answer] + self.incorrect_answers)\n\n    def check_answer(self, user_choice):\n        return user_choice.strip().lower() == self.correct_answer.strip().lower()\n\n\nclass TriviaGame:\n    def __init__(self):\n        self.questions = []\n        self.score = 0\n\n    def load_from_json(self, json_string):\n        try:\n            data = json.loads(json_string)\n        except (json.JSONDecodeError, TypeError):\n            return False\n\n        self.questions = []\n        for item in data.get(\"results\", []):\n            q = TriviaQuestion(\n                item[\"question\"],\n                item[\"correct_answer\"],\n                item[\"incorrect_answers\"]\n            )\n            self.questions.append(q)\n        return True\n\n    def answer_question(self, question_idx, user_choice):\n        if not (0 <= question_idx < len(self.questions)):\n            raise IndexError(\"Question index out of range\")\n        question = self.questions[question_idx]\n        if question.check_answer(user_choice):\n            self.score += 1\n            return True\n        return False\n\n    def get_summary(self):\n        total = len(self.questions)\n        pct = round((self.score / total) * 100, 1) if total > 0 else 0.0\n        return {\"score\": self.score, \"total\": total, \"pct\": pct}\n\n# Demonstration\nsample_data = json.dumps({\n    \"results\": [\n        {\"question\": \"Python creator?\", \"correct_answer\": \"Guido van Rossum\", \"incorrect_answers\": [\"James Gosling\", \"Bjarne Stroustrup\"]}\n    ]\n})\ngame = TriviaGame()\ngame.load_from_json(sample_data)\ngame.answer_question(0, \"guido van rossum\")\nprint(\"Game Summary:\", game.get_summary())\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Graphics with Arcade",
+    "lessons": [
+      {
+        "id": "5.1",
+        "title": "Arcade Initialization & Coordinates",
+        "emoji": "🎨",
+        "minutes": 10,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "The Cartesian Coordinate System in Arcade",
+            "body": "<p>In most 2D graphics frameworks (and unlike standard web DOM layout), <b>Python Arcade</b> uses the traditional mathematical Cartesian coordinate system:</p>\n<ul>\n<li>The origin <code>(0, 0)</code> is at the <b>bottom-left corner</b> of the window.</li>\n<li><b>X increases to the right</b> (<code>x = 0</code> to <code>width</code>).</li>\n<li><b>Y increases upward</b> (<code>y = 0</code> to <code>height</code>).</li>\n</ul>\n<p>Subclass <code>arcade.Window</code> to create your game canvas and override <code>on_draw(self)</code> to draw each frame.</p>",
+            "code": "import arcade\n\nclass MyGame(arcade.Window):\n    def __init__(self, width=800, height=600, title=\"My Arcade Window\"):\n        super().__init__(width, height, title)\n        arcade.set_background_color(arcade.color.AMAZON)\n\n    def on_draw(self):\n        arcade.start_render()\n        # Draw a circle in the center of the window (400, 300)\n        arcade.draw_circle_filled(400, 300, 50, arcade.color.WHITE)\n        arcade.finish_render()\n\ngame = MyGame()\ngame.on_draw()\nprint(f\"Window: {game.width}x{game.height}, title: '{game.title}'\")\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Coordinate Placement",
+            "code": "# Screen dimensions: 800 width, 600 height\ncenter_x = 800 // 2\ncenter_y = 600 // 2\ntop_right_x = 800\ntop_right_y = 600\nprint(f\"Center: ({center_x}, {center_y}) | Top-Right: ({top_right_x}, {top_right_y})\")\n",
+            "question": "Where is coordinate (400, 300) located on an 800x600 Arcade screen?",
+            "options": [
+              "Top-left corner",
+              "Exact center of the screen",
+              "Bottom-right corner",
+              "Off-screen"
+            ],
+            "answer": 1,
+            "explain": "Because <code>width = 800</code> and <code>height = 600</code>, coordinates <code>(800//2, 600//2) = (400, 300)</code> pinpoint the exact geometric center."
+          },
+          {
+            "type": "concept",
+            "title": "Drawing Primitives",
+            "body": "<p>Arcade provides high-performance drawing primitives:</p>\n<ul>\n<li><code>arcade.draw_circle_filled(center_x, center_y, radius, color)</code></li>\n<li><code>arcade.draw_rectangle_filled(center_x, center_y, width, height, color)</code></li>\n<li><code>arcade.draw_line(start_x, start_y, end_x, end_y, color, line_width)</code></li>\n<li><code>arcade.draw_text(text, start_x, start_y, color, font_size)</code></li>\n</ul>",
+            "code": "import arcade\n\narcade.start_render()\n# Ground\narcade.draw_rectangle_filled(400, 50, 800, 100, arcade.color.GREEN)\n# Sun\narcade.draw_circle_filled(700, 500, 40, arcade.color.YELLOW)\n# Ray\narcade.draw_line(700, 500, 620, 460, arcade.color.YELLOW, 3)\narcade.finish_render()\n\nprint(\"Primitives rendered successfully!\")\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Game Canvas Scaffold",
+            "body": "<p>Create a custom <code>GameCanvas</code> window class inheriting from <code>arcade.Window</code>:</p>\n<ol>\n<li><code>__init__(self, width=800, height=600, title=\"Python Arcade\")</code>:\n  <ul>\n    <li>Call <code>super().__init__(width, height, title)</code>.</li>\n    <li>Set background color using <code>arcade.set_background_color(arcade.color.BLACK)</code>.</li>\n    <li>Store <code>self.score = 0</code>.</li>\n  </ul>\n</li>\n<li><code>on_draw(self)</code>:\n  <ul>\n    <li>Call <code>arcade.start_render()</code>.</li>\n    <li>Draw a centered circle with radius <code>30</code> in <code>arcade.color.CYAN</code> at <code>(self.width // 2, self.height // 2)</code>.</li>\n    <li>Draw a score line at the bottom: <code>arcade.draw_line(0, 50, self.width, 50, arcade.color.WHITE, 2)</code>.</li>\n    <li>Call <code>arcade.finish_render()</code>.</li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import arcade\n\nclass GameCanvas(arcade.Window):\n    def __init__(self, width=800, height=600, title=\"Python Arcade\"):\n        # TODO: call super() and initialize attributes\n        pass\n\n    def on_draw(self):\n        # TODO: start_render, draw circle & line, finish_render\n        pass\n",
+            "tests": [
+              {
+                "name": "Window initializes with proper dimensions and score attribute",
+                "check": "win = GameCanvas(1024, 768, \"TestGame\")\nassert isinstance(win, arcade.Window)\nassert win.width == 1024\nassert win.height == 768\nassert win.title == \"TestGame\"\nassert win.score == 0\n"
+              },
+              {
+                "name": "on_draw calls start_render and primitives",
+                "check": "win = GameCanvas(800, 600)\nwin.on_draw()\n# Verify draw commands recorded in arcade shim\ncommands = arcade._draw_commands\nassert any(c[\"type\"] == \"circle_filled\" and c[\"x\"] == 400 and c[\"y\"] == 300 and c[\"radius\"] == 30 for c in commands), \"Expected centered cyan circle with radius 30\"\nassert any(c[\"type\"] == \"line\" and c[\"y1\"] == 50 and c[\"y2\"] == 50 for c in commands), \"Expected score boundary line at y=50\"\n"
+              }
+            ],
+            "hints": [
+              "In <code>__init__</code>: call <code>super().__init__(width, height, title)</code>, <code>arcade.set_background_color(arcade.color.BLACK)</code>, and set <code>self.score = 0</code>.",
+              "In <code>on_draw</code>: begin with <code>arcade.start_render()</code>.",
+              "Draw the circle with <code>arcade.draw_circle_filled(self.width // 2, self.height // 2, 30, arcade.color.CYAN)</code>.",
+              "Draw the line with <code>arcade.draw_line(0, 50, self.width, 50, arcade.color.WHITE, 2)</code> and end with <code>arcade.finish_render()</code>."
+            ],
+            "solution": "import arcade\n\nclass GameCanvas(arcade.Window):\n    def __init__(self, width=800, height=600, title=\"Python Arcade\"):\n        super().__init__(width, height, title)\n        arcade.set_background_color(arcade.color.BLACK)\n        self.score = 0\n\n    def on_draw(self):\n        arcade.start_render()\n        center_x = self.width // 2\n        center_y = self.height // 2\n        arcade.draw_circle_filled(center_x, center_y, 30, arcade.color.CYAN)\n        arcade.draw_line(0, 50, self.width, 50, arcade.color.WHITE, 2)\n        arcade.finish_render()\n\n# Demonstration\ncanvas = GameCanvas(800, 600)\ncanvas.on_draw()\nprint(f\"Rendered canvas: {canvas.width}x{canvas.height}\")\n"
+          }
+        ]
+      },
+      {
+        "id": "5.2",
+        "title": "Drawing & Movement",
+        "emoji": "🕹️",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "The Game Loop: on_update & on_key_press",
+            "body": "<p>A game loop repeats continuously 60 times per second (60 FPS):</p>\n<ol>\n<li><b>Process Input</b>: <code>on_key_press(symbol, modifiers)</code> captures key presses.</li>\n<li><b>Update State</b>: <code>on_update(delta_time)</code> moves positions based on velocity (<code>change_x</code>, <code>change_y</code>).</li>\n<li><b>Render Frame</b>: <code>on_draw()</code> repaints the new visual state.</li>\n</ol>",
+            "code": "import arcade\n\nclass PlayerBall(arcade.Window):\n    def __init__(self):\n        super().__init__(800, 600, \"Moving Ball\")\n        self.ball_x = 400\n        self.ball_y = 300\n        self.speed = 5\n\n    def on_key_press(self, symbol, modifiers):\n        if symbol == arcade.key.LEFT:\n            self.ball_x -= self.speed\n        elif symbol == arcade.key.RIGHT:\n            self.ball_x += self.speed\n\n    def on_draw(self):\n        arcade.start_render()\n        arcade.draw_circle_filled(self.ball_x, self.ball_y, 20, arcade.color.YELLOW)\n        arcade.finish_render()\n\nplayer = PlayerBall()\nplayer.on_key_press(arcade.key.RIGHT, 0)\nprint(\"Ball moved to x:\", player.ball_x)\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Delta Time & Velocity",
+            "code": "x = 100.0\nvelocity_x = 60.0  # pixels per second\ndelta_time = 1 / 60  # 60 FPS frame time (approx 0.01667)\n\nx += velocity_x * delta_time\nprint(round(x, 1))\n",
+            "question": "What is the updated position <code>x</code> after 1 frame?",
+            "options": [
+              "160.0",
+              "101.0",
+              "100.0",
+              "106.0"
+            ],
+            "answer": 1,
+            "explain": "<code>velocity_x * delta_time = 60.0 * (1/60) = 1.0</code>. <code>100.0 + 1.0 = 101.0</code>. Multiplying by <code>delta_time</code> ensures frame-rate-independent physics."
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: Arcade Graphics & Input",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "Where is coordinate (0, 0) in the Python Arcade window coordinate system?",
+                "options": [
+                  "Top-left corner",
+                  "Center of the screen",
+                  "Bottom-left corner",
+                  "Bottom-right corner"
+                ],
+                "answer": 2,
+                "explain": "Python Arcade uses a standard Cartesian plane where (0, 0) is situated at the bottom-left corner."
+              },
+              {
+                "q": "Which method should contain drawing primitives such as <code>draw_circle_filled</code>?",
+                "options": [
+                  "__init__",
+                  "on_draw",
+                  "on_update",
+                  "on_key_press"
+                ],
+                "answer": 1,
+                "explain": "All rendering and drawing instructions must reside inside <code>on_draw()</code>."
+              },
+              {
+                "q": "What is the purpose of passing <code>delta_time</code> to <code>on_update</code>?",
+                "options": [
+                  "To measure system temperature",
+                  "To make movement speed independent of framerate fluctuations",
+                  "To determine screen resolution",
+                  "To calculate player score"
+                ],
+                "answer": 1,
+                "explain": "Multiplying velocities by <code>delta_time</code> (the fraction of a second since last frame) guarantees identical movement speeds regardless of whether a machine runs at 30, 60, or 144 FPS."
+              },
+              {
+                "q": "What function is called at the very beginning of <code>on_draw()</code> to wipe the previous frame?",
+                "options": [
+                  "arcade.clear()",
+                  "arcade.start_render()",
+                  "arcade.reset()",
+                  "arcade.flush()"
+                ],
+                "answer": 1,
+                "explain": "<code>arcade.start_render()</code> clears the window surface using the configured background color to prepare for drawing the new frame."
+              },
+              {
+                "q": "Which function starts the main Arcade game loop?",
+                "options": [
+                  "arcade.start()",
+                  "arcade.run()",
+                  "arcade.loop()",
+                  "arcade.main()"
+                ],
+                "answer": 1,
+                "explain": "<code>arcade.run()</code> hands control over to the underlying event loop to handle windows, inputs, updates, and rendering."
+              }
+            ]
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: 4-Directional Player Controller",
+            "body": "<p>Build a <code>ControllablePlayer</code> window class that handles 4-directional motion and boundaries:</p>\n<ol>\n<li><code>__init__(self, width=800, height=600)</code>:\n  <ul>\n    <li>Call <code>super().__init__(width, height, \"Player Controller\")</code>.</li>\n    <li>Initialize <code>self.player_x = width // 2</code> and <code>self.player_y = height // 2</code>.</li>\n    <li>Initialize velocity: <code>self.change_x = 0</code>, <code>self.change_y = 0</code>.</li>\n    <li>Set <code>self.speed = 5</code>.</li>\n  </ul>\n</li>\n<li><code>on_key_press(self, symbol, modifiers)</code>:\n  <ul>\n    <li><code>arcade.key.LEFT</code>: <code>self.change_x = -self.speed</code></li>\n    <li><code>arcade.key.RIGHT</code>: <code>self.change_x = self.speed</code></li>\n    <li><code>arcade.key.UP</code>: <code>self.change_y = self.speed</code></li>\n    <li><code>arcade.key.DOWN</code>: <code>self.change_y = -self.speed</code></li>\n  </ul>\n</li>\n<li><code>on_key_release(self, symbol, modifiers)</code>:\n  <ul>\n    <li>If released key is LEFT or RIGHT: reset <code>self.change_x = 0</code>.</li>\n    <li>If released key is UP or DOWN: reset <code>self.change_y = 0</code>.</li>\n  </ul>\n</li>\n<li><code>on_update(self, delta_time)</code>:\n  <ul>\n    <li>Apply motion: <code>self.player_x += self.change_x</code>, <code>self.player_y += self.change_y</code>.</li>\n    <li>Clamp to window bounds: keep <code>self.player_x</code> between <code>0</code> and <code>self.width</code>, and <code>self.player_y</code> between <code>0</code> and <code>self.height</code>.</li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import arcade\n\nclass ControllablePlayer(arcade.Window):\n    def __init__(self, width=800, height=600):\n        # TODO: call super() and initialize coordinates and velocities\n        pass\n\n    def on_key_press(self, symbol, modifiers):\n        # TODO: set change_x or change_y based on directional keys\n        pass\n\n    def on_key_release(self, symbol, modifiers):\n        # TODO: stop motion when directional keys are released\n        pass\n\n    def on_update(self, delta_time):\n        # TODO: update player position and clamp within window bounds\n        pass\n",
+            "tests": [
+              {
+                "name": "Arrow keys update velocity and position",
+                "check": "game = ControllablePlayer(800, 600)\nassert game.player_x == 400\nassert game.player_y == 300\n\n# Press RIGHT\ngame.on_key_press(arcade.key.RIGHT, 0)\nassert game.change_x == 5\ngame.on_update(1/60)\nassert game.player_x == 405\n\n# Release RIGHT\ngame.on_key_release(arcade.key.RIGHT, 0)\nassert game.change_x == 0\n\n# Press UP\ngame.on_key_press(arcade.key.UP, 0)\nassert game.change_y == 5\ngame.on_update(1/60)\nassert game.player_y == 305\n"
+              },
+              {
+                "name": "Player is clamped to window boundaries",
+                "check": "game = ControllablePlayer(800, 600)\ngame.player_x = 798\ngame.change_x = 10\ngame.on_update(1/60)\nassert game.player_x == 800, f\"Expected clamped position 800, got {game.player_x}\"\n\ngame.player_y = 2\ngame.change_y = -10\ngame.on_update(1/60)\nassert game.player_y == 0, f\"Expected clamped position 0, got {game.player_y}\"\n"
+              }
+            ],
+            "hints": [
+              "Use <code>max(0, min(self.width, self.player_x))</code> to clamp <code>player_x</code> cleanly.",
+              "In <code>on_key_release</code>, check <code>if symbol in (arcade.key.LEFT, arcade.key.RIGHT): self.change_x = 0</code>."
+            ],
+            "solution": "import arcade\n\nclass ControllablePlayer(arcade.Window):\n    def __init__(self, width=800, height=600):\n        super().__init__(width, height, \"Player Controller\")\n        self.player_x = width // 2\n        self.player_y = height // 2\n        self.change_x = 0\n        self.change_y = 0\n        self.speed = 5\n\n    def on_key_press(self, symbol, modifiers):\n        if symbol == arcade.key.LEFT:\n            self.change_x = -self.speed\n        elif symbol == arcade.key.RIGHT:\n            self.change_x = self.speed\n        elif symbol == arcade.key.UP:\n            self.change_y = self.speed\n        elif symbol == arcade.key.DOWN:\n            self.change_y = -self.speed\n\n    def on_key_release(self, symbol, modifiers):\n        if symbol in (arcade.key.LEFT, arcade.key.RIGHT):\n            self.change_x = 0\n        elif symbol in (arcade.key.UP, arcade.key.DOWN):\n            self.change_y = 0\n\n    def on_update(self, delta_time):\n        self.player_x += self.change_x\n        self.player_y += self.change_y\n        self.player_x = max(0, min(self.width, self.player_x))\n        self.player_y = max(0, min(self.height, self.player_y))\n\ngame = ControllablePlayer(800, 600)\ngame.on_key_press(arcade.key.RIGHT, 0)\ngame.on_update(1/60)\nprint(f\"Player at: ({game.player_x}, {game.player_y})\")\n"
+          }
+        ]
+      },
+      {
+        "id": "5.3",
+        "title": "Project: Generative Screensaver Art",
+        "emoji": "🌀",
+        "minutes": 15,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Algorithmic Art with Trigonometry",
+            "body": "<p>Generative art uses mathematical formulas to produce intricate patterns.</p>\n<p>By computing polar-to-Cartesian coordinates using sine and cosine:</p>\n<pre class=\"md-code\"><code>x = center_x + radius * math.cos(angle)\ny = center_y + radius * math.sin(angle)</code></pre>\n<p>Connecting multiple rotating vertices or drawing radial petals creates captivating spiral rosettes and harmonic Lissajous curves.</p>",
+            "code": "import math\nimport arcade\n\ncenter_x, center_y = 400, 300\nradius = 150\npoints = []\n\n# Generate a 12-point star pattern\nfor i in range(12):\n    angle = (2 * math.pi / 12) * i\n    px = center_x + radius * math.cos(angle)\n    py = center_y + radius * math.sin(angle)\n    points.append((round(px, 1), round(py, 1)))\n\nprint(\"First 3 vertices:\", points[:3])\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Project: Generative Spiral Screensaver",
+            "body": "<p>Build the <code>GenerativeArt</code> engine implementing a dynamic multi-petal rosette screensaver:</p>\n<ol>\n<li><code>compute_vertex(center_x, center_y, radius, angle_radians)</code>:\n  <ul>\n    <li>Returns tuple <code>(x, y)</code> calculated with:\n      <code>x = center_x + radius * math.cos(angle_radians)</code>,\n      <code>y = center_y + radius * math.sin(angle_radians)</code>.</li>\n  </ul>\n</li>\n<li><code>generate_rosette(num_petals, base_radius, center_x=400, center_y=300)</code>:\n  <ul>\n    <li>Computes <code>num_petals</code> vertices evenly spaced around a full circle (<code>2 * math.pi</code>).</li>\n    <li>Returns a list of <code>(x, y)</code> tuples.</li>\n  </ul>\n</li>\n<li><code>GenerativeArtWindow</code> class (subclass of <code>arcade.Window</code>):\n  <ul>\n    <li><code>__init__(self, width=800, height=600, num_petals=16)</code>: calls <code>super()</code>, sets <code>self.num_petals = num_petals</code>, <code>self.rotation = 0.0</code>, and <code>self.radius = 120.0</code>.</li>\n    <li><code>on_update(self, delta_time)</code>: increments <code>self.rotation += 0.5 * delta_time</code>.</li>\n    <li><code>on_draw(self)</code>:\n      <ul>\n        <li>Calls <code>arcade.start_render()</code>.</li>\n        <li>Generates the vertices with rotation offset: for <code>i in range(self.num_petals)</code>, <code>angle = (2 * math.pi / self.num_petals) * i + self.rotation</code>.</li>\n        <li>Draws lines from center <code>(self.width // 2, self.height // 2)</code> to each computed vertex in <code>arcade.color.CYAN</code>.</li>\n        <li>Calls <code>arcade.finish_render()</code>.</li>\n      </ul>\n    </li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import math\nimport arcade\n\ndef compute_vertex(center_x, center_y, radius, angle_radians):\n    # TODO: return (x, y) using math.cos and math.sin\n    return (0.0, 0.0)\n\ndef generate_rosette(num_petals, base_radius, center_x=400, center_y=300):\n    # TODO: return list of (x, y) tuples evenly distributed\n    return []\n\nclass GenerativeArtWindow(arcade.Window):\n    def __init__(self, width=800, height=600, num_petals=16):\n        # TODO: initialize attributes\n        pass\n\n    def on_update(self, delta_time):\n        # TODO: advance rotation\n        pass\n\n    def on_draw(self):\n        # TODO: start_render, draw radial lines to vertices, finish_render\n        pass\n",
+            "tests": [
+              {
+                "name": "compute_vertex trigonometric accuracy",
+                "check": "import math\np0 = compute_vertex(400, 300, 100, 0)\nassert round(p0[0], 2) == 500.0 and round(p0[1], 2) == 300.0\n\np_half_pi = compute_vertex(400, 300, 100, math.pi / 2)\nassert round(p_half_pi[0], 2) == 400.0 and round(p_half_pi[1], 2) == 400.0\n"
+              },
+              {
+                "name": "generate_rosette generates exact petal count",
+                "check": "verts = generate_rosette(8, 100, 400, 300)\nassert len(verts) == 8, f\"Expected 8 vertices, got {len(verts)}\"\nassert all(isinstance(v, tuple) and len(v) == 2 for v in verts)\n"
+              },
+              {
+                "name": "GenerativeArtWindow update and render calls",
+                "check": "win = GenerativeArtWindow(800, 600, 12)\nassert win.rotation == 0.0\nwin.on_update(1.0)\nassert win.rotation == 0.5, f\"Expected rotation 0.5, got {win.rotation}\"\n\nwin.on_draw()\ncommands = arcade._draw_commands\nlines = [c for c in commands if c[\"type\"] == \"line\"]\nassert len(lines) == 12, f\"Expected 12 rendered radial lines, got {len(lines)}\"\n"
+              }
+            ],
+            "hints": [
+              "In <code>compute_vertex</code>: return <code>(center_x + radius * math.cos(angle_radians), center_y + radius * math.sin(angle_radians))</code>.",
+              "In <code>generate_rosette</code>: use list comprehension <code>[compute_vertex(center_x, center_y, base_radius, (2 * math.pi / num_petals) * i) for i in range(num_petals)]</code>.",
+              "In <code>GenerativeArtWindow.on_draw</code>: begin with <code>arcade.start_render()</code>, draw each line from center to vertex using <code>arcade.draw_line(cx, cy, vx, vy, arcade.color.CYAN, 2)</code>, and end with <code>arcade.finish_render()</code>."
+            ],
+            "solution": "import math\nimport arcade\n\ndef compute_vertex(center_x, center_y, radius, angle_radians):\n    x = center_x + radius * math.cos(angle_radians)\n    y = center_y + radius * math.sin(angle_radians)\n    return (x, y)\n\ndef generate_rosette(num_petals, base_radius, center_x=400, center_y=300):\n    vertices = []\n    step = (2 * math.pi) / num_petals\n    for i in range(num_petals):\n        vertices.append(compute_vertex(center_x, center_y, base_radius, step * i))\n    return vertices\n\nclass GenerativeArtWindow(arcade.Window):\n    def __init__(self, width=800, height=600, num_petals=16):\n        super().__init__(width, height, \"Generative Art\")\n        self.num_petals = num_petals\n        self.rotation = 0.0\n        self.radius = 120.0\n\n    def on_update(self, delta_time):\n        self.rotation += 0.5 * delta_time\n\n    def on_draw(self):\n        arcade.start_render()\n        cx = self.width // 2\n        cy = self.height // 2\n        step = (2 * math.pi) / self.num_petals\n        for i in range(self.num_petals):\n            angle = step * i + self.rotation\n            vx, vy = compute_vertex(cx, cy, self.radius, angle)\n            arcade.draw_line(cx, cy, vx, vy, arcade.color.CYAN, 2)\n        arcade.finish_render()\n\n# Demonstration\nart = GenerativeArtWindow(800, 600, 12)\nart.on_update(1/60)\nart.on_draw()\nprint(\"Generative screensaver frame rendered!\")\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Game Dev Capstone",
+    "lessons": [
+      {
+        "id": "6.1",
+        "title": "Sprites & SpriteLists",
+        "emoji": "👾",
+        "minutes": 10,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Batch Rendering with Sprites",
+            "body": "<p>In real 2D games, rendering hundreds of objects individually is slow. Arcade provides <b><code>arcade.Sprite</code></b> and <b><code>arcade.SpriteList</code></b> for hardware-accelerated batch rendering.</p>\n<ul>\n<li><code>Sprite</code>: An object with <code>center_x</code>, <code>center_y</code>, <code>change_x</code>, <code>change_y</code>, and collision bounds.</li>\n<li><code>SpriteList</code>: A container that updates and draws all contained sprites in a single GPU draw call.</li>\n</ul>",
+            "code": "import arcade\n\nplayer = arcade.Sprite(scale=1.0, center_x=100, center_y=150)\nplayer.change_x = 2.0\n\ncoins = arcade.SpriteList()\nfor i in range(5):\n    coin = arcade.Sprite(scale=0.5, center_x=200 + i * 50, center_y=150)\n    coins.append(coin)\n\nprint(\"Coins in list:\", len(coins))\nplayer.update()\nprint(f\"Player advanced to ({player.center_x}, {player.center_y})\")\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Axis-Aligned Bounding Box (AABB)",
+            "code": "import arcade\n\ns1 = arcade.Sprite(scale=1.0, center_x=100, center_y=100)\ns1.width, s1.height = 32, 32\n\ns2 = arcade.Sprite(scale=1.0, center_x=120, center_y=100)\ns2.width, s2.height = 32, 32\n\n# Distance between centers is 20. Sum of half-widths is 16 + 16 = 32.\ncollides = arcade.check_for_collision(s1, s2)\nprint(\"Collision:\", collides)\n",
+            "question": "Do <code>s1</code> and <code>s2</code> collide?",
+            "options": [
+              "True",
+              "False",
+              "None",
+              "TypeError"
+            ],
+            "answer": 0,
+            "explain": "Because the distance between centers (<code>20</code>) is strictly less than the combined half-widths (<code>32</code>) and Y is aligned, their bounding boxes overlap (<b>True</b>)."
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Coin Collection Manager",
+            "body": "<p>Build the coin collection mechanic for our game:</p>\n<ol>\n<li><code>spawn_coin_row(start_x, y, count, spacing=40)</code>:\n  <ul>\n    <li>Creates and returns an <code>arcade.SpriteList()</code>.</li>\n    <li>Appends <code>count</code> coins placed at <code>x = start_x + (i * spacing)</code> and <code>center_y = y</code> with <code>scale=0.5</code>.</li>\n  </ul>\n</li>\n<li><code>collect_coins(player_sprite, coin_list)</code>:\n  <ul>\n    <li>Finds all coins colliding with <code>player_sprite</code> using <code>arcade.check_for_collision_with_list(player_sprite, coin_list)</code>.</li>\n    <li>Removes each collected coin from <code>coin_list</code>.</li>\n    <li>Returns the number of coins collected.</li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import arcade\n\ndef spawn_coin_row(start_x, y, count, spacing=40):\n    # TODO: populate and return an arcade.SpriteList of coins\n    return arcade.SpriteList()\n\ndef collect_coins(player_sprite, coin_list):\n    # TODO: detect collisions, remove collected coins, return count\n    return 0\n",
+            "tests": [
+              {
+                "name": "spawn_coin_row creates exact count at spaced positions",
+                "check": "coins = spawn_coin_row(100, 200, 4, spacing=50)\nassert isinstance(coins, arcade.SpriteList)\nassert len(coins) == 4\nassert [c.center_x for c in coins] == [100.0, 150.0, 200.0, 250.0]\nassert all(c.center_y == 200.0 for c in coins)\n"
+              },
+              {
+                "name": "collect_coins removes touched coins and returns count",
+                "check": "coins = spawn_coin_row(100, 100, 3, spacing=40)\nplayer = arcade.Sprite(scale=1.0, center_x=105, center_y=100)\n\ncollected = collect_coins(player, coins)\nassert collected == 1, f\"Expected 1 coin collected, got {collected}\"\nassert len(coins) == 2, f\"Expected 2 remaining coins, got {len(coins)}\"\nassert coins[0].center_x == 140.0\n"
+              }
+            ],
+            "hints": [
+              "In <code>spawn_coin_row</code>: loop <code>for i in range(count): coin = arcade.Sprite(scale=0.5, center_x=start_x + i * spacing, center_y=y); coin_list.append(coin)</code>.",
+              "In <code>collect_coins</code>: call <code>hits = arcade.check_for_collision_with_list(player_sprite, coin_list)</code>. Loop <code>for c in hits: coin_list.remove(c)</code> and return <code>len(hits)</code>."
+            ],
+            "solution": "import arcade\n\ndef spawn_coin_row(start_x, y, count, spacing=40):\n    coin_list = arcade.SpriteList()\n    for i in range(count):\n        coin = arcade.Sprite(scale=0.5, center_x=start_x + (i * spacing), center_y=y)\n        coin_list.append(coin)\n    return coin_list\n\ndef collect_coins(player_sprite, coin_list):\n    hit_list = arcade.check_for_collision_with_list(player_sprite, coin_list)\n    for coin in hit_list:\n        coin_list.remove(coin)\n    return len(hit_list)\n\n# Demo run\ncoins = spawn_coin_row(100, 100, 5)\nplayer = arcade.Sprite(scale=1.0, center_x=100, center_y=100)\ncount = collect_coins(player, coins)\nprint(f\"Collected: {count}, Remaining: {len(coins)}\")\n"
+          }
+        ]
+      },
+      {
+        "id": "6.2",
+        "title": "Physics & Collision Engine",
+        "emoji": "🧱",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "PhysicsEngineSimple & Wall Collision",
+            "body": "<p>In platformers, players should stand on floors and bump into walls instead of passing right through them.</p>\n<p>Arcade's <code>PhysicsEngineSimple(player, walls)</code> automatically prevents the player sprite from penetrating walls.</p>",
+            "code": "import arcade\n\nplayer = arcade.Sprite(scale=1.0, center_x=100, center_y=100)\nwalls = arcade.SpriteList()\n\n# Ground platform at (100, 68) with height 32\nfloor = arcade.Sprite(scale=1.0, center_x=100, center_y=68)\nwalls.append(floor)\n\nphysics = arcade.PhysicsEngineSimple(player, walls)\nplayer.change_y = -5.0  # gravity pull\nphysics.update()\nprint(\"Player settled at y:\", player.center_y)\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Jump Impulse & Gravity",
+            "code": "vy = 12.0      # Jump impulse\ngravity = 1.0  # Downward pull per frame\n\n# Simulate 3 frames of flight\nfor frame in range(3):\n    vy -= gravity\n\nprint(\"Velocity after 3 frames:\", vy)\n",
+            "question": "What is the value of <code>vy</code> after 3 frames?",
+            "options": [
+              "12.0",
+              "15.0",
+              "9.0",
+              "0.0"
+            ],
+            "answer": 2,
+            "explain": "Starting at <code>12.0</code>, gravity subtracts <code>1.0</code> per frame: <code>12 - 1 - 1 - 1 = 9.0</code>."
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: 2D Game Mechanics & Physics",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "What does AABB stand for in game collision detection?",
+                "options": [
+                  "Axis-Aligned Bounding Box",
+                  "Advanced Arcade Binary Buffer",
+                  "Asynchronous Audio Base Band",
+                  "Array Allocated Bit Block"
+                ],
+                "answer": 0,
+                "explain": "AABB stands for Axis-Aligned Bounding Box — a fast rectangular collision test where rectangle edges align with screen coordinate axes."
+              },
+              {
+                "q": "Why are sprites grouped into a <code>SpriteList</code> rather than a standard Python list?",
+                "options": [
+                  "To encrypt game graphics",
+                  "To enable batch drawing on the GPU with minimal draw calls",
+                  "Because standard Python lists cannot hold objects",
+                  "To automatically sort sprites alphabetically"
+                ],
+                "answer": 1,
+                "explain": "<code>SpriteList</code> batches sprite textures and vertex coordinates into vertex buffers for high-speed GPU rendering."
+              },
+              {
+                "q": "How is a jump typically triggered in platformer games?",
+                "options": [
+                  "By decreasing the player height attribute",
+                  "By giving the player an instantaneous positive vertical velocity (change_y)",
+                  "By reloading the level map",
+                  "By changing the background color to white"
+                ],
+                "answer": 1,
+                "explain": "Jumping applies an upward vertical impulse: <code>self.player.change_y = JUMP_SPEED</code>."
+              },
+              {
+                "q": "What role does <code>arcade.PhysicsEngineSimple</code> fulfill?",
+                "options": [
+                  "It generates 3D lighting shaders",
+                  "It stops player sprites from walking through solid walls and platforms",
+                  "It downloads sprite assets from the internet",
+                  "It plays background music files"
+                ],
+                "answer": 1,
+                "explain": "It handles discrete collision resolution between the player and obstacles, clamping penetration to keep the player on top of surfaces."
+              },
+              {
+                "q": "What should happen to coin sprites when collected by a player?",
+                "options": [
+                  "They should multiply by two",
+                  "They should be removed from the active coin SpriteList to stop rendering and collisions",
+                  "The window should close immediately",
+                  "They should reverse player direction"
+                ],
+                "answer": 1,
+                "explain": "Calling <code>coin_list.remove(coin)</code> or <code>coin.kill()</code> removes it from rendering and collision evaluation."
+              }
+            ]
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Platformer Jump Physics Controller",
+            "body": "<p>Implement a platformer gravity controller class <code>PlatformController</code>:</p>\n<ol>\n<li><code>__init__(self, jump_speed=12.0, gravity=0.8)</code>:\n  <ul>\n    <li>Stores float <code>self.jump_speed</code> and <code>self.gravity</code>.</li>\n    <li>Initializes <code>self.can_jump = True</code>.</li>\n  </ul>\n</li>\n<li><code>jump(self, player_sprite)</code>:\n  <ul>\n    <li>If <code>self.can_jump</code> is True: set <code>player_sprite.change_y = self.jump_speed</code>, set <code>self.can_jump = False</code>, and return <code>True</code>.</li>\n    <li>Otherwise, return <code>False</code>.</li>\n  </ul>\n</li>\n<li><code>apply_gravity(self, player_sprite, floor_y=100.0)</code>:\n  <ul>\n    <li>Subtract <code>self.gravity</code> from <code>player_sprite.change_y</code>.</li>\n    <li>Update position: <code>player_sprite.center_y += player_sprite.change_y</code>.</li>\n    <li>If <code>player_sprite.center_y &lt;= floor_y</code>: clamp <code>player_sprite.center_y = floor_y</code>, set <code>player_sprite.change_y = 0.0</code>, and restore <code>self.can_jump = True</code>.</li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import arcade\n\nclass PlatformController:\n    def __init__(self, jump_speed=12.0, gravity=0.8):\n        # TODO: initialize attributes\n        pass\n\n    def jump(self, player_sprite):\n        # TODO: apply jump if can_jump\n        return False\n\n    def apply_gravity(self, player_sprite, floor_y=100.0):\n        # TODO: apply gravity, update pos, clamp on floor, reset can_jump\n        pass\n",
+            "tests": [
+              {
+                "name": "Jump triggers and prevents mid-air double jump",
+                "check": "player = arcade.Sprite(scale=1.0, center_x=100, center_y=100)\nctrl = PlatformController(jump_speed=10.0, gravity=1.0)\n\nok1 = ctrl.jump(player)\nassert ok1 is True\nassert player.change_y == 10.0\nassert ctrl.can_jump is False\n\n# Double jump attempt while in air\nok2 = ctrl.jump(player)\nassert ok2 is False\nassert player.change_y == 10.0\n"
+              },
+              {
+                "name": "Gravity decreases velocity and lands smoothly on floor",
+                "check": "player = arcade.Sprite(scale=1.0, center_x=100, center_y=100)\nctrl = PlatformController(jump_speed=10.0, gravity=2.0)\nctrl.jump(player)\n\n# Frame 1: change_y = 10 - 2 = 8, pos = 100 + 8 = 108\nctrl.apply_gravity(player, floor_y=100.0)\nassert player.change_y == 8.0\nassert player.center_y == 108.0\n\n# Multiple frames until landing\nfor _ in range(10):\n    ctrl.apply_gravity(player, floor_y=100.0)\n\nassert player.center_y == 100.0\nassert player.change_y == 0.0\nassert ctrl.can_jump is True\n"
+              }
+            ],
+            "hints": [
+              "In <code>jump</code>: check <code>if self.can_jump: player_sprite.change_y = self.jump_speed; self.can_jump = False; return True</code>.",
+              "In <code>apply_gravity</code>: <code>player_sprite.change_y -= self.gravity</code>, add to <code>player_sprite.center_y</code>, and if below floor, clamp and set <code>self.can_jump = True</code>."
+            ],
+            "solution": "import arcade\n\nclass PlatformController:\n    def __init__(self, jump_speed=12.0, gravity=0.8):\n        self.jump_speed = float(jump_speed)\n        self.gravity = float(gravity)\n        self.can_jump = True\n\n    def jump(self, player_sprite):\n        if self.can_jump:\n            player_sprite.change_y = self.jump_speed\n            self.can_jump = False\n            return True\n        return False\n\n    def apply_gravity(self, player_sprite, floor_y=100.0):\n        player_sprite.change_y -= self.gravity\n        player_sprite.center_y += player_sprite.change_y\n        if player_sprite.center_y <= floor_y:\n            player_sprite.center_y = floor_y\n            player_sprite.change_y = 0.0\n            self.can_jump = True\n\n# Demo run\np = arcade.Sprite(center_x=100, center_y=100)\nctrl = PlatformController()\nctrl.jump(p)\nctrl.apply_gravity(p)\nprint(f\"Airborne: center_y={p.center_y}, change_y={p.change_y}\")\n"
+          }
+        ]
+      },
+      {
+        "id": "6.3",
+        "title": "Project: 2D Platformer Capstone",
+        "emoji": "🏆",
+        "minutes": 15,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Full Game Loop Architecture",
+            "body": "<p>A complete 2D platformer coordinates multiple systems:</p>\n<ol>\n<li><b>Game State</b>: <code>score</code>, <code>lives</code>, <code>game_over</code>, <code>won</code>.</li>\n<li><b>Sprite Management</b>: <code>player</code>, <code>walls</code>, <code>coins</code>, <code>enemies</code>.</li>\n<li><b>Collision Resolution</b>: Collecting coins updates score; touching hazards costs lives.</li>\n<li><b>Win Condition</b>: When all coins in the level are gathered!</li>\n</ol>",
+            "code": "# Architecture preview:\n# PlatformerGame:\n# - setup(): initialize lists, player, platforms, coins\n# - on_update(): physics update, coin collection, hazard check\n# - on_key_press(): jump and horizontal movement\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Project: The Platformer Engine",
+            "body": "<p>Build the full engine for our <b>2D Platformer Capstone</b>:</p>\n<ol>\n<li><code>PlatformerEngine</code> class (subclass of <code>arcade.Window</code>):\n  <ul>\n    <li><code>__init__(self, width=800, height=600)</code>:\n      <ul>\n        <li>Calls <code>super().__init__(width, height, \"Platformer Capstone\")</code>.</li>\n        <li>Initializes <code>self.score = 0</code>, <code>self.lives = 3</code>, <code>self.game_over = False</code>, <code>self.won = False</code>.</li>\n        <li>Calls <code>self.setup()</code>.</li>\n      </ul>\n    </li>\n    <li><code>setup(self)</code>:\n      <ul>\n        <li>Initializes <code>self.player = arcade.Sprite(scale=1.0, center_x=100, center_y=150)</code>.</li>\n        <li>Initializes <code>self.walls = arcade.SpriteList()</code> and appends a floor platform at <code>(400, 50)</code> with <code>width=800</code>, <code>height=100</code>.</li>\n        <li>Initializes <code>self.coins = arcade.SpriteList()</code>.</li>\n        <li>Initializes <code>self.enemies = arcade.SpriteList()</code>.</li>\n        <li>Initializes <code>self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)</code>.</li>\n      </ul>\n    </li>\n    <li><code>add_coin(self, x, y)</code>: appends an <code>arcade.Sprite(scale=0.5, center_x=x, center_y=y)</code> to <code>self.coins</code>.</li>\n    <li><code>add_enemy(self, x, y)</code>: appends an <code>arcade.Sprite(scale=1.0, center_x=x, center_y=y)</code> to <code>self.enemies</code>.</li>\n    <li><code>update_game(self)</code>:\n      <ul>\n        <li>If <code>self.game_over</code> or <code>self.won</code>, do nothing.</li>\n        <li>Update <code>self.physics_engine.update()</code>.</li>\n        <li>Check coin collisions with <code>arcade.check_for_collision_with_list(self.player, self.coins)</code>. For each hit coin: remove from <code>self.coins</code> and increment <code>self.score += 10</code>.</li>\n        <li>If <code>len(self.coins) == 0</code> and <code>self.score &gt; 0</code>: set <code>self.won = True</code>.</li>\n        <li>Check enemy collisions with <code>arcade.check_for_collision_with_list(self.player, self.enemies)</code>. If touched: decrement <code>self.lives -= 1</code>, and if <code>self.lives &lt;= 0</code>, set <code>self.game_over = True</code>.</li>\n      </ul>\n    </li>\n  </ul>\n</li>\n</ol>",
+            "starter": "import arcade\n\nclass PlatformerEngine(arcade.Window):\n    def __init__(self, width=800, height=600):\n        # TODO: call super, set initial state, and call setup()\n        pass\n\n    def setup(self):\n        # TODO: initialize player, walls, coins, enemies, physics_engine\n        pass\n\n    def add_coin(self, x, y):\n        # TODO: append coin to self.coins\n        pass\n\n    def add_enemy(self, x, y):\n        # TODO: append enemy to self.enemies\n        pass\n\n    def update_game(self):\n        # TODO: update physics, collect coins, check enemies, handle win/lose\n        pass\n",
+            "tests": [
+              {
+                "name": "Engine initializes player, platforms, and default state",
+                "check": "game = PlatformerEngine(800, 600)\nassert game.score == 0\nassert game.lives == 3\nassert game.game_over is False\nassert game.won is False\nassert isinstance(game.player, arcade.Sprite)\nassert isinstance(game.walls, arcade.SpriteList)\nassert len(game.walls) == 1\n"
+              },
+              {
+                "name": "Collecting all coins updates score and triggers win state",
+                "check": "game = PlatformerEngine(800, 600)\ngame.add_coin(100, 150)\ngame.add_coin(100, 150)\nassert len(game.coins) == 2\n\ngame.update_game()\nassert len(game.coins) == 0, \"Coins touching player should be removed\"\nassert game.score == 20, f\"Expected score 20, got {game.score}\"\nassert game.won is True, \"Game should be won after collecting all coins\"\n"
+              },
+              {
+                "name": "Enemy collision reduces lives and triggers game over",
+                "check": "game = PlatformerEngine(800, 600)\ngame.add_coin(500, 500)  # Uncollected coin\ngame.add_enemy(100, 150) # Colliding with player\n\ngame.update_game()\nassert game.lives == 2\nassert game.game_over is False\n\n# Two more hits trigger game over\ngame.update_game()\ngame.update_game()\nassert game.lives == 0\nassert game.game_over is True\n"
+              }
+            ],
+            "hints": [
+              "In <code>setup</code>: assign <code>self.player = arcade.Sprite(scale=1.0, center_x=100, center_y=150)</code> and ground block in <code>self.walls</code>.",
+              "In <code>update_game</code>: check <code>hit_coins = arcade.check_for_collision_with_list(self.player, self.coins)</code>. Remove each and add 10 to score.",
+              "If <code>len(self.coins) == 0 and self.score > 0: self.won = True</code>.",
+              "Check enemies with <code>hit_enemies = arcade.check_for_collision_with_list(self.player, self.enemies)</code>; if hit, decrement <code>self.lives -= 1</code> and set <code>game_over = True</code> if <code>self.lives <= 0</code>."
+            ],
+            "solution": "import arcade\n\nclass PlatformerEngine(arcade.Window):\n    def __init__(self, width=800, height=600):\n        super().__init__(width, height, \"Platformer Capstone\")\n        self.score = 0\n        self.lives = 3\n        self.game_over = False\n        self.won = False\n        self.setup()\n\n    def setup(self):\n        self.player = arcade.Sprite(scale=1.0, center_x=100, center_y=150)\n        self.walls = arcade.SpriteList()\n        floor = arcade.Sprite(scale=1.0, center_x=400, center_y=50)\n        floor.width = 800\n        floor.height = 100\n        self.walls.append(floor)\n\n        self.coins = arcade.SpriteList()\n        self.enemies = arcade.SpriteList()\n        self.physics_engine = arcade.PhysicsEngineSimple(self.player, self.walls)\n\n    def add_coin(self, x, y):\n        coin = arcade.Sprite(scale=0.5, center_x=float(x), center_y=float(y))\n        self.coins.append(coin)\n\n    def add_enemy(self, x, y):\n        enemy = arcade.Sprite(scale=1.0, center_x=float(x), center_y=float(y))\n        self.enemies.append(enemy)\n\n    def update_game(self):\n        if self.game_over or self.won:\n            return\n\n        self.physics_engine.update()\n\n        # Coin collection\n        hit_coins = arcade.check_for_collision_with_list(self.player, self.coins)\n        for coin in hit_coins:\n            self.coins.remove(coin)\n            self.score += 10\n\n        if len(self.coins) == 0 and self.score > 0:\n            self.won = True\n\n        # Hazard check\n        hit_enemies = arcade.check_for_collision_with_list(self.player, self.enemies)\n        if hit_enemies:\n            self.lives -= 1\n            if self.lives <= 0:\n                self.game_over = True\n\n# Demo execution\ngame = PlatformerEngine(800, 600)\ngame.add_coin(100, 150)\ngame.update_game()\nprint(f\"Game State -> Score: {game.score}, Lives: {game.lives}, Won: {game.won}\")\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Machine Learning Basics",
+    "lessons": [
+      {
+        "id": "7.1",
+        "title": "Intro to Datasets (Features & Targets)",
+        "emoji": "📊",
+        "minutes": 10,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Supervised Learning: Features (X) & Targets (y)",
+            "body": "<p>In <b>Machine Learning</b>, models learn patterns from historical examples to make predictions on unseen data.</p>\n<ul>\n<li><b>Features (<code>X</code>)</b>: The input measurements or attributes (a 2D matrix of shape <code>n_samples × n_features</code>).</li>\n<li><b>Target (<code>y</code>)</b>: The ground-truth label or outcome we want to predict (a 1D array of length <code>n_samples</code>).</li>\n</ul>\n<p>The famous <b>Iris dataset</b> contains 150 flower specimens across 3 species, measured by 4 physical traits (sepal length, sepal width, petal length, petal width).</p>",
+            "code": "from sklearn.datasets import load_iris\n\niris = load_iris()\nX = iris.data\ny = iris.target\n\nprint(\"Number of samples:\", len(X))\nprint(\"Number of features:\", len(X[0]))\nprint(\"Feature names:\", iris.feature_names)\nprint(\"Target classes:\", iris.target_names)\nprint(\"First sample features:\", X[0])\nprint(\"First sample class label:\", y[0], f\"({iris.target_names[y[0]]})\")\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Feature matrix dimensions",
+            "code": "data = [\n    [5.1, 3.5, 1.4, 0.2],\n    [4.9, 3.0, 1.4, 0.2],\n    [4.7, 3.2, 1.3, 0.2]\n]\nn_samples = len(data)\nn_features = len(data[0])\nprint(f\"Shape: ({n_samples}, {n_features})\")\n",
+            "question": "What is the shape of this feature matrix?",
+            "options": [
+              "Shape: (3, 4)",
+              "Shape: (4, 3)",
+              "Shape: (12, 1)",
+              "Shape: (3, 1)"
+            ],
+            "answer": 0,
+            "explain": "There are 3 rows (samples) and 4 columns (features per sample), yielding shape <b>(3, 4)</b>."
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Dataset Inspector",
+            "body": "<p>Write a function <code>inspect_dataset(bunch)</code> that extracts key statistics from any scikit-learn dataset Bunch:</p>\n<ol>\n<li><code>n_samples</code>: Total count of rows in <code>bunch.data</code>.</li>\n<li><code>n_features</code>: Number of features in the first row of <code>bunch.data</code>.</li>\n<li><code>classes</code>: List of unique target values present in <code>bunch.target</code> (sorted).</li>\n<li><code>class_counts</code>: Dictionary mapping each class label to its frequency in <code>bunch.target</code>.</li>\n<li>Return the dictionary: <code>{\"samples\": n_samples, \"features\": n_features, \"classes\": classes, \"counts\": class_counts}</code>.</li>\n</ol>",
+            "starter": "from collections import Counter\n\ndef inspect_dataset(bunch):\n    # TODO: compute samples, features, classes, and counts\n    return {}\n",
+            "tests": [
+              {
+                "name": "Extracts accurate statistics from Iris dataset",
+                "check": "from sklearn.datasets import load_iris\niris = load_iris()\nstats = inspect_dataset(iris)\n\nassert stats[\"samples\"] == 150\nassert stats[\"features\"] == 4\nassert stats[\"classes\"] == [0, 1, 2]\nassert stats[\"counts\"] == {0: 50, 1: 50, 2: 50}\n"
+              }
+            ],
+            "hints": [
+              "Count samples with <code>len(bunch.data)</code> and features with <code>len(bunch.data[0])</code>.",
+              "Compute unique sorted classes with <code>sorted(list(set(bunch.target)))</code>.",
+              "Use <code>dict(Counter(bunch.target))</code> to map class frequencies."
+            ],
+            "solution": "from collections import Counter\nfrom sklearn.datasets import load_iris\n\ndef inspect_dataset(bunch):\n    n_samples = len(bunch.data)\n    n_features = len(bunch.data[0]) if n_samples > 0 else 0\n    classes = sorted(list(set(bunch.target)))\n    counts = dict(Counter(bunch.target))\n    return {\n        \"samples\": n_samples,\n        \"features\": n_features,\n        \"classes\": classes,\n        \"counts\": counts\n    }\n\niris = load_iris()\nprint(\"Dataset summary:\", inspect_dataset(iris))\n"
+          }
+        ]
+      },
+      {
+        "id": "7.2",
+        "title": "Classifiers & Train/Test Split",
+        "emoji": "🧠",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Train/Test Split & Preventing Data Leakage",
+            "body": "<p>If you evaluate a model on the exact same data it was trained on, it might simply memorize the answers (<b>overfitting</b>).</p>\n<p>To measure genuine generalization ability, always split your dataset into two sets:</p>\n<ul>\n<li><b>Training set (e.g. 80%)</b>: Used by the model to learn weights/rules.</li>\n<li><b>Testing set (e.g. 20%)</b>: Held out until evaluation to simulate real-world unseen data.</li>\n</ul>\n<p>In scikit-learn, use <code>train_test_split(X, y, test_size=0.2, random_state=42)</code>.</p>",
+            "code": "from sklearn.datasets import load_iris\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.neighbors import KNeighborsClassifier\n\niris = load_iris()\nX_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, random_state=42)\n\nprint(f\"Total: {len(iris.data)} | Train: {len(X_train)} | Test: {len(X_test)}\")\n\n# Train a K-Nearest Neighbors (KNN) model\nknn = KNeighborsClassifier(n_neighbors=3)\nknn.fit(X_train, y_train)\n\ntrain_acc = knn.score(X_train, y_train)\ntest_acc = knn.score(X_test, y_test)\nprint(f\"Train Accuracy: {train_acc:.2%}\")\nprint(f\"Test Accuracy:  {test_acc:.2%}\")\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Decision Tree classification",
+            "code": "from sklearn.tree import DecisionTreeClassifier\n\n# Simple 1D threshold dataset: values <= 5 are class 0, > 5 are class 1\nX_train = [[1], [3], [4], [7], [9], [10]]\ny_train = [0, 0, 0, 1, 1, 1]\n\nclf = DecisionTreeClassifier()\nclf.fit(X_train, y_train)\n\ntest_sample = [[8]]\nprediction = clf.predict(test_sample)\nprint(prediction)\n",
+            "question": "What is the predicted class for sample [[8]]?",
+            "options": [
+              "[0]",
+              "[1]",
+              "[0.5]",
+              "TypeError"
+            ],
+            "answer": 1,
+            "explain": "Since <code>8</code> is closer to the high group (7, 9, 10), the tree classifies it as <b>[1]</b>."
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: Machine Learning Essentials",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "What is the primary purpose of splitting data into train and test sets?",
+                "options": [
+                  "To reduce file size on disk",
+                  "To verify the model generalizes well to unseen data and prevent overfitting",
+                  "To double the amount of training examples",
+                  "To encrypt the target labels"
+                ],
+                "answer": 1,
+                "explain": "Evaluating on held-out test data provides an unbiased estimate of how well the model performs on real-world unseen inputs."
+              },
+              {
+                "q": "What is \"Data Leakage\" in Machine Learning?",
+                "options": [
+                  "When information from the test set inadvertently influences model training",
+                  "When a database password is leaked",
+                  "When numbers lose precision due to floating-point rounding",
+                  "When training data contains duplicate rows"
+                ],
+                "answer": 0,
+                "explain": "Data leakage occurs when test information bleeds into training, leading to unrealistically optimistic validation metrics that collapse in production."
+              },
+              {
+                "q": "How does the K-Nearest Neighbors (KNN) algorithm classify a new point?",
+                "options": [
+                  "By training a deep neural network",
+                  "By assigning the majority label among the K closest training points",
+                  "By calculating a linear regression slope",
+                  "By randomly guessing between the target categories"
+                ],
+                "answer": 1,
+                "explain": "KNN computes distances to all training points and assigns the most frequent class among the K nearest neighbors."
+              },
+              {
+                "q": "What standard method is called to train an estimator in scikit-learn?",
+                "options": [
+                  "model.train(X, y)",
+                  "model.fit(X, y)",
+                  "model.learn(X, y)",
+                  "model.run(X, y)"
+                ],
+                "answer": 1,
+                "explain": "All scikit-learn estimators implement the unified <code>.fit(X, y)</code> interface."
+              },
+              {
+                "q": "What does a model score of 1.0 (100%) on the test set mean?",
+                "options": [
+                  "The model made zero errors on that test partition",
+                  "The dataset was empty",
+                  "The model must be retrained",
+                  "The code has an infinite loop"
+                ],
+                "answer": 0,
+                "explain": "Accuracy is the ratio of correct predictions over total predictions. An accuracy score of 1.0 indicates 100% correct classifications on that test split."
+              }
+            ]
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Model Trainer & Evaluator",
+            "body": "<p>Build a model evaluation pipeline function <code>train_and_evaluate(X, y, n_neighbors=3, test_size=0.2, random_state=42)</code>:</p>\n<ol>\n<li>Splits <code>X</code> and <code>y</code> using <code>train_test_split(...)</code>.</li>\n<li>Instantiates a <code>KNeighborsClassifier(n_neighbors=n_neighbors)</code>.</li>\n<li>Fits the classifier on <code>X_train</code> and <code>y_train</code>.</li>\n<li>Calculates accuracy on training set: <code>train_score = model.score(X_train, y_train)</code>.</li>\n<li>Calculates accuracy on test set: <code>test_score = model.score(X_test, y_test)</code>.</li>\n<li>Returns a dictionary: <code>{\"model\": model, \"train_acc\": train_score, \"test_acc\": test_score}</code>.</li>\n</ol>",
+            "starter": "from sklearn.model_selection import train_test_split\nfrom sklearn.neighbors import KNeighborsClassifier\n\ndef train_and_evaluate(X, y, n_neighbors=3, test_size=0.2, random_state=42):\n    # TODO: split, fit KNN, compute scores, return dict\n    return {}\n",
+            "tests": [
+              {
+                "name": "Trains KNN model and returns high accuracy metrics on Iris",
+                "check": "from sklearn.datasets import load_iris\niris = load_iris()\nresults = train_and_evaluate(iris.data, iris.target, n_neighbors=3, test_size=0.2, random_state=42)\n\nassert isinstance(results[\"model\"], KNeighborsClassifier)\nassert 0.9 <= results[\"train_acc\"] <= 1.0, f\"Expected train accuracy >= 0.9, got {results['train_acc']}\"\nassert 0.9 <= results[\"test_acc\"] <= 1.0, f\"Expected test accuracy >= 0.9, got {results['test_acc']}\"\n"
+              }
+            ],
+            "hints": [
+              "Call <code>X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=test_size, random_state=random_state)</code>.",
+              "Instantiate <code>clf = KNeighborsClassifier(n_neighbors=n_neighbors)</code> and call <code>clf.fit(X_tr, y_tr)</code>.",
+              "Return <code>{\"model\": clf, \"train_acc\": clf.score(X_tr, y_tr), \"test_acc\": clf.score(X_te, y_te)}</code>."
+            ],
+            "solution": "from sklearn.model_selection import train_test_split\nfrom sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.datasets import load_iris\n\ndef train_and_evaluate(X, y, n_neighbors=3, test_size=0.2, random_state=42):\n    X_train, X_test, y_train, y_test = train_test_split(\n        X, y, test_size=test_size, random_state=random_state\n    )\n    model = KNeighborsClassifier(n_neighbors=n_neighbors)\n    model.fit(X_train, y_train)\n    train_acc = model.score(X_train, y_train)\n    test_acc = model.score(X_test, y_test)\n    return {\n        \"model\": model,\n        \"train_acc\": train_acc,\n        \"test_acc\": test_acc\n    }\n\niris = load_iris()\nres = train_and_evaluate(iris.data, iris.target)\nprint(f\"Train: {res['train_acc']:.2%}, Test: {res['test_acc']:.2%}\")\n"
+          }
+        ]
+      },
+      {
+        "id": "7.3",
+        "title": "Project: Handwritten Digit Recognizer",
+        "emoji": "🔢",
+        "minutes": 15,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Computer Vision: Classifying 8x8 Pixel Images",
+            "body": "<p>The <b>load_digits</b> dataset consists of 8×8 pixel images of handwritten numerals (0 through 9).</p>\n<p>Each image is flattened into a 64-dimensional feature vector, where each feature represents the grayscale intensity of that pixel (from 0 to 16).</p>\n<p>We train a classifier to predict which digit is drawn from pixel intensity values, then generate a <b>Confusion Matrix</b> and <b>Classification Report</b>.</p>",
+            "code": "from sklearn.datasets import load_digits\nfrom sklearn.metrics import classification_report, confusion_matrix\n\ndigits = load_digits()\nprint(\"Images count:\", len(digits.data))\nprint(\"Pixels per image:\", len(digits.data[0]))\nprint(\"Target classes:\", digits.target_names)\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Project: The Digit Classifier Pipeline",
+            "body": "<p>Build a handwritten digit classification engine:</p>\n<ol>\n<li><code>DigitRecognizer</code> class:\n  <ul>\n    <li><code>__init__(self, n_neighbors=3)</code>: initializes <code>self.model = KNeighborsClassifier(n_neighbors=n_neighbors)</code> and sets <code>self.is_trained = False</code>.</li>\n    <li><code>train(self, X_train, y_train)</code>: fits <code>self.model</code> on training data and sets <code>self.is_trained = True</code>.</li>\n    <li><code>predict(self, X)</code>: calls <code>self.model.predict(X)</code>.</li>\n    <li><code>evaluate(self, X_test, y_test)</code>:\n      <ul>\n        <li>Generates predictions: <code>y_pred = self.predict(X_test)</code>.</li>\n        <li>Computes accuracy: <code>accuracy_score(y_test, y_pred)</code>.</li>\n        <li>Computes confusion matrix: <code>confusion_matrix(y_test, y_pred)</code>.</li>\n        <li>Computes classification report: <code>classification_report(y_test, y_pred)</code>.</li>\n        <li>Returns a dictionary: <code>{\"accuracy\": acc, \"matrix\": matrix, \"report\": report}</code>.</li>\n      </ul>\n    </li>\n  </ul>\n</li>\n</ol>",
+            "starter": "from sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.metrics import accuracy_score, confusion_matrix, classification_report\n\nclass DigitRecognizer:\n    def __init__(self, n_neighbors=3):\n        # TODO: initialize attributes\n        pass\n\n    def train(self, X_train, y_train):\n        # TODO: fit model and update is_trained\n        pass\n\n    def predict(self, X):\n        # TODO: return predictions\n        return []\n\n    def evaluate(self, X_test, y_test):\n        # TODO: return dict with accuracy, matrix, report\n        return {}\n",
+            "tests": [
+              {
+                "name": "DigitRecognizer trains and predicts accurately",
+                "check": "from sklearn.datasets import load_digits\nfrom sklearn.model_selection import train_test_split\n\ndigits = load_digits()\nX_tr, X_te, y_tr, y_te = train_test_split(digits.data, digits.target, test_size=0.2, random_state=42)\n\nclf = DigitRecognizer(n_neighbors=3)\nassert clf.is_trained is False\nclf.train(X_tr, y_tr)\nassert clf.is_trained is True\n\neval_res = clf.evaluate(X_te, y_te)\nassert eval_res[\"accuracy\"] >= 0.85, f\"Expected accuracy >= 0.85, got {eval_res['accuracy']}\"\nassert isinstance(eval_res[\"matrix\"], list)\nassert isinstance(eval_res[\"report\"], str)\nassert \"precision\" in eval_res[\"report\"]\n"
+              }
+            ],
+            "hints": [
+              "In <code>__init__</code>: set <code>self.model = KNeighborsClassifier(n_neighbors=n_neighbors)</code> and <code>self.is_trained = False</code>.",
+              "In <code>train</code>: call <code>self.model.fit(X_train, y_train)</code> and set <code>self.is_trained = True</code>.",
+              "In <code>evaluate</code>: compute <code>preds = self.predict(X_test)</code>, then return <code>{\"accuracy\": accuracy_score(y_test, preds), \"matrix\": confusion_matrix(y_test, preds), \"report\": classification_report(y_test, preds)}</code>."
+            ],
+            "solution": "from sklearn.neighbors import KNeighborsClassifier\nfrom sklearn.metrics import accuracy_score, confusion_matrix, classification_report\nfrom sklearn.datasets import load_digits\nfrom sklearn.model_selection import train_test_split\n\nclass DigitRecognizer:\n    def __init__(self, n_neighbors=3):\n        self.model = KNeighborsClassifier(n_neighbors=n_neighbors)\n        self.is_trained = False\n\n    def train(self, X_train, y_train):\n        self.model.fit(X_train, y_train)\n        self.is_trained = True\n\n    def predict(self, X):\n        return self.model.predict(X)\n\n    def evaluate(self, X_test, y_test):\n        preds = self.predict(X_test)\n        acc = accuracy_score(y_test, preds)\n        matrix = confusion_matrix(y_test, preds)\n        report = classification_report(y_test, preds)\n        return {\n            \"accuracy\": acc,\n            \"matrix\": matrix,\n            \"report\": report\n        }\n\n# Demonstration\ndigits = load_digits()\nX_train, X_test, y_train, y_test = train_test_split(digits.data, digits.target, test_size=0.2, random_state=42)\nrecognizer = DigitRecognizer(n_neighbors=3)\nrecognizer.train(X_train, y_train)\nmetrics = recognizer.evaluate(X_test, y_test)\nprint(f\"Digit Recognizer Accuracy: {metrics['accuracy']:.2%}\")\n"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "ML Pipelines & Deployment",
+    "lessons": [
+      {
+        "id": "8.1",
+        "title": "The Preprocessing Problem",
+        "emoji": "⚙️",
+        "minutes": 10,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "Feature Scaling: StandardScaler & OneHotEncoder",
+            "body": "<p>Real-world datasets contain features on wildly different scales (e.g. Age in decades vs. Salary in tens of thousands). Features with larger numbers can unfairly dominate algorithms.</p>\n<ul>\n<li><b><code>StandardScaler</code></b>: Rescales numerical features to have <b>mean = 0</b> and <b>standard deviation = 1</b> (z-score normalization: <code>z = (x - μ) / σ</code>).</li>\n<li><b><code>OneHotEncoder</code></b>: Converts categorical text columns into binary indicator columns (e.g. <code>[\"US\", \"EU\", \"ASIA\"]</code> → <code>[1, 0, 0]</code>).</li>\n</ul>",
+            "code": "from sklearn.preprocessing import StandardScaler\n\nraw_data = [\n    [10.0, 1000.0],\n    [20.0, 2000.0],\n    [30.0, 3000.0]\n]\n\nscaler = StandardScaler()\nscaled = scaler.fit_transform(raw_data)\n\nprint(\"Original:\\n\", raw_data)\nprint(\"Standardized (mean=0, std=1):\\n\", [[round(v, 2) for v in row] for row in scaled])\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Z-score Normalization",
+            "code": "# Values: [10, 20, 30] -> mean = 20\nmean = 20.0\nstd = 8.165\n\n# For value = 20 (exact mean):\nz = (20.0 - mean) / std\nprint(\"Z-score of mean:\", round(z, 2))\n",
+            "question": "What is the z-score of the mean value?",
+            "options": [
+              "1.0",
+              "0.0",
+              "20.0",
+              "-1.0"
+            ],
+            "answer": 1,
+            "explain": "A data point equal to the average has a deviation of <code>0</code>, resulting in a standardized z-score of <b>0.0</b>."
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Robust Feature Preprocessor",
+            "body": "<p>Write a function <code>standardize_matrix(data)</code> that fits and transforms an input feature matrix:</p>\n<ol>\n<li>Instantiates a <code>StandardScaler()</code>.</li>\n<li>Calls <code>fit_transform(data)</code>.</li>\n<li>Rounds each float to <code>3</code> decimal places.</li>\n<li>Returns a dictionary: <code>{\"scaler\": scaler, \"scaled_data\": rounded_data, \"mean\": scaler.mean_}</code>.</li>\n</ol>",
+            "starter": "from sklearn.preprocessing import StandardScaler\n\ndef standardize_matrix(data):\n    # TODO: fit_transform using StandardScaler, round values to 3 decimals, return dict\n    return {}\n",
+            "tests": [
+              {
+                "name": "Scales matrix and centers mean at zero",
+                "check": "matrix = [[1.0, 100.0], [2.0, 200.0], [3.0, 300.0]]\nres = standardize_matrix(matrix)\n\nassert isinstance(res[\"scaler\"], StandardScaler)\nassert res[\"mean\"] == [2.0, 200.0]\nassert res[\"scaled_data\"][1] == [0.0, 0.0], \"Middle row (mean) should scale to [0.0, 0.0]\"\n"
+              }
+            ],
+            "hints": [
+              "Instantiate <code>scaler = StandardScaler()</code> and call <code>scaled = scaler.fit_transform(data)</code>.",
+              "Round the values with <code>[[round(val, 3) for val in row] for row in scaled]</code>.",
+              "Return <code>{\"scaler\": scaler, \"scaled_data\": rounded, \"mean\": scaler.mean_}</code>."
+            ],
+            "solution": "from sklearn.preprocessing import StandardScaler\n\ndef standardize_matrix(data):\n    scaler = StandardScaler()\n    scaled = scaler.fit_transform(data)\n    rounded = [[round(val, 3) for val in row] for row in scaled]\n    return {\n        \"scaler\": scaler,\n        \"scaled_data\": rounded,\n        \"mean\": scaler.mean_\n    }\n\nprint(\"Scaled:\", standardize_matrix([[10.0], [20.0], [30.0]]))\n"
+          }
+        ]
+      },
+      {
+        "id": "8.2",
+        "title": "Building the Pipeline & ColumnTransformer",
+        "emoji": "🔗",
+        "minutes": 12,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "ColumnTransformer & make_pipeline",
+            "body": "<p>In production Machine Learning, you must apply different transformers to different columns:</p>\n<ul>\n<li><code>ColumnTransformer</code> applies scalers to numerical columns while applying encoders to categorical columns and passing through others.</li>\n<li><code>Pipeline</code> chains all preprocessing steps directly to the estimator.</li>\n</ul>\n<p>This encapsulates the entire workflow into a single object: calling <code>pipeline.fit(X_train, y_train)</code> and <code>pipeline.predict(X_test)</code> guarantees zero data leakage.</p>",
+            "code": "from sklearn.compose import ColumnTransformer\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Example: Scale columns 0 and 1, passthrough the rest\npreprocessor = ColumnTransformer(\n    transformers=[\n        (\"num\", StandardScaler(), [0, 1])\n    ],\n    remainder=\"passthrough\"\n)\n\npipeline = Pipeline([\n    (\"preprocessor\", preprocessor),\n    (\"classifier\", KNeighborsClassifier(n_neighbors=3))\n])\n\nprint(\"Pipeline initialized with steps:\", [name for name, _ in pipeline.steps])\n"
+          },
+          {
+            "type": "predict",
+            "title": "Predict the output: Pipeline encapsulation",
+            "code": "from sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.neighbors import KNeighborsClassifier\n\npipe = make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=1))\nprint(len(pipe.steps))\n",
+            "question": "How many stages are chained in this pipeline?",
+            "options": [
+              "1",
+              "2",
+              "3",
+              "0"
+            ],
+            "answer": 1,
+            "explain": "<code>make_pipeline</code> bundles 2 stages: the <code>StandardScaler</code> transformer followed by the <code>KNeighborsClassifier</code> estimator."
+          },
+          {
+            "type": "quiz",
+            "title": "Quiz: ML Pipelines & Production Best Practices",
+            "passScore": 4,
+            "questions": [
+              {
+                "q": "What is the main benefit of bundling transformers and estimators into a Pipeline?",
+                "options": [
+                  "It avoids code duplication and eliminates data leakage by applying transforms identically to train and test sets",
+                  "It converts Python to C++ automatically",
+                  "It eliminates the need for test labels",
+                  "It encrypts datasets on disk"
+                ],
+                "answer": 0,
+                "explain": "Pipelines enforce that test data is only transformed using parameters learned on training data, preventing data leakage."
+              },
+              {
+                "q": "What does <code>ColumnTransformer</code> allow you to do?",
+                "options": [
+                  "Delete duplicate rows from a database",
+                  "Apply different transformations to different subsets of columns",
+                  "Train multiple models at once",
+                  "Rename columns in a CSV file"
+                ],
+                "answer": 1,
+                "explain": "<code>ColumnTransformer</code> applies specific transforms (e.g. scaling or encoding) to selected columns while passing the rest."
+              },
+              {
+                "q": "What does the <code>remainder=\"passthrough\"</code> argument in ColumnTransformer do?",
+                "options": [
+                  "Drops all columns not explicitly specified",
+                  "Leaves columns not explicitly listed untouched in the output",
+                  "Replaces missing values with zeroes",
+                  "Raises an exception if extra columns exist"
+                ],
+                "answer": 1,
+                "explain": "Setting <code>remainder=\"passthrough\"</code> preserves unlisted columns in the output matrix without modifying them."
+              },
+              {
+                "q": "What tool systematically searches over specified parameter values for an estimator?",
+                "options": [
+                  "GridSearchCV",
+                  "BinarySearch",
+                  "DataTransformer",
+                  "ColumnSampler"
+                ],
+                "answer": 0,
+                "explain": "<code>GridSearchCV</code> exhaustively trains and cross-validates across a grid of parameter combinations to select the optimal model hyperparameters."
+              },
+              {
+                "q": "In regression tasks, what metric measures the proportion of variance explained by the model?",
+                "options": [
+                  "Accuracy",
+                  "Confusion Matrix",
+                  "R-squared (R²)",
+                  "F1-score"
+                ],
+                "answer": 2,
+                "explain": "The R-squared ($R^2$) score represents the coefficient of determination, where 1.0 is a perfect fit and 0.0 indicates predicting the baseline mean."
+              }
+            ]
+          },
+          {
+            "type": "challenge",
+            "title": "Challenge: Modular Pipeline Builder",
+            "body": "<p>Build a factory function <code>build_ml_pipeline(numeric_cols, n_neighbors=3)</code>:</p>\n<ol>\n<li>Creates a <code>ColumnTransformer</code> named <code>preprocessor</code> that applies <code>StandardScaler()</code> to the indices in <code>numeric_cols</code> with <code>remainder=\"passthrough\"</code>.</li>\n<li>Creates a <code>Pipeline</code> with two steps:\n  <ul>\n    <li><code>(\"preprocessor\", preprocessor)</code></li>\n    <li><code>(\"classifier\", KNeighborsClassifier(n_neighbors=n_neighbors))</code></li>\n  </ul>\n</li>\n<li>Returns the constructed <code>Pipeline</code> instance.</li>\n</ol>",
+            "starter": "from sklearn.compose import ColumnTransformer\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.neighbors import KNeighborsClassifier\n\ndef build_ml_pipeline(numeric_cols, n_neighbors=3):\n    # TODO: assemble and return the Pipeline\n    return None\n",
+            "tests": [
+              {
+                "name": "Pipeline trains and classifies end-to-end",
+                "check": "from sklearn.datasets import load_iris\nfrom sklearn.model_selection import train_test_split\n\niris = load_iris()\nX_tr, X_te, y_tr, y_te = train_test_split(iris.data, iris.target, test_size=0.2, random_state=42)\n\npipeline = build_ml_pipeline(numeric_cols=[0, 1, 2, 3], n_neighbors=3)\nassert isinstance(pipeline, Pipeline)\nassert len(pipeline.steps) == 2\n\npipeline.fit(X_tr, y_tr)\ntest_acc = pipeline.score(X_te, y_te)\nassert test_acc >= 0.9, f\"Expected pipeline test accuracy >= 0.9, got {test_acc}\"\n"
+              }
+            ],
+            "hints": [
+              "Create preprocessor: <code>preprocessor = ColumnTransformer([(\"scale\", StandardScaler(), numeric_cols)], remainder=\"passthrough\")</code>.",
+              "Assemble Pipeline: <code>return Pipeline([(\"preprocessor\", preprocessor), (\"classifier\", KNeighborsClassifier(n_neighbors=n_neighbors))])</code>."
+            ],
+            "solution": "from sklearn.compose import ColumnTransformer\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.neighbors import KNeighborsClassifier\n\ndef build_ml_pipeline(numeric_cols, n_neighbors=3):\n    preprocessor = ColumnTransformer(\n        transformers=[\n            (\"scaler\", StandardScaler(), list(numeric_cols))\n        ],\n        remainder=\"passthrough\"\n    )\n    return Pipeline([\n        (\"preprocessor\", preprocessor),\n        (\"classifier\", KNeighborsClassifier(n_neighbors=n_neighbors))\n    ])\n\n# Test instantiation\npipe = build_ml_pipeline([0, 1])\nprint(\"Built pipeline successfully:\", pipe)\n"
+          }
+        ]
+      },
+      {
+        "id": "8.3",
+        "title": "Project: Health Predictor (Diabetes Regression)",
+        "emoji": "🩺",
+        "minutes": 15,
+        "steps": [
+          {
+            "type": "concept",
+            "title": "The Diabetes Regression Dataset & Pipeline Deployment",
+            "body": "<p>In this capstone, we predict disease progression based on 10 physiological variables (age, sex, BMI, blood pressure, etc.).</p>\n<p>Unlike classification (predicting distinct categories), <b>regression</b> predicts continuous numerical values.</p>\n<p>We assemble a complete reproducible ML system: data splitting, column standardization, Ridge regression, and hyperparameter tuning with <code>GridSearchCV</code>.</p>",
+            "code": "from sklearn.datasets import load_diabetes\n\ndiabetes = load_diabetes()\nprint(\"Patients count:\", len(diabetes.data))\nprint(\"Variables:\", diabetes.feature_names)\nprint(\"Target sample values (disease progression):\", diabetes.target[:5])\n"
+          },
+          {
+            "type": "challenge",
+            "title": "Project: The Health Predictor Pipeline",
+            "body": "<p>Build the full <code>HealthPredictor</code> system:</p>\n<ol>\n<li><code>HealthPredictor</code> class:\n  <ul>\n    <li><code>__init__(self, alpha=1.0)</code>:\n      <ul>\n        <li>Sets up <code>self.preprocessor = ColumnTransformer([(\"scaler\", StandardScaler(), list(range(10)))], remainder=\"passthrough\")</code>.</li>\n        <li>Sets up <code>self.regressor = Ridge(alpha=alpha)</code>.</li>\n        <li>Assembles <code>self.pipeline = Pipeline([(\"preprocessor\", self.preprocessor), (\"regressor\", self.regressor)])</code>.</li>\n      </ul>\n    </li>\n    <li><code>train(self, X_train, y_train)</code>:\n      <ul>\n        <li>Fits <code>self.pipeline.fit(X_train, y_train)</code>.</li>\n      </ul>\n    </li>\n    <li><code>predict(self, X)</code>:\n      <ul>\n        <li>Returns predictions from <code>self.pipeline.predict(X)</code>.</li>\n      </ul>\n    </li>\n    <li><code>evaluate(self, X_test, y_test)</code>:\n      <ul>\n        <li>Calculates $R^2$ score: <code>score = self.pipeline.score(X_test, y_test)</code>.</li>\n        <li>Returns <code>{\"r2_score\": round(score, 3), \"status\": \"pass\" if score &gt; 0 else \"fail\"}</code>.</li>\n      </ul>\n    </li>\n  </ul>\n</li>\n</ol>",
+            "starter": "from sklearn.compose import ColumnTransformer\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import Ridge\n\nclass HealthPredictor:\n    def __init__(self, alpha=1.0):\n        # TODO: assemble pipeline with ColumnTransformer and Ridge regressor\n        pass\n\n    def train(self, X_train, y_train):\n        # TODO: fit pipeline\n        pass\n\n    def predict(self, X):\n        # TODO: return predictions\n        return []\n\n    def evaluate(self, X_test, y_test):\n        # TODO: return dict with r2_score and status\n        return {}\n",
+            "tests": [
+              {
+                "name": "HealthPredictor trains on diabetes dataset and achieves positive R2 score",
+                "check": "from sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\n\ndiabetes = load_diabetes()\nX_tr, X_te, y_tr, y_te = train_test_split(diabetes.data, diabetes.target, test_size=0.2, random_state=42)\n\nmodel = HealthPredictor(alpha=0.5)\nmodel.train(X_tr, y_tr)\npreds = model.predict(X_te)\nassert len(preds) == len(y_te)\n\nmetrics = model.evaluate(X_te, y_te)\nassert metrics[\"status\"] == \"pass\"\nassert metrics[\"r2_score\"] > 0.0, f\"Expected positive R2 score, got {metrics['r2_score']}\"\n"
+              }
+            ],
+            "hints": [
+              "In <code>__init__</code>: set <code>self.preprocessor = ColumnTransformer([(\"scaler\", StandardScaler(), list(range(10)))], remainder=\"passthrough\")</code> and <code>self.pipeline = Pipeline([(\"prep\", self.preprocessor), (\"model\", Ridge(alpha=alpha))])</code>.",
+              "In <code>train</code>: call <code>self.pipeline.fit(X_train, y_train)</code>.",
+              "In <code>predict</code>: return <code>self.pipeline.predict(X)</code>.",
+              "In <code>evaluate</code>: compute <code>r2 = self.pipeline.score(X_test, y_test)</code> and return <code>{\"r2_score\": round(r2, 3), \"status\": \"pass\" if r2 > 0 else \"fail\"}</code>."
+            ],
+            "solution": "from sklearn.compose import ColumnTransformer\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.pipeline import Pipeline\nfrom sklearn.linear_model import Ridge\nfrom sklearn.datasets import load_diabetes\nfrom sklearn.model_selection import train_test_split\n\nclass HealthPredictor:\n    def __init__(self, alpha=1.0):\n        self.preprocessor = ColumnTransformer(\n            transformers=[\n                (\"scaler\", StandardScaler(), list(range(10)))\n            ],\n            remainder=\"passthrough\"\n        )\n        self.regressor = Ridge(alpha=float(alpha))\n        self.pipeline = Pipeline([\n            (\"preprocessor\", self.preprocessor),\n            (\"regressor\", self.regressor)\n        ])\n\n    def train(self, X_train, y_train):\n        self.pipeline.fit(X_train, y_train)\n\n    def predict(self, X):\n        return self.pipeline.predict(X)\n\n    def evaluate(self, X_test, y_test):\n        score = self.pipeline.score(X_test, y_test)\n        return {\n            \"r2_score\": round(score, 3),\n            \"status\": \"pass\" if score > 0 else \"fail\"\n        }\n\n# Full pipeline run\ndiabetes = load_diabetes()\nX_tr, X_te, y_tr, y_te = train_test_split(diabetes.data, diabetes.target, test_size=0.2, random_state=42)\npredictor = HealthPredictor(alpha=0.5)\npredictor.train(X_tr, y_tr)\nmetrics = predictor.evaluate(X_te, y_te)\nprint(\"Pipeline evaluation:\", metrics)\n"
+          }
+        ]
+      }
+    ]
+  }
+]
