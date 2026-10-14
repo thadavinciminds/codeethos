@@ -15,10 +15,37 @@ function headers(key) {
 
 export async function listModels() {
   const { base, key } = cfg();
-  const res = await fetch(`${base}/models`, { headers: headers(key) });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  return (data.data || []).map((m) => m.id);
+  const cleanBase = base.replace(/\/+$/, '');
+  const urlsToTry = [
+    `${cleanBase}/models`,
+    cleanBase.endsWith('/v1') ? `${cleanBase.slice(0, -3)}/models` : `${cleanBase}/v1/models`,
+    `${cleanBase}/props`,
+    `${cleanBase}/api/tags`
+  ];
+
+  let lastErr = null;
+  for (const u of urlsToTry) {
+    try {
+      const res = await fetch(u, { headers: headers(key) });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (Array.isArray(data.data) && data.data.length) {
+        return data.data.map((m) => m.id || m.name).filter(Boolean);
+      }
+      if (Array.isArray(data.models) && data.models.length) {
+        return data.models.map((m) => m.name || m.model).filter(Boolean);
+      }
+      if (Array.isArray(data) && data.length) {
+        return data.map((m) => (typeof m === 'string' ? m : m.id || m.name)).filter(Boolean);
+      }
+      if (data.default_generation_settings?.model) {
+        return [data.default_generation_settings.model];
+      }
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr || new Error('Could not fetch models. Check server URL and CORS.');
 }
 
 /**
