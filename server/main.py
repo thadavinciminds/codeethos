@@ -1,4 +1,5 @@
 import json
+import os
 from contextlib import asynccontextmanager
 from datetime import datetime
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -24,23 +25,22 @@ from .schemas import (
 async def lifespan(app: FastAPI):
     # Initialize database tables and migrations
     init_db()
-    # Seed default admin if no admin exists
-    with get_db() as db:
-        admin_pwd = hash_password("admin12345")
-        existing_admin = db.execute("SELECT id FROM users WHERE username = 'admin' OR role = 'admin' LIMIT 1").fetchone()
-        if existing_admin:
-            db.execute(
-                "UPDATE users SET email = 'admin@codeethos.com', display_name = 'Codeethos Admin', hashed_password = ? WHERE id = ?",
-                (admin_pwd, existing_admin["id"]),
-            )
-        else:
-            db.execute(
-                """
-                INSERT INTO users (email, username, display_name, hashed_password, role, bio)
-                VALUES (?, ?, ?, ?, 'admin', 'Lead Educator & System Administrator')
-                """,
-                ("admin@codeethos.com", "admin", "Codeethos Admin", admin_pwd),
-            )
+    # Optional one-time admin bootstrap. Runs only when NO admin exists and both
+    # ADMIN_EMAIL and ADMIN_PASSWORD are set. Never modifies existing accounts.
+    admin_email = os.environ.get("ADMIN_EMAIL", "").strip().lower()
+    admin_password = os.environ.get("ADMIN_PASSWORD", "")
+    if admin_email and admin_password:
+        with get_db() as db:
+            has_admin = db.execute("SELECT 1 FROM users WHERE role = 'admin' LIMIT 1").fetchone()
+            if not has_admin:
+                username = admin_email.split("@")[0]
+                db.execute(
+                    """
+                    INSERT INTO users (email, username, display_name, hashed_password, role, bio)
+                    VALUES (?, ?, ?, ?, 'admin', 'Lead Educator & System Administrator')
+                    """,
+                    (admin_email, username, "Codeethos Admin", hash_password(admin_password)),
+                )
     yield
 
 

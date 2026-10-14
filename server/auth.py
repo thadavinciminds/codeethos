@@ -6,7 +6,9 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from .database import get_db
 
-SECRET_KEY = os.environ.get("JWT_SECRET", "super_secret_codeethos_jwt_key_2026_change_in_prod")
+SECRET_KEY = os.environ.get("JWT_SECRET", "")
+if len(SECRET_KEY) < 32:
+    raise RuntimeError("JWT_SECRET env var must be set to a random string of at least 32 characters")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_DAYS = 7
 
