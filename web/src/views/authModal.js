@@ -18,7 +18,7 @@ export function openAuthModal(initialTab = 'signin') {
         <form id="form-signin">
           <label class="field">
             Email or Username
-            <input id="si-identifier" type="text" placeholder="e.g. admin@codeethos.com" required autocomplete="username" />
+            <input id="si-identifier" type="text" placeholder="you@example.com" required autocomplete="username" />
           </label>
           <label class="field">
             Password
@@ -26,7 +26,6 @@ export function openAuthModal(initialTab = 'signin') {
           </label>
           <div id="si-error" class="auth-error hidden"></div>
           <div class="modal-actions" style="margin-top:1.2rem;">
-            <button type="button" class="btn ghost sm" id="btn-demo-admin" title="Fill admin credentials">Demo Admin</button>
             <button type="submit" class="btn primary" id="btn-si-submit">Sign In</button>
           </div>
         </form>
@@ -72,12 +71,6 @@ export function openAuthModal(initialTab = 'signin') {
 
   q('#tab-signin').onclick = () => setTab('signin');
   q('#tab-signup').onclick = () => setTab('signup');
-
-  // Fill default demo admin credentials
-  q('#btn-demo-admin').onclick = () => {
-    q('#si-identifier').value = 'admin@codeethos.com';
-    q('#si-password').value = 'admin12345';
-  };
 
   // Sign in submit
   const submitSignIn = async (e) => {
