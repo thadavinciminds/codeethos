@@ -110,7 +110,9 @@ async function send(text) {
     if (err.name === 'AbortError') return;
     bot.classList.remove('typing');
     bot.classList.add('error');
-    bot.innerHTML = `⚠ Could not reach your local LLM.<br><small>${esc(err.message)}</small><br><button class="btn xs ghost" id="chat-fix">⚙ Open AI settings</button>`;
+    const isNetwork = err instanceof TypeError || err.message?.includes('Failed to fetch') || err.message?.includes('NetworkError');
+    const errTitle = isNetwork ? '⚠ Could not reach your LLM server.' : '⚠ LLM Server error.';
+    bot.innerHTML = `${errTitle}<br><small>${esc(err.message)}</small><br><button class="btn xs ghost" id="chat-fix">⚙ Open AI settings</button>`;
     bot.querySelector('#chat-fix').onclick = openSettings;
   } finally {
     abort = null;

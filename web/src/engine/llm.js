@@ -49,15 +49,50 @@ export async function listModels() {
 }
 
 /**
+ * Normalizes messages to conform strictly to all chat templates
+ * (including Qwen, Llama 3, DeepSeek, and llama.cpp/Jinja).
+ */
+export function normalizeMessages(msgs) {
+  // 1. Merge every system message into one at the top
+  const sys = msgs
+    .filter((m) => m.role === 'system')
+    .map((m) => m.content)
+    .filter(Boolean)
+    .join('\n\n');
+
+  // 2. Keep only user and assistant turns with non-empty content
+  let rest = msgs.filter((m) => (m.role === 'user' || m.role === 'assistant') && m.content?.trim());
+
+  // 3. Chat history must start with a user turn
+  while (rest.length && rest[0].role !== 'user') {
+    rest.shift();
+  }
+
+  // 4. Merge back-to-back messages with the same role
+  rest = rest.reduce((acc, m) => {
+    const last = acc[acc.length - 1];
+    if (last && last.role === m.role) {
+      last.content += '\n\n' + m.content;
+    } else {
+      acc.push({ role: m.role, content: m.content });
+    }
+    return acc;
+  }, []);
+
+  return sys ? [{ role: 'system', content: sys }, ...rest] : rest;
+}
+
+/**
  * Stream a chat completion. Calls onToken(text) for each chunk.
  * Returns the full reply.
  */
 export async function streamChat(messages, onToken, signal) {
   const { base, model, key } = cfg();
+  const normalized = normalizeMessages(messages);
   const res = await fetch(`${base}/chat/completions`, {
     method: 'POST',
     headers: headers(key),
-    body: JSON.stringify({ model, messages, stream: true, temperature: 0.4 }),
+    body: JSON.stringify({ model, messages: normalized, stream: true, temperature: 0.4 }),
     signal,
   });
   if (!res.ok || !res.body) {
