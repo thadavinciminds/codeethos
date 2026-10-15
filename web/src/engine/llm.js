@@ -2,11 +2,23 @@
 // (Ollama, LM Studio, llama.cpp server, vLLM, LocalAI...).
 
 import { store } from './store.js';
+import { api } from './api.js';
+
+export const BUILTIN_LLM = '/llm/v1';
+export const BUILTIN_MODEL = 'qwen38-27b-abl';
 
 function cfg() {
   const s = store.get().settings;
-  return { base: s.llmUrl.replace(/\/+$/, ''), model: s.model, key: s.apiKey };
+  const base = (s.llmUrl || BUILTIN_LLM).replace(/\/+$/, '');
+  const builtin = base === BUILTIN_LLM;
+  return {
+    base,
+    builtin,
+    model: builtin ? (s.model || BUILTIN_MODEL) : s.model,
+    key: builtin ? api.getToken() : s.apiKey,
+  };
 }
+
 function headers(key) {
   const h = { 'Content-Type': 'application/json' };
   if (key) h.Authorization = `Bearer ${key}`;
@@ -14,7 +26,11 @@ function headers(key) {
 }
 
 export async function listModels() {
-  const { base, key } = cfg();
+  const { base, builtin, key } = cfg();
+  if (builtin && !key) {
+    throw new Error('Sign in to use the Codeethos AI tutor.');
+  }
+
   const cleanBase = base.replace(/\/+$/, '');
   const urlsToTry = [
     `${cleanBase}/models`,
@@ -87,7 +103,11 @@ export function normalizeMessages(msgs) {
  * Returns the full reply.
  */
 export async function streamChat(messages, onToken, signal) {
-  const { base, model, key } = cfg();
+  const { base, builtin, model, key } = cfg();
+  if (builtin && !key) {
+    throw new Error('Sign in to use the Codeethos AI tutor.');
+  }
+
   const normalized = normalizeMessages(messages);
   const res = await fetch(`${base}/chat/completions`, {
     method: 'POST',
@@ -95,9 +115,25 @@ export async function streamChat(messages, onToken, signal) {
     body: JSON.stringify({ model, messages: normalized, stream: true, temperature: 0.4 }),
     signal,
   });
+
   if (!res.ok || !res.body) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`LLM error ${res.status}: ${text.slice(0, 200)}`);
+    if (builtin && res.status === 401) {
+      throw new Error('Your session expired — sign in again to use the tutor.');
+    }
+    if (res.status === 429) {
+      throw new Error('The tutor is busy — wait a moment and try again.');
+    }
+    if (res.status === 413) {
+      throw new Error("That's too much code for one question — try a smaller snippet.");
+    }
+    let detail = '';
+    try {
+      const j = await res.json();
+      detail = j?.error?.message || j?.detail || '';
+    } catch {
+      detail = await res.text().catch(() => '');
+    }
+    throw new Error(`Tutor error ${res.status}${detail ? ': ' + detail.slice(0, 200) : ''}`);
   }
   const reader = res.body.getReader();
   const decoder = new TextDecoder();

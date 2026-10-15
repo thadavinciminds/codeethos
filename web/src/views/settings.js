@@ -4,10 +4,10 @@ import { listModels } from '../engine/llm.js';
 import { modal, esc, toast } from '../ui/dom.js';
 
 const PRESETS = [
-  { name: 'Ollama (via proxy)', url: '/llm/v1' },
+  { name: 'Codeethos AI (Built-in)', url: '/llm/v1' },
   { name: 'Ollama direct', url: 'http://localhost:11434/v1' },
   { name: 'LM Studio', url: 'http://localhost:1234/v1' },
-  { name: 'llama.cpp server', url: 'http://localhost:8080/v1' },
+  { name: 'llama.cpp local', url: 'http://localhost:8080/v1' },
 ];
 
 export function openSettings() {
