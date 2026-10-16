@@ -7,15 +7,23 @@ import { api } from './api.js';
 export const BUILTIN_LLM = '/llm/v1';
 export const BUILTIN_MODEL = 'qwen38-27b-abl';
 
-function cfg() {
-  const s = store.get().settings;
-  const base = (s.llmUrl || BUILTIN_LLM).replace(/\/+$/, '');
-  const builtin = base === BUILTIN_LLM;
+export function isBuiltinLLM(url) {
+  if (!url) return true;
+  const clean = url.trim().replace(/\/+$/, '');
+  return clean === '' || clean === '/llm' || clean === '/llm/v1' || clean.endsWith('/llm/v1') || clean.endsWith('/llm');
+}
+
+export function cfg() {
+  const s = store.get().settings || {};
+  const rawBase = (s.llmUrl || BUILTIN_LLM).trim().replace(/\/+$/, '');
+  const builtin = isBuiltinLLM(rawBase);
+  const base = builtin ? BUILTIN_LLM : rawBase;
+  const token = api.getToken();
   return {
     base,
     builtin,
-    model: builtin ? BUILTIN_MODEL : s.model,
-    key: builtin ? api.getToken() : s.apiKey,
+    model: builtin ? BUILTIN_MODEL : (s.model || BUILTIN_MODEL),
+    key: builtin ? token : (s.apiKey || token),
   };
 }
 

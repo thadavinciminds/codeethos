@@ -1,7 +1,9 @@
-import { streamChat, TUTOR_SYSTEM_PROMPT } from '../engine/llm.js';
+import { streamChat, TUTOR_SYSTEM_PROMPT, cfg } from '../engine/llm.js';
 import { store } from '../engine/store.js';
+import { api } from '../engine/api.js';
 import { h, md, esc, toast } from '../ui/dom.js';
 import { openSettings } from './settings.js';
+import { openAuthModal } from './authModal.js';
 import { startVoiceRecognition, stopVoiceRecognition, isSTTSupported } from '../engine/voice.js';
 
 let context = {};
@@ -149,6 +151,18 @@ export function toggleChat() {
 async function send(text) {
   if (abort) abort.abort();
   const log = panel.querySelector('#chat-log');
+
+  const { builtin, key } = cfg();
+  if (builtin && (!api.getToken() || !key)) {
+    toast('🔒 Please sign in to ask the Codeethos AI tutor.', 'warn', 4000);
+    openAuthModal('signin');
+    const notice = h('<div class="msg bot"><b>🔒 Sign in required</b><br>Please <a href="#" class="chat-signin-action" style="color:var(--accent); text-decoration:underline;">sign in or create a free account</a> to get AI hints, track hearts, and earn badges.</div>');
+    log.append(notice);
+    const link = notice.querySelector('.chat-signin-action');
+    if (link) link.onclick = (e) => { e.preventDefault(); openAuthModal('signin'); };
+    log.scrollTop = log.scrollHeight;
+    return;
+  }
 
   const hInfo = store.getHearts();
   if (hInfo.count <= 0) {
