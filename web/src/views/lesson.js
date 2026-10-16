@@ -6,16 +6,18 @@ import { detectPitfalls, explainError } from '../engine/pitfalls.js';
 import { createEditor } from '../ui/editor.js';
 import { h, esc, md, toast, modal, celebrate, xpPop } from '../ui/dom.js';
 import { setChatContext, openChat } from './chat.js';
+import { openVisualizer } from './visualizer.js';
+import { speakText, stopSpeaking, isSpeaking } from '../engine/voice.js';
 
 const XP = { concept: 10, predictFirst: 25, predict: 10, challenge: 50, quiz: 40, lesson: 100 };
 const TYPE_LABEL = { concept: 'learn', predict: 'predict', challenge: 'code', quiz: 'quiz' };
 
 export function renderLesson(root, lessonId, stepParam) {
   const lesson = findLesson(lessonId);
-  if (!lesson) return (location.hash = '#/');
+  if (!lesson) return (location.hash = '#/roadmap');
   if (!isUnlocked(lessonId, store.get().lessons, store.getJourney())) {
     toast('🔒 Finish the previous lesson in your journey first', 'warn');
-    return (location.hash = '#/');
+    return (location.hash = '#/roadmap');
   }
 
   // Resume at the first unfinished step
@@ -26,7 +28,10 @@ export function renderLesson(root, lessonId, stepParam) {
   <section class="lesson fade-in">
     <div class="pane learn-pane glass">
       <div class="lesson-head">
-        <a href="#/" class="back" id="btn-back">← Roadmap</a>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <a href="#/roadmap" class="back" id="btn-back">← Curriculum</a>
+          <button class="btn xs ghost" id="btn-read-aloud" title="Read lesson text aloud (Voice TTS)">🔊 Listen</button>
+        </div>
         <div class="lesson-title"><span>${lesson.emoji}</span> ${lesson.id} · ${esc(lesson.title)}</div>
         <div class="dots" id="dots"></div>
       </div>
@@ -43,9 +48,10 @@ export function renderLesson(root, lessonId, stepParam) {
         <span class="file-tab">main.py</span>
         <div class="tool-btns">
           <button class="btn sm ghost" id="btn-reset" title="Reset code">reset</button>
+          <button class="btn sm ghost" id="btn-visualize" title="Step-through Python execution visualizer">visualize 👁</button>
           <button class="btn sm ghost" id="btn-ai" title="Ask the AI Profesor to review your code">review</button>
-          <button class="btn sm run" id="btn-run" title="Run (Ctrl+Enter)">run ⌃↵</button>
-          <button class="btn sm check" id="btn-check" title="Check (Shift+Enter)">check ⇧↵</button>
+          <button class="btn sm run" id="btn-run" title="Run code (Ctrl+Enter)">run ⌃↵</button>
+          <button class="btn sm check" id="btn-check" title="Submit & Auto-Grade against hidden tests (Shift+Enter)">submit ⇧↵</button>
         </div>
       </div>
       <div class="editor-wrap" id="editor"></div>
@@ -348,11 +354,26 @@ export function renderLesson(root, lessonId, stepParam) {
     if (firstFail) showResult(firstFail.result);
     if (all) {
       const hadFails = store.attempts(draftKey()) > 0;
+      const spree = store.recordSubmitSuccess(hadFails);
       markDone(XP.challenge, btn);
       earn('first_challenge');
       if (hadFails) earn('bug_slayer');
+      if (spree === 3) {
+        earn('sharpshooter_3');
+        store.addXp(50);
+        toast('🎯 <b>Sharpshooter III: 3 clean submissions in a row!</b> +50 XP bonus', 'badge', 4500);
+      } else if (spree === 5) {
+        earn('sharpshooter_5');
+        store.addXp(100);
+        toast('⚡ <b>Master Marksman: 5 clean submissions!</b> +100 XP bonus', 'badge', 4500);
+      } else if (spree === 10) {
+        earn('sharpshooter_10');
+        store.addXp(250);
+        toast('🏹 <b>Archmage Marksman: 10 clean submissions!</b> +250 XP bonus', 'badge', 5000);
+      }
       celebrate();
     } else {
+      store.resetSpree();
       const n = store.failAttempt(draftKey());
       if (n >= 3) q('#btn-solution')?.removeAttribute('disabled');
       if (n === 2) toast('💡 Stuck? Try the <b>Hint</b> button or <b>🤖 Review</b>.', 'info');
@@ -360,22 +381,27 @@ export function renderLesson(root, lessonId, stepParam) {
   }
 
   function go(i) {
+    stopSpeaking();
     idx = i;
     history.replaceState(null, '', `#/lesson/${lesson.id}/${idx}`);
     renderStep();
   }
 
   function finishLesson() {
+    stopSpeaking();
     const first = store.completeLesson(lesson.id);
-    if (first) store.addXp(XP.lesson);
+    if (first) {
+      store.addXp(XP.lesson);
+      store.addChest(1); // Reward mystery loot chest upon completing lesson
+    }
     const pos = allLessons.findIndex((l) => l.id === lesson.id);
     const nextL = allLessons[pos + 1];
     if (first && !nextL) earn('week1');
     celebrate(true);
     const m = modal(`<div class="done-modal"><div class="done-emoji">🎉</div><h2>Lesson complete!</h2>
-      <p>${lesson.emoji} <b>${lesson.title}</b> ${first ? `— <span class="grad">+${XP.lesson} XP</span>` : ''}</p>
+      <p>${lesson.emoji} <b>${lesson.title}</b> ${first ? `— <span class="grad">+${XP.lesson} XP · +1 🎁 Chest</span>` : ''}</p>
       <p class="muted">Your progress is saved. Export the tracker anytime from the roadmap.</p>
-      <div class="modal-actions"><a class="btn ghost" href="#/" id="m-home">Roadmap</a>
+      <div class="modal-actions"><a class="btn ghost" href="#/roadmap" id="m-home">Curriculum</a>
       ${nextL ? `<a class="btn primary" href="#/lesson/${nextL.id}" id="m-next">Next: ${nextL.emoji} ${nextL.title} →</a>` : '<span class="btn primary">🎓 Week 1 done — Week 2 coming next!</span>'}</div></div>`);
     m.el.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => m.close()));
   }
@@ -383,6 +409,36 @@ export function renderLesson(root, lessonId, stepParam) {
   // ───────── wiring
   q('#btn-run').onclick = run;
   q('#btn-check').onclick = check;
+  q('#btn-visualize').onclick = () => {
+    openVisualizer({ code: editor.get(), stdin: stdinEl.value, editor });
+  };
+  const readBtn = q('#btn-read-aloud');
+  if (readBtn) {
+    readBtn.onclick = () => {
+      if (isSpeaking()) {
+        stopSpeaking();
+        readBtn.textContent = '🔊 Listen';
+        readBtn.classList.remove('pulse');
+      } else {
+        const s = step();
+        const textToRead = `${s.title}. ${s.body || s.question || ''}`;
+        speakText(textToRead, {
+          onStart: () => {
+            readBtn.textContent = '⏹ Stop';
+            readBtn.classList.add('pulse');
+          },
+          onEnd: () => {
+            readBtn.textContent = '🔊 Listen';
+            readBtn.classList.remove('pulse');
+          },
+          onError: () => {
+            readBtn.textContent = '🔊 Listen';
+            readBtn.classList.remove('pulse');
+          },
+        });
+      }
+    };
+  }
   q('#btn-prev').onclick = () => idx > 0 && go(idx - 1);
   q('#btn-next').onclick = () => {
     if (step().type === 'concept') markDone(XP.concept);
@@ -406,7 +462,10 @@ export function renderLesson(root, lessonId, stepParam) {
     if (e.key === 'ArrowLeft') q('#btn-prev').click();
   };
   document.addEventListener('keydown', keyNav);
-  window.addEventListener('hashchange', () => document.removeEventListener('keydown', keyNav), { once: true });
+  window.addEventListener('hashchange', () => {
+    stopSpeaking();
+    document.removeEventListener('keydown', keyNav);
+  }, { once: true });
 
   renderStep();
 }

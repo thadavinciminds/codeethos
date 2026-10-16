@@ -86,3 +86,31 @@ export async function runTests(code, tests) {
   }
   return results;
 }
+
+/**
+ * Step-by-step execution tracer for Python Tutor-style visualizer.
+ * Returns { ok, steps: [{line, event, locals, stdout}], stdout, error, errorLine }
+ */
+export async function tracePython(code, stdin = '') {
+  await initPython();
+  const id = nextId++;
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => {
+      pending.delete(id);
+      worker.terminate();
+      worker = null;
+      spawn();
+      resolve({
+        ok: false,
+        timeout: true,
+        steps: [],
+        stdout: '',
+        error: 'Execution timed out (infinite loop detected).',
+        errorLine: 0,
+      });
+    }, TIMEOUT_MS);
+    pending.set(id, { resolve, timer });
+    worker.postMessage({ id, mode: 'trace', code, stdin });
+  });
+}
+

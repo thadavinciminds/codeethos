@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://codeethos.tech/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://codeethos.tech/#/roadmap</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- Week 1: Foundations -->
+  <url><loc>https://codeethos.tech/#/lesson/1.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/1.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/1.3</loc><priority>0.8</priority></url>
+  <!-- Week 2: Data Structures -->
+  <url><loc>https://codeethos.tech/#/lesson/2.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/2.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/2.3</loc><priority>0.8</priority></url>
+  <!-- Week 3: OOP -->
+  <url><loc>https://codeethos.tech/#/lesson/3.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/3.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/3.3</loc><priority>0.8</priority></url>
+  <!-- Week 4: File I/O & APIs -->
+  <url><loc>https://codeethos.tech/#/lesson/4.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/4.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/4.3</loc><priority>0.8</priority></url>
+  <!-- Week 5: Graphics & Math -->
+  <url><loc>https://codeethos.tech/#/lesson/5.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/5.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/5.3</loc><priority>0.8</priority></url>
+  <!-- Week 6: 2D Game Capstone -->
+  <url><loc>https://codeethos.tech/#/lesson/6.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/6.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/6.3</loc><priority>0.8</priority></url>
+  <!-- Week 7: Machine Learning Fundamentals -->
+  <url><loc>https://codeethos.tech/#/lesson/7.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/7.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/7.3</loc><priority>0.8</priority></url>
+  <!-- Week 8: Production ML Pipelines -->
+  <url><loc>https://codeethos.tech/#/lesson/8.1</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/8.2</loc><priority>0.8</priority></url>
+  <url><loc>https://codeethos.tech/#/lesson/8.3</loc><priority>0.8</priority></url>
+</urlset>

@@ -4,7 +4,7 @@ import { store, BADGES } from '../engine/store.js';
 import { downloadTracker } from '../engine/tracker.js';
 import { openJourneyModal } from './journeyModal.js';
 import { api } from '../engine/api.js';
-import { h, toast } from '../ui/dom.js';
+import { h, toast, modal, celebrate } from '../ui/dom.js';
 
 export function renderRoadmap(root) {
   const s = store.get();
@@ -17,6 +17,7 @@ export function renderRoadmap(root) {
   const totalJourneyLessons = Math.max(journeyLessons.length, 1);
   const doneJourneyLessons = journeyLessons.filter((l) => s.lessons.includes(l.id)).length;
   const next = journeyLessons.find((l) => !s.lessons.includes(l.id));
+  const hearts = store.getHearts();
 
   const view = h(`
   <section class="roadmap fade-in">
@@ -46,6 +47,27 @@ export function renderRoadmap(root) {
       <div class="hero-ring">
         <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="ring-bg"/><circle cx="60" cy="60" r="52" class="ring-fg" style="stroke-dasharray:${(doneJourneyLessons / totalJourneyLessons) * 326.7} 326.7"/></svg>
         <div class="ring-label"><b>${doneJourneyLessons}/${totalJourneyLessons}</b><span>journey done</span></div>
+      </div>
+    </div>
+
+    <!-- RPG Inventory & Loot Chests (Phase 2) -->
+    <div class="rpg-strip glass">
+      <div class="rpg-item" title="Streak Freezes protect your daily streak if you miss a day">
+        <span class="rpg-icon">🛡️</span>
+        <div><b>${s.freezes || 0} Freezes</b><small class="dim">Streak insurance</small></div>
+      </div>
+      <div class="rpg-item" title="Socratic AI Tutor hearts (recharge 1 every 3 minutes)">
+        <span class="rpg-icon">❤️</span>
+        <div><b>${hearts.count}/${hearts.max} Hearts</b><small class="dim">AI mentor energy</small></div>
+      </div>
+      <div class="rpg-item" title="Seer stones peek reference solutions without resetting your streak">
+        <span class="rpg-icon">🔮</span>
+        <div><b>${s.seerStones || 0} Seer Stones</b><small class="dim">Solution tokens</small></div>
+      </div>
+      <div class="rpg-item chests-group" title="Earned on sprees and module completions">
+        <span class="rpg-icon">🎁</span>
+        <div><b>${s.chests || 0} Mystery Chests</b><small class="dim">Contains rare study loot</small></div>
+        <button class="btn sm primary ${s.chests > 0 ? 'pulse' : ''}" id="btn-open-chest" ${s.chests > 0 ? '' : 'disabled'}>Open Chest</button>
       </div>
     </div>
 
@@ -95,6 +117,32 @@ export function renderRoadmap(root) {
 
   view.querySelector('#btn-customize-journey').onclick = openCustomizer;
   view.querySelector('#btn-manage-journey').onclick = openCustomizer;
+
+  const openChestBtn = view.querySelector('#btn-open-chest');
+  if (openChestBtn) {
+    openChestBtn.onclick = () => {
+      const drop = store.openChest();
+      if (!drop) return;
+      celebrate(true);
+      const m = modal(`
+        <div style="text-align:center; padding:1.2rem;">
+          <div style="font-size:3.2rem; margin-bottom:0.5rem; animation:pulseDot 1s infinite;">🎁</div>
+          <h2 style="margin:0 0 0.5rem;">Loot Chest Unlocked!</h2>
+          <div style="font-size:1.25rem; margin:1.2rem 0; color:var(--accent);">
+            <b>${drop.name}</b>
+          </div>
+          <p class="muted small" style="margin-bottom:1.5rem;">${drop.desc}</p>
+          <div class="modal-actions" style="justify-content:center;">
+            <button class="btn primary big" id="btn-claim-reward">Claim Reward</button>
+          </div>
+        </div>
+      `);
+      m.el.querySelector('#btn-claim-reward').onclick = () => {
+        m.close();
+        renderRoadmap(root);
+      };
+    };
+  }
 
   // Handle "+ Add" on inactive week cards
   view.querySelectorAll('.btn-add-week').forEach((btn) => {

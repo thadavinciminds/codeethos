@@ -14,7 +14,7 @@ function cfg() {
   return {
     base,
     builtin,
-    model: builtin ? (s.model || BUILTIN_MODEL) : s.model,
+    model: builtin ? BUILTIN_MODEL : s.model,
     key: builtin ? api.getToken() : s.apiKey,
   };
 }
@@ -149,7 +149,7 @@ export async function streamChat(messages, onToken, signal) {
       const t = line.trim();
       if (!t.startsWith('data:')) continue;
       const payload = t.slice(5).trim();
-      if (payload === '[DONE]') return full;
+      if (payload === '[DONE]') return enforceSocraticGuardrails(full);
       try {
         const delta = JSON.parse(payload).choices?.[0]?.delta?.content;
         if (delta) {
@@ -161,7 +161,24 @@ export async function streamChat(messages, onToken, signal) {
       }
     }
   }
-  return full;
+  return enforceSocraticGuardrails(full);
+}
+
+/**
+ * Socratic Output Guardrail (Phase 2):
+ * Scans generated AI content to ensure the AI does not dump full code solutions.
+ * If code blocks exceed 5 lines of code, redacts excess lines with a Socratic prompt.
+ */
+export function enforceSocraticGuardrails(text) {
+  if (!text) return '';
+  return text.replace(/```(?:python)?\s*([\s\S]*?)```/g, (match, code) => {
+    const lines = code.trim().split('\n');
+    if (lines.length > 5) {
+      const allowed = lines.slice(0, 4);
+      return `\`\`\`python\n${allowed.join('\n')}\n# ... [Socratic Guardrail: Codeethos won't give away the full block!]\n# Hint: What should the next operation return here?\n\`\`\``;
+    }
+    return match;
+  });
 }
 
 export const TUTOR_SYSTEM_PROMPT = `You are the Codeethos AI Tutor, a friendly, encouraging expert programming mentor for learners.
@@ -171,3 +188,4 @@ Rules:
 - Keep answers short (under 150 words), use simple English and markdown.
 - Point out common pitfalls: missing colons, indentation, = vs ==, shadowing built-ins, mutable defaults, is vs ==, type errors from input().
 - When reviewing code: first praise one thing, then point to at most 2 issues with line numbers, then ask a question.`;
+

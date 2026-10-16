@@ -3,25 +3,113 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Codeethos — Learn Programming Fast, Interactively</title>
-    <meta name="description" content="Codeethos: an interactive coding platform with live in-browser execution, auto-graded challenges, real-world projects, quizzes and an intelligent AI tutor." />
+    
+    <!-- Primary Meta Tags -->
+    <title>Codeethos — Learn to Code by Doing | In-Browser Python & Backend Curriculum</title>
+    <meta name="title" content="Codeethos — Learn to Code by Doing | In-Browser Python & Backend Curriculum" />
+    <meta name="description" content="Master Python, algorithms, backend architecture and machine learning through bite-sized interactive lessons, unit-test auto-grading, and a Socratic AI tutor. Zero setup required." />
+    <meta name="keywords" content="learn python, python coding platform, boot.dev alternative, interactive python, pyodide wasm, learn to code, backend engineering, scikit-learn, socratic ai tutor" />
+    <meta name="author" content="Codeethos" />
+    <meta name="theme-color" content="#0c0d0e" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://codeethos.tech/" />
+    <meta property="og:title" content="Codeethos — Learn to Code by Doing | In-Browser Python & Backend" />
+    <meta property="og:description" content="Interactive, test-driven coding platform with live in-browser WebAssembly execution, auto-graded challenges, and a Socratic AI mentor." />
+    <meta property="og:site_name" content="Codeethos" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://codeethos.tech/" />
+    <meta property="twitter:title" content="Codeethos — Learn to Code by Doing" />
+    <meta property="twitter:description" content="Interactive in-browser Python execution, auto-graded unit tests, and Socratic AI guidance. 100% hands-on." />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://codeethos.tech/" />
+
+    <!-- Favicon & Fonts -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Structured Data (JSON-LD) for Search Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://codeethos.tech/#website",
+          "url": "https://codeethos.tech/",
+          "name": "Codeethos",
+          "description": "Interactive in-browser coding platform for Python and backend development.",
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "Course",
+          "@id": "https://codeethos.tech/#course-python",
+          "name": "Python Mastery & Backend Systems",
+          "description": "An 8-week structured, test-driven interactive curriculum covering foundations, data structures, OOP, REST APIs, arcade game physics, and scikit-learn machine learning.",
+          "provider": {
+            "@type": "Organization",
+            "name": "Codeethos",
+            "sameAs": "https://codeethos.tech"
+          },
+          "hasCourseInstance": {
+            "@type": "CourseInstance",
+            "courseMode": "Online",
+            "courseWorkload": "PT40H"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <header class="topbar">
-      <a href="#/" class="brand" id="brand-link"><span class="brand-logo">~$</span><span><b>codeethos</b></span></a>
+      <a href="#/" class="brand" id="brand-link" title="Codeethos Home">
+        <span class="brand-logo">~$</span><span><b>codeethos</b></span>
+      </a>
+      <nav class="main-nav" id="main-nav" aria-label="Main Navigation">
+        <a href="#/" class="nav-link" id="nav-home">home</a>
+        <a href="#/roadmap" class="nav-link" id="nav-roadmap">curriculum</a>
+        <button class="nav-link" id="nav-pro" style="background:none; border:none; cursor:pointer; color:var(--accent); font-family:inherit; font-size:0.82rem; padding:0;">⚡ pro</button>
+      </nav>
       <div class="stats" id="stats"></div>
       <div class="top-actions">
-        <span class="py-status" id="py-status" title="Language engine status"><i></i><em>python ready</em></span>
+        <span class="py-status" id="py-status" title="Language engine status (click to load runtime)"><i></i><em>python idle</em></span>
         <button class="icon-btn" id="btn-chat" title="Ask Codeethos AI Tutor">ask</button>
         <button class="icon-btn" id="btn-settings" title="Settings">config</button>
         <div id="auth-actions" class="auth-actions"></div>
       </div>
     </header>
-    <main id="app"></main>
+
+    <!-- Semantic fallback markup for SEO crawlers and non-JS clients.
+         Replaced dynamically by main.js upon client load. -->
+    <main id="app">
+      <noscript>
+        <div style="max-width: 800px; margin: 40px auto; padding: 20px; font-family: monospace;">
+          <h1>Codeethos — Learn Programming by Doing</h1>
+          <p>Codeethos is an interactive coding platform featuring live in-browser execution, unit-test auto-graded challenges, and an intelligent Socratic AI mentor.</p>
+          <h2>Curriculum Tracks:</h2>
+          <ul>
+            <li><strong>Week 1: Foundations & Interactive CLI</strong> — Variables, control flow, loops, and terminal I/O.</li>
+            <li><strong>Week 2: Data Structures & Clean Code</strong> — Lists, dicts, tuples, comprehensions, and DRY functions.</li>
+            <li><strong>Week 3: Object-Oriented Programming (OOP)</strong> — Classes, inheritance, polymorphism, Leitner flashcard engine.</li>
+            <li><strong>Week 4: File I/O, APIs & Error Handling</strong> — Context managers, requests, robust exception handling.</li>
+            <li><strong>Week 5: Introduction to Graphics with Arcade</strong> — Window, Cartesian coordinates, generative math art.</li>
+            <li><strong>Week 6: 2D Game Development Capstone</strong> — SpriteLists, physics engines, collisions, and platformer capstone.</li>
+            <li><strong>Week 7: Machine Learning Fundamentals</strong> — Scikit-Learn classifiers, feature arrays, model metrics.</li>
+            <li><strong>Week 8: Production ML & Pipelines</strong> — Train-test split, preprocessing, cross-validation, serialization.</li>
+          </ul>
+          <p>Please enable JavaScript to run interactive lessons and in-browser code execution.</p>
+        </div>
+      </noscript>
+    </main>
+
     <aside class="chat-panel" id="chat-panel" aria-label="AI tutor chat"></aside>
     <div class="modal-root" id="modal-root"></div>
     <div class="toast-root" id="toast-root"></div>

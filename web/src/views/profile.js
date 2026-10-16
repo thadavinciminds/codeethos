@@ -3,7 +3,7 @@ import { api } from '../engine/api.js';
 import { store, BADGES } from '../engine/store.js';
 import { curriculum } from '../content/curriculum.js';
 import { openAuthModal } from './authModal.js';
-import { h, esc, toast } from '../ui/dom.js';
+import { h, esc, toast, modal, celebrate } from '../ui/dom.js';
 
 export async function renderProfile(root) {
   const user = api.getUser();
@@ -105,6 +105,15 @@ export async function renderProfile(root) {
         </form>
       </div>
 
+      <!-- Verified Certificate Section (Phase 3) -->
+      <div class="glass" style="padding:1.4rem; margin:1.5rem 0; border-left:3px solid var(--accent); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+        <div style="max-width:680px;">
+          <h3 style="margin:0 0 0.3rem; font-size:1.05rem; font-weight:500;">🎓 Verified Certificate of Completion</h3>
+          <p class="muted small" style="margin:0;">Demonstrating tested mastery across Python foundations, clean code, OOP, fault-tolerant REST APIs, 2D arcade physics, and production scikit-learn ML pipelines.</p>
+        </div>
+        <button class="btn primary" id="btn-view-certificate">View Certificate 📜</button>
+      </div>
+
       <!-- Badges Earned Section -->
       <h2 class="section-title">Your Badges (${s.badges.length} / ${Object.keys(BADGES).length})</h2>
       <div class="badges">
@@ -120,6 +129,46 @@ export async function renderProfile(root) {
       </div>
     </section>
   `);
+
+  // Handle Certificate View
+  view.querySelector('#btn-view-certificate').onclick = () => {
+    celebrate();
+    const certDate = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    const certId = `CE-PY-${Math.abs(user.id || 101)}-${Date.now().toString(36).toUpperCase()}`;
+    const m = modal(`
+      <div class="certificate-wrap" style="text-align:center; padding:1.5rem; border:2px solid var(--accent); background:var(--bg); border-radius:var(--radius); position:relative;">
+        <div style="font-size:0.78rem; letter-spacing:0.18em; color:var(--accent); text-transform:uppercase; margin-bottom:0.4rem;">
+          OFFICIAL CODEETHOS CERTIFICATE OF MASTERY
+        </div>
+        <h2 style="font-size:1.6rem; font-weight:600; margin:0.4rem 0 0.2rem; color:#fff;">
+          Certificate of Completion
+        </h2>
+        <div class="muted small" style="margin-bottom:1.4rem;">8-Week Interactive Python Mastery Curriculum</div>
+        
+        <p class="muted small" style="margin-bottom:0.2rem;">This certifies that</p>
+        <div style="font-size:1.5rem; font-weight:600; color:var(--accent); margin-bottom:0.8rem; border-bottom:1px dashed var(--line-strong); padding-bottom:0.4rem; display:inline-block; min-width:240px;">
+          ${esc(user.display_name || user.username)}
+        </div>
+        
+        <p class="muted small" style="max-width:540px; margin:0 auto 1.4rem; line-height:1.5;">
+          has successfully passed the comprehensive curriculum covering terminal I/O, OOP design patterns, Leitner algorithms, real-time arcade graphics, and scikit-learn machine learning.
+        </p>
+
+        <div style="display:flex; justify-content:space-around; align-items:center; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:0.8rem 0; margin-bottom:1.4rem; font-size:0.82rem;">
+          <div><span class="muted">Status:</span> <b style="color:var(--green)">Verified ✓</b></div>
+          <div><span class="muted">Verification ID:</span> <code>${certId}</code></div>
+          <div><span class="muted">Date:</span> <b>${certDate}</b></div>
+        </div>
+
+        <div class="modal-actions" style="justify-content:center; gap:0.8rem;">
+          <button class="btn primary" id="btn-print-cert">🖨️ Print / Save PDF</button>
+          <button class="btn ghost" id="btn-close-cert">Close</button>
+        </div>
+      </div>
+    `);
+    m.el.querySelector('#btn-print-cert').onclick = () => window.print();
+    m.el.querySelector('#btn-close-cert').onclick = m.close;
+  };
 
   // Handle Cloud Sync
   view.querySelector('#btn-sync-now').onclick = async () => {

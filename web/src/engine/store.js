@@ -11,6 +11,11 @@ const DEFAULTS = {
   badges: [],
   streak: { last: null, count: 0 },
   drafts: {}, // saved editor code per step
+  spree: { current: 0, best: 0 },
+  freezes: 2, // starts with 2 free streak freezes
+  chests: 1, // starts with 1 free mystery chest
+  seerStones: 1, // peek solution token
+  hearts: { count: 10, max: 10, lastRecharge: Date.now() },
   journey: {
     track: 'all',
     activeWeeks: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -28,6 +33,11 @@ export const BADGES = {
   first_challenge: { icon: '🏆', name: 'Challenger', desc: 'Passed your first coding challenge' },
   bug_slayer: { icon: '🐛', name: 'Bug Slayer', desc: 'Fixed failing code until all tests passed' },
   sharp_eye: { icon: '🔮', name: 'Sharp Eye', desc: 'Predicted 3 outputs right on the first try' },
+  sharpshooter_3: { icon: '🎯', name: 'Sharpshooter III', desc: '3 challenge submissions passed on the first try' },
+  sharpshooter_5: { icon: '⚡', name: 'Master Marksman', desc: '5 challenge submissions passed on the first try' },
+  sharpshooter_10: { icon: '🏹', name: 'Archmage Marksman', desc: '10 challenge submissions passed on the first try' },
+  first_chest: { icon: '🎁', name: 'Treasure Hunter', desc: 'Opened a mystery loot chest' },
+  streak_master: { icon: '🔥', name: 'Flamekeeper', desc: 'Reached a 7-day learning streak' },
   quiz_ace: { icon: '🧠', name: 'Quiz Ace', desc: 'Scored 5/5 on a quiz' },
   asked_ai: { icon: '🤖', name: 'Curious Mind', desc: 'Asked Codeethos AI for guidance' },
   week1: { icon: '🎓', name: 'Module 1 Graduate', desc: 'Completed all of Module 1' },
@@ -39,12 +49,17 @@ const listeners = new Set();
 function load() {
   try {
     const raw = JSON.parse(localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY));
-    return raw ? {
+    if (!raw) return structuredClone(DEFAULTS);
+    return {
       ...structuredClone(DEFAULTS),
       ...raw,
+      freezes: raw.freezes != null ? raw.freezes : DEFAULTS.freezes,
+      chests: raw.chests != null ? raw.chests : DEFAULTS.chests,
+      seerStones: raw.seerStones != null ? raw.seerStones : DEFAULTS.seerStones,
+      hearts: { ...DEFAULTS.hearts, ...(raw.hearts || {}) },
       journey: { ...DEFAULTS.journey, ...(raw.journey || {}) },
-      settings: { ...DEFAULTS.settings, ...(raw.settings || {}) }
-    } : structuredClone(DEFAULTS);
+      settings: { ...DEFAULTS.settings, ...(raw.settings || {}) },
+    };
   } catch {
     return structuredClone(DEFAULTS);
   }
@@ -76,10 +91,72 @@ export const store = {
     const today = new Date().toDateString();
     if (state.streak.last !== today) {
       const yesterday = new Date(Date.now() - 864e5).toDateString();
-      state.streak.count = state.streak.last === yesterday ? state.streak.count + 1 : 1;
+      if (state.streak.last === yesterday) {
+        state.streak.count = (state.streak.count || 0) + 1;
+      } else if (state.streak.last && (state.freezes || 0) > 0) {
+        // Streak freeze used automatically
+        state.freezes -= 1;
+        state.streak.count = (state.streak.count || 0) + 1;
+        state.streakProtected = true;
+      } else {
+        state.streak.count = 1;
+      }
       state.streak.last = today;
+      if (state.streak.count >= 7) {
+        this.award('streak_master');
+      }
     }
     save();
+  },
+
+  getHearts() {
+    if (!state.hearts) {
+      state.hearts = { count: 10, max: 10, lastRecharge: Date.now() };
+    }
+    const elapsedMinutes = (Date.now() - (state.hearts.lastRecharge || Date.now())) / (1000 * 60);
+    const recharged = Math.floor(elapsedMinutes / 3);
+    if (recharged > 0 && state.hearts.count < state.hearts.max) {
+      state.hearts.count = Math.min(state.hearts.max, state.hearts.count + recharged);
+      state.hearts.lastRecharge = Date.now();
+      save();
+    }
+    return state.hearts;
+  },
+
+  useHeart() {
+    const h = this.getHearts();
+    if (h.count <= 0) return false;
+    h.count -= 1;
+    save();
+    return true;
+  },
+
+  refillHearts() {
+    if (!state.hearts) state.hearts = { count: 10, max: 10, lastRecharge: Date.now() };
+    state.hearts.count = state.hearts.max;
+    state.hearts.lastRecharge = Date.now();
+    save();
+  },
+
+  addChest(qty = 1) {
+    state.chests = (state.chests || 0) + qty;
+    save();
+  },
+
+  openChest() {
+    if ((state.chests || 0) <= 0) return null;
+    state.chests -= 1;
+    this.award('first_chest');
+    const drops = [
+      { id: 'freeze', name: '🛡️ Streak Freeze', desc: 'Protects your daily streak if you miss a day.', apply: () => { state.freezes = (state.freezes || 0) + 1; } },
+      { id: 'xp_boost', name: '🧪 150 XP Potion', desc: 'Surges 150 bonus XP toward your next level.', apply: () => { state.xp += 150; } },
+      { id: 'hearts_refill', name: '❤️ Socratic Hearts Full Refill', desc: 'Instantly refills all 10 AI tutor questions.', apply: () => { this.refillHearts(); } },
+      { id: 'seer_stone', name: '🔮 Seer Stone', desc: 'Solution token to peek logic without penalty.', apply: () => { state.seerStones = (state.seerStones || 0) + 1; } },
+    ];
+    const item = drops[Math.floor(Math.random() * drops.length)];
+    item.apply();
+    save();
+    return item;
   },
 
   /** returns true if newly earned */
@@ -139,6 +216,28 @@ export const store = {
     state[counter] = (state[counter] || 0) + 1;
     save();
     return state[counter];
+  },
+
+  recordSubmitSuccess(hadFails) {
+    if (!state.spree) state.spree = { current: 0, best: 0 };
+    if (!hadFails) {
+      state.spree.current = (state.spree.current || 0) + 1;
+      if (state.spree.current > (state.spree.best || 0)) {
+        state.spree.best = state.spree.current;
+      }
+      save();
+      return state.spree.current;
+    } else {
+      state.spree.current = 0;
+      save();
+      return 0;
+    }
+  },
+
+  resetSpree() {
+    if (!state.spree) state.spree = { current: 0, best: 0 };
+    state.spree.current = 0;
+    save();
   },
 
   mergeCloud(cloud) {

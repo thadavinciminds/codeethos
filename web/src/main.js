@@ -4,26 +4,44 @@ import { store } from './engine/store.js';
 import { api } from './engine/api.js';
 import { initPython, onStatus } from './engine/pyRunner.js';
 import { renderRoadmap } from './views/roadmap.js';
+import { renderLanding } from './views/landing.js';
 import { renderLesson } from './views/lesson.js';
 import { renderProfile } from './views/profile.js';
 import { renderAdmin } from './views/admin.js';
 import { openAuthModal } from './views/authModal.js';
 import { initChat, toggleChat } from './views/chat.js';
 import { openSettings } from './views/settings.js';
+import { openProModal } from './views/proModal.js';
 import { esc } from './ui/dom.js';
 
 const app = document.getElementById('app');
 
+function updateActiveNav(page) {
+  const homeLink = document.getElementById('nav-home');
+  const roadmapLink = document.getElementById('nav-roadmap');
+  if (homeLink) homeLink.classList.toggle('active', !page || page === 'home');
+  if (roadmapLink) roadmapLink.classList.toggle('active', page === 'roadmap' || page === 'curriculum');
+}
+
 function route() {
   const [, page, id, step] = location.hash.replace(/^#\/?/, '#/').split('/');
   if (page === 'lesson' && id) {
+    // Lazy-load Python WebAssembly only when an interactive lesson is opened
+    initPython().catch(() => {});
     renderLesson(app, id, step);
+    updateActiveNav('lesson');
+  } else if (page === 'roadmap' || page === 'curriculum') {
+    renderRoadmap(app);
+    updateActiveNav('roadmap');
   } else if (page === 'profile') {
     renderProfile(app);
+    updateActiveNav('profile');
   } else if (page === 'admin') {
     renderAdmin(app);
+    updateActiveNav('admin');
   } else {
-    renderRoadmap(app);
+    renderLanding(app);
+    updateActiveNav('home');
   }
   window.scrollTo(0, 0);
 }
@@ -31,8 +49,10 @@ function route() {
 function renderStats() {
   const s = store.get();
   const { lv, pct, toNext } = store.levelProgress();
+  const spree = s.spree?.current || 0;
   document.getElementById('stats').innerHTML = `
     <div class="stat" title="Daily streak">streak <b>${s.streak?.count || 0}d</b></div>
+    ${spree > 1 ? `<div class="stat spree" title="Sharpshooter spree: consecutive challenges passed on first attempt" style="color:var(--accent);">🎯 <b>${spree} spree</b></div>` : ''}
     <div class="stat level" title="${toNext} XP to next level">
       <span class="lv">lv${lv}</span>
       <span class="xp-bar"><i style="width:${pct}%"></i></span>
@@ -110,10 +130,25 @@ async function initSession() {
   }
 }
 
+// Allow manual pre-load of Python on demand
+const pyStatusEl = document.getElementById('py-status');
+if (pyStatusEl) {
+  pyStatusEl.style.cursor = 'pointer';
+  pyStatusEl.onclick = () => {
+    initPython().catch(() => {});
+  };
+}
+
+const proBtn = document.getElementById('nav-pro');
+if (proBtn) {
+  proBtn.onclick = openProModal;
+}
+
 initChat();
 renderStats();
 renderAuthNav();
 window.addEventListener('hashchange', route);
 route();
 initSession();
-initPython().catch(() => {});
+
+
