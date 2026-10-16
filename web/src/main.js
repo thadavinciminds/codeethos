@@ -119,13 +119,20 @@ async function initSession() {
     try {
       const user = await api.checkAuth();
       if (user) {
+        api.setUser(user);
+        renderAuthNav();
         const cloudProgress = await api.getCloudProgress();
         if (cloudProgress) {
           store.mergeCloud(cloudProgress);
         }
+      } else {
+        api.logout();
+        renderAuthNav();
       }
     } catch (e) {
       console.warn('Session resume notice:', e);
+      api.logout();
+      renderAuthNav();
     }
   }
 }

@@ -153,7 +153,7 @@ async function send(text) {
   const log = panel.querySelector('#chat-log');
 
   const { builtin, key } = cfg();
-  if (builtin && (!api.getToken() || !key)) {
+  if (builtin && (!api.isLoggedIn() || !api.getToken() || !key)) {
     toast('🔒 Please sign in to ask the Codeethos AI tutor.', 'warn', 4000);
     openAuthModal('signin');
     const notice = h('<div class="msg bot"><b>🔒 Sign in required</b><br>Please <a href="#" class="chat-signin-action" style="color:var(--accent); text-decoration:underline;">sign in or create a free account</a> to get AI hints, track hearts, and earn badges.</div>');
