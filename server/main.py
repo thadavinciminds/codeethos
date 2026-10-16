@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .database import init_db, get_db
 from .auth import hash_password, verify_password, create_access_token, get_current_user, require_admin
+from .discord_notify import notify_user_registered, notify_streak_milestone, notify_certificate_earned
 from .schemas import (
     RegisterRequest,
     LoginRequest,
@@ -101,8 +102,10 @@ def register(req: RegisterRequest):
         user_id = cursor.lastrowid
         user = db.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
 
-    token = create_access_token({"sub": str(user_id), "role": user["role"]})
-    return TokenResponse(access_token=token, user=user_to_response(dict(user)))
+    user_dict = dict(user)
+    notify_user_registered(user_dict["username"], user_dict.get("display_name"))
+    token = create_access_token({"sub": str(user_id), "role": user_dict["role"]})
+    return TokenResponse(access_token=token, user=user_to_response(user_dict))
 
 
 @app.post("/api/auth/login", response_model=TokenResponse)
@@ -231,6 +234,11 @@ def sync_progress(req: ProgressSyncRequest, user: dict = Depends(get_current_use
                     """,
                     (user["id"], str(lesson_id)),
                 )
+            if len(req.lessons) >= 8:
+                notify_certificate_earned(user["username"], f"CE-PY-{user['id']:04d}")
+
+    if new_streak >= 7 and (user["streak_count"] or 0) < 7:
+        notify_streak_milestone(user["username"], new_streak)
 
     return ProgressSyncResponse(success=True, xp=new_xp, level=new_level, streak_count=new_streak)
 
