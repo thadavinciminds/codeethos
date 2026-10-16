@@ -127,10 +127,10 @@ export const api = {
   },
 
   // Profile
-  async updateProfile({ display_name, bio, avatar_seed }) {
+  async updateProfile({ display_name, bio, avatar_seed, avatar_url }) {
     const user = await this.request('/api/profile', {
       method: 'PUT',
-      body: JSON.stringify({ display_name, bio, avatar_seed }),
+      body: JSON.stringify({ display_name, bio, avatar_seed, avatar_url }),
     });
     this.setUser(user);
     return user;

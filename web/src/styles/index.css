@@ -336,7 +336,8 @@ table.mini td { padding: 0.3rem 0.8rem; border: 1px solid var(--line); font-size
 .profile-view { max-width: 1000px; margin: 0 auto; }
 .profile-header { display: flex; align-items: center; gap: 1.8rem; padding: 1.8rem; flex-wrap: wrap; }
 .profile-avatar-wrap { flex-shrink: 0; }
-.profile-avatar { width: 72px; height: 72px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line-strong); font-size: 2.2rem; display: grid; place-content: center; }
+.profile-avatar { width: 78px; height: 78px; border-radius: 12px; background: var(--panel-2); border: 2px solid var(--accent); font-size: 2.2rem; display: grid; place-content: center; overflow: hidden; position: relative; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .profile-info { flex: 1; min-width: 260px; }
 .profile-title-row { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
 .profile-title-row h1 { margin: 0; font-size: 1.5rem; font-weight: 500; }
@@ -353,6 +354,16 @@ table.mini td { padding: 0.3rem 0.8rem; border: 1px solid var(--line); font-size
 .stat-box .stat-val { font-size: 1.6rem; font-weight: 500; display: block; margin: 0.3rem 0; }
 .profile-edit-section { padding: 1.6rem; margin: 1.5rem 0; }
 .profile-edit-section h3 { margin-top: 0; font-size: 1rem; font-weight: 500; }
+
+/* Avatar Collection Picker */
+.avatar-picker-section { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.avatar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(54px, 1fr)); gap: 0.6rem; max-height: 270px; overflow-y: auto; padding: 0.8rem; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--line); border-radius: var(--radius); }
+.avatar-grid::-webkit-scrollbar { width: 6px; }
+.avatar-grid::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 3px; }
+.avatar-chip { position: relative; border-radius: 8px; overflow: hidden; border: 2px solid transparent; cursor: pointer; background: var(--panel-2); aspect-ratio: 1; transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease; padding: 0; }
+.avatar-chip:hover { transform: translateY(-2px) scale(1.06); border-color: var(--accent); box-shadow: 0 4px 12px rgba(212, 166, 90, 0.3); }
+.avatar-chip.active { border-color: var(--accent); box-shadow: 0 0 12px rgba(212, 166, 90, 0.6); outline: 2px solid var(--accent); }
+.avatar-chip img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* ═══════════ admin dashboard ═══════════ */
 .admin-view { max-width: 1200px; margin: 0 auto; }

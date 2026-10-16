@@ -5,6 +5,15 @@ import { curriculum } from '../content/curriculum.js';
 import { openAuthModal } from './authModal.js';
 import { h, esc, toast, modal, celebrate } from '../ui/dom.js';
 
+export const MASCOT_AVATARS = Array.from({ length: 84 }, (_, i) => {
+  const num = String(i + 1).padStart(2, '0');
+  return {
+    id: `mascot_${num}`,
+    url: `/avatars/mascot_${num}.png`,
+    name: `Cyber Mascot #${num}`,
+  };
+});
+
 export async function renderProfile(root) {
   const user = api.getUser();
 
@@ -32,11 +41,17 @@ export async function renderProfile(root) {
   const doneLessons = s.lessons.length;
   const joinDate = user.created_at ? new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'Recently';
 
+  let currentAvatarUrl = user.avatar_url || '';
+
+  const avatarDisplayHtml = currentAvatarUrl
+    ? `<img src="${esc(currentAvatarUrl)}" alt="${esc(user.username)}" id="header-avatar-img" />`
+    : `<span id="header-avatar-emoji">${esc(user.avatar_seed || '🐍')}</span>`;
+
   const view = h(`
     <section class="profile-view fade-in">
       <div class="profile-header glass">
         <div class="profile-avatar-wrap">
-          <div class="profile-avatar">${user.avatar_seed || '🐍'}</div>
+          <div class="profile-avatar" id="profile-avatar-display">${avatarDisplayHtml}</div>
         </div>
         <div class="profile-info">
           <div class="profile-title-row">
@@ -83,7 +98,7 @@ export async function renderProfile(root) {
 
       <!-- Edit Profile Details -->
       <div class="glass profile-edit-section">
-        <h3>Edit Profile Details</h3>
+        <h3>Edit Profile & Mascot</h3>
         <form id="form-edit-profile" onsubmit="return false;" style="margin-top:1rem;">
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:1rem;">
             <label class="field">
@@ -91,7 +106,7 @@ export async function renderProfile(root) {
               <input id="edit-display-name" value="${esc(user.display_name || '')}" placeholder="Your preferred name" />
             </label>
             <label class="field">
-              Avatar Emoji
+              Fallback Emoji
               <input id="edit-avatar" value="${esc(user.avatar_seed || '🐍')}" placeholder="e.g. 🐍, ⚡, 🚀, 💻" />
             </label>
           </div>
@@ -99,8 +114,31 @@ export async function renderProfile(root) {
             Personal Bio
             <textarea id="edit-bio" rows="3" style="background:transparent; color:var(--text); border:1px solid var(--line-strong); border-radius:var(--radius); padding:0.5rem 0.7rem; font-family:var(--font); font-size:0.88rem; outline:none; resize:vertical;" placeholder="Write a short bio about what you are building with Codeethos...">${esc(user.bio || '')}</textarea>
           </label>
-          <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1rem;">
-            <button type="submit" class="btn primary" id="btn-save-profile">Save Changes</button>
+
+          <!-- 84 Cyberpunk Mascot Avatars Grid -->
+          <div class="avatar-picker-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8rem; flex-wrap:wrap; gap:0.6rem;">
+              <div>
+                <h4 style="margin:0 0 0.2rem; font-size:0.95rem; font-weight:500; color:var(--text);">Choose Your Avatar Mascot</h4>
+                <div class="muted small">Select any of the 84 official Codeethos cyberpunk cyber-mascots.</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:0.6rem;">
+                <span class="muted small" id="avatar-status-pill">${currentAvatarUrl ? 'Mascot active' : 'Emoji active'}</span>
+                <button type="button" class="btn ghost sm" id="btn-clear-mascot" style="font-size:0.75rem; padding:0.2rem 0.5rem;">Use Emoji</button>
+              </div>
+            </div>
+
+            <div class="avatar-grid" id="avatar-grid">
+              ${MASCOT_AVATARS.map((m) => `
+                <button type="button" class="avatar-chip ${currentAvatarUrl === m.url ? 'active' : ''}" data-url="${m.url}" title="${m.name}">
+                  <img src="${m.url}" alt="${m.name}" loading="lazy" />
+                </button>
+              `).join('')}
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:1.4rem;">
+            <button type="submit" class="btn primary" id="btn-save-profile">Save Profile & Mascot</button>
           </div>
         </form>
       </div>
@@ -146,8 +184,9 @@ export async function renderProfile(root) {
         <div class="muted small" style="margin-bottom:1.4rem;">8-Week Interactive Python Mastery Curriculum</div>
         
         <p class="muted small" style="margin-bottom:0.2rem;">This certifies that</p>
-        <div style="font-size:1.5rem; font-weight:600; color:var(--accent); margin-bottom:0.8rem; border-bottom:1px dashed var(--line-strong); padding-bottom:0.4rem; display:inline-block; min-width:240px;">
-          ${esc(user.display_name || user.username)}
+        <div style="font-size:1.5rem; font-weight:600; color:var(--accent); margin-bottom:0.8rem; border-bottom:1px dashed var(--line-strong); padding-bottom:0.4rem; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; min-width:240px;">
+          ${user.avatar_url ? `<img src="${esc(user.avatar_url)}" alt="Mascot" style="width:36px; height:36px; border-radius:8px; border:1px solid var(--accent); vertical-align:middle; object-fit:cover;" />` : ''}
+          <span>${esc(user.display_name || user.username)}</span>
         </div>
         
         <p class="muted small" style="max-width:540px; margin:0 auto 1.4rem; line-height:1.5;">
@@ -169,6 +208,35 @@ export async function renderProfile(root) {
     m.el.querySelector('#btn-print-cert').onclick = () => window.print();
     m.el.querySelector('#btn-close-cert').onclick = m.close;
   };
+
+  // Handle Mascot Avatar Selection
+  const avatarDisplay = view.querySelector('#profile-avatar-display');
+  const statusPill = view.querySelector('#avatar-status-pill');
+
+  view.querySelectorAll('.avatar-chip').forEach((chip) => {
+    chip.onclick = () => {
+      view.querySelectorAll('.avatar-chip').forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentAvatarUrl = chip.dataset.url;
+      if (avatarDisplay) {
+        avatarDisplay.innerHTML = `<img src="${esc(currentAvatarUrl)}" alt="Avatar" id="header-avatar-img" />`;
+      }
+      if (statusPill) statusPill.textContent = 'Mascot selected (click save)';
+    };
+  });
+
+  const clearMascotBtn = view.querySelector('#btn-clear-mascot');
+  if (clearMascotBtn) {
+    clearMascotBtn.onclick = () => {
+      view.querySelectorAll('.avatar-chip').forEach((c) => c.classList.remove('active'));
+      currentAvatarUrl = '';
+      const fallbackEmoji = view.querySelector('#edit-avatar').value.trim() || '🐍';
+      if (avatarDisplay) {
+        avatarDisplay.innerHTML = `<span id="header-avatar-emoji">${esc(fallbackEmoji)}</span>`;
+      }
+      if (statusPill) statusPill.textContent = 'Emoji active (click save)';
+    };
+  }
 
   // Handle Cloud Sync
   view.querySelector('#btn-sync-now').onclick = async () => {
@@ -195,7 +263,7 @@ export async function renderProfile(root) {
     }
   };
 
-  // Handle Save Profile
+  // Handle Save Profile & Mascot
   view.querySelector('#form-edit-profile').onsubmit = async () => {
     const saveBtn = view.querySelector('#btn-save-profile');
     const display_name = view.querySelector('#edit-display-name').value.trim();
@@ -206,14 +274,15 @@ export async function renderProfile(root) {
     saveBtn.textContent = 'Saving…';
 
     try {
-      const updated = await api.updateProfile({ display_name, avatar_seed, bio });
-      toast('Profile updated!', 'success');
+      const updated = await api.updateProfile({ display_name, avatar_seed, bio, avatar_url: currentAvatarUrl });
+      celebrate();
+      toast('🎉 Profile and mascot avatar updated!', 'badge', 4000);
       renderProfile(root);
     } catch (err) {
       toast(`Failed to update profile: ${err.message}`, 'warn');
     } finally {
       saveBtn.disabled = false;
-      saveBtn.textContent = 'Save Changes';
+      saveBtn.textContent = 'Save Profile & Mascot';
     }
   };
 

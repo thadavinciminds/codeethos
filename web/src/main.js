@@ -70,10 +70,14 @@ function renderAuthNav() {
     el.innerHTML = `<button class="btn sm ghost" id="btn-auth-signin" title="Sign In or Register">sign in</button>`;
     el.querySelector('#btn-auth-signin').onclick = () => openAuthModal('signin');
   } else {
+    const avatarHtml = user.avatar_url
+      ? `<img src="${esc(user.avatar_url)}" alt="${esc(user.username)}" class="user-avatar-tiny" style="width:22px; height:22px; border-radius:4px; object-fit:cover; vertical-align:middle; display:inline-block; border:1px solid var(--line-strong);" />`
+      : `<span class="user-emoji">${esc(user.avatar_seed || '🐍')}</span>`;
+
     el.innerHTML = `
       ${user.role === 'admin' ? `<a href="#/admin" class="icon-btn" id="btn-topbar-admin" title="Admin Dashboard">admin</a>` : ''}
       <a href="#/profile" class="btn sm ghost user-nav-btn" id="btn-topbar-profile" title="View Profile">
-        <span class="user-emoji">${esc(user.avatar_seed || '🐍')}</span>
+        ${avatarHtml}
         <b>${esc(user.username)}</b>
       </a>
     `;
